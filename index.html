@@ -1,4 +1,9 @@
 <!doctype html>
+<!--
+  Vendor Ramp Tracker
+  Copyright (c) 2026 Karen Tinoco (https://www.thehumanelement.live). All rights reserved.
+  Licensed under the PolyForm Noncommercial License 1.0.0. See LICENSE.md.
+-->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -83,6 +88,7 @@ a { color: var(--accent); }
 .player { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
 .player input[type=range] { flex: 1; min-width: 160px; accent-color: var(--accent); }
 .docs { padding-block: 56px 48px; }
+.copyright { text-align: center; color: var(--muted); font-size: 12px; padding: 8px 16px 24px; margin: 0; }
 .foot { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var(--muted); font-size: 0.85rem; }
 .foot .docs-in { display: grid; gap: 6px; }
 .docs-h { font-size: clamp(1.5rem, 3.5vw, 2.2rem); margin: 6px 0 22px; }
@@ -269,6 +275,7 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
       </div>
     </div>
     <main class="wrap" id="app"></main>
+    <p class="copyright" data-t="foot.short">foot.short</p>
   </div>
 </section>
 
@@ -435,12 +442,14 @@ const ES = {
   'Weighted score': 'Puntaje ponderado', 'doc.ws': "Σ(peso × cumplimiento) ÷ Σ pesos. Cada métrica tiene un tope de 120%, para que una métrica fuerte no esconda una débil.",
   'Partnership plan': 'Plan de colaboración', 'doc.ca': 'Las métricas se agrupan por área. Cada área que no está en meta muestra coaching para el equipo del proveedor y, cuando hace falta, el apoyo que nos toca dar: herramientas, accesos, guías o pronósticos. Las áreas en meta se reconocen como fortalezas.',
   'About this project': 'Sobre este proyecto',
-  'foot.by': 'Vendor Ramp Tracker por Karen Tinoco. Diseñado y dirigido por la autora; implementado con Claude Code como programador de IA en pareja. Todos los datos de proveedores del ejemplo son simulados.',
+  'foot.by': 'Vendor Ramp Tracker por Karen Tinoco. Diseñado y dirigido por la autora; implementado con Claude Code como programador de IA en pareja. Todos los datos de proveedores del ejemplo son simulados. Northwind BPO es una empresa ficticia; sin afiliación con ningún proveedor real.',
+  'foot.short': '© 2026 Karen Tinoco. Todos los derechos reservados. Puede consultarlo y aprender de él; el uso comercial requiere permiso por escrito.',
   'foot.copy': '© 2026 Karen Tinoco. Todos los derechos reservados. Puede consultarlo y aprender de él; el uso comercial requiere permiso por escrito. <a href="https://github.com/karentinoco13-alt/vendor-ramp-tracker/blob/main/LICENSE.md">Licencia</a>',
   'doc.about': 'Creado para que las revisiones de incorporación de proveedores sean consistentes y reutilizables entre equipos. Los datos se exportan como archivos CSV ordenados para Tableau, y el modelo de datos corresponde directamente a objetos personalizados de Salesforce para un flujo en vivo. Consulta la pestaña <a href="#demo" data-action="view" data-view="guide">Exportar a Tableau</a>.',
 };
 const EN_LONG = {
-  'foot.by': 'Vendor Ramp Tracker by Karen Tinoco. Designed and directed by the author; implemented with Claude Code as an AI pair programmer. All sample vendor data is simulated.',
+  'foot.by': 'Vendor Ramp Tracker by Karen Tinoco. Designed and directed by the author; implemented with Claude Code as an AI pair programmer. All sample vendor data is simulated. Northwind BPO is a fictional company; not affiliated with any real vendor.',
+  'foot.short': '© 2026 Karen Tinoco. All rights reserved. Free to view and learn from; commercial use requires written permission.',
   'foot.copy': '© 2026 Karen Tinoco. All rights reserved. Free to view and learn from; commercial use requires written permission. <a href="https://github.com/karentinoco13-alt/vendor-ramp-tracker/blob/main/LICENSE.md">License</a>',
   'hero.lede': 'A 90-day proficiency console for outsourced teams. When you hire a vendor the trust is already there; the work is building a partnership strong enough to drive results. Anyone can choose the metrics that matter, log results, and see in plain language where the team needs coaching, where they need support from you, and when they are ready at day 90.',
   'demo.notice': '<b>Interactive demo with a sample vendor.</b> Northwind BPO is ramping a Tier 1 voice team. Press play to replay their first 98 days and watch the targets step up at days 30, 60 and 90, the partnership plan change, and the day-90 verdict land. All numbers are example data, scored by the same rules as real programs.',

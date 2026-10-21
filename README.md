@@ -24,7 +24,7 @@ It is a single static file. Open `index.html` in a browser.
 
 ## Credits
 
-Vendor Ramp Tracker by Karen Tinoco. Designed and directed by the author; implemented with Claude Code as an AI pair programmer. All sample vendor data is simulated.
+Vendor Ramp Tracker by Karen Tinoco. Designed and directed by the author; implemented with Claude Code as an AI pair programmer. All sample vendor data is simulated. Northwind BPO is a fictional company; not affiliated with any real vendor.
 
 ## License
 
