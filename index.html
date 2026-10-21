@@ -70,7 +70,7 @@ a { color: var(--accent); }
 .docs-p { max-width: 70ch; color: var(--muted); margin-top: 6px; }
 .flow { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; counter-reset: f; }
 .flow li { counter-increment: f; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 6px; align-content: start; }
-.flow li::before { content: "Step " counter(f); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.flow-n { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
 .flow span { color: var(--muted); font-size: 0.9rem; }
 .docs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-top: 28px; }
 .docs-grid h3 { margin-bottom: 6px; }
@@ -211,16 +211,19 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg); padding: 9px 16px; border-radius: 8px; font-size: 0.9rem; z-index: 20; }
 .empty { text-align: center; padding: 40px 16px; display: grid; gap: 12px; justify-items: center; }
 @media (prefers-reduced-motion: no-preference) { .tl-seg, .choice, .mopt { transition: background .15s, border-color .15s; } }
+.lang { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.lang button { border: 0; background: var(--surface); padding: 5px 11px; font-weight: 700; font-size: 0.82rem; cursor: pointer; color: var(--muted); }
+.lang button[aria-pressed=true] { background: var(--accent); color: var(--accent-ink); }
 </style>
 
 <header class="hero">
   <div class="hero-in">
-    <p class="hero-eyebrow">Vendor management</p>
+    <p class="hero-eyebrow" data-t="Vendor management">Vendor management</p>
     <h1 class="hero-title">Vendor Ramp Tracker</h1>
-    <p class="hero-lede">A 90-day proficiency console for outsourced teams. Anyone can answer a few questions to choose the metrics that matter for their vendor. Then they log results and see, in plain language, whether the team is on pace, needs coaching, or has reached proficiency at day 90.</p>
+    <p class="hero-lede" data-t="hero.lede">A 90-day proficiency console for outsourced teams. Anyone can answer a few questions to choose the metrics that matter for their vendor. Then they log results and see, in plain language, whether the team is on pace, needs coaching, or has reached proficiency at day 90.</p>
     <div class="hero-cta">
-      <a class="hbtn solid" href="#demo" data-action="playDemo">Try the live demo</a>
-      <a class="hbtn line" href="#how">How it scores</a>
+      <a class="hbtn solid" href="#demo" data-action="playDemo" data-t="Try the live demo">Try the live demo</a>
+      <a class="hbtn line" href="#how" data-t="How it scores">How it scores</a>
     </div>
   </div>
 </header>
@@ -234,12 +237,16 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
           Vendor Ramp Tracker
         </div>
         <div class="tabs" role="group" aria-label="Views">
-          <button id="tabProgram" data-action="view" data-view="program">Scorecard</button>
-          <button id="tabWizard" data-action="new">New program</button>
-          <button id="tabGuide" data-action="view" data-view="guide">Tableau export</button>
+          <button id="tabProgram" data-action="view" data-view="program" data-t="Scorecard">Scorecard</button>
+          <button id="tabWizard" data-action="new" data-t="New program">New program</button>
+          <button id="tabGuide" data-action="view" data-view="guide" data-t="Tableau export">Tableau export</button>
         </div>
         <div class="pills" id="pills"></div>
         <select id="progSel" aria-label="Program"></select>
+        <div class="lang" role="group" aria-label="Language">
+          <button data-action="lang" data-lang="en" id="langEn">EN</button>
+          <button data-action="lang" data-lang="es" id="langEs">ES</button>
+        </div>
       </div>
     </div>
     <main class="wrap" id="app"></main>
@@ -247,29 +254,201 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
 </section>
 
 <section class="docs" id="how">
-  <div class="docs-in">
-    <p class="eyebrow">How it scores</p>
-    <h2 class="docs-h">From a few questions to a day-90 verdict</h2>
-    <ol class="flow">
-      <li><b>Answer the setup questions</b><span>Vendor, start date, type of work and priorities. The answers filter a library of metrics and recommend the ones that fit.</span></li>
-      <li><b>Pick metrics and set goals</b><span>Use the suggested metrics or add your own. Each one gets a goal, a direction (higher or lower is better) and a weight from 1 to 3.</span></li>
-      <li><b>Choose a ramp</b><span>Gradual, steady or fast. The ramp sets each checkpoint's target as a share of the goal, for example 70%, 85% and 100% at days 30, 60 and 90.</span></li>
-      <li><b>Log results</b><span>Enter values daily or weekly. Each value is compared with the target for its phase. At or above target is on track, 90–99% is watch, and below 90% is at risk.</span></li>
-      <li><b>Get the verdict</b><span>The weighted score for days 61–90 decides proficiency. The team needs 100% or more overall, with no single metric below 90%.</span></li>
-    </ol>
-    <div class="docs-grid">
-      <div><h3>Attainment</h3><p>Higher is better: actual ÷ target. Lower is better: target ÷ actual. For lower-is-better metrics, early targets are looser (goal ÷ ramp %).</p></div>
-      <div><h3>Weighted score</h3><p>Σ(weight × attainment) ÷ Σ weights. Each metric is capped at 120%, so one strong metric can't hide a weak one.</p></div>
-      <div><h3>Coaching alerts</h3><p>Any metric at risk in the current phase raises an alert with a suggested next step for its focus area, so the review ends with an action.</p></div>
-    </div>
-    <p class="eyebrow" style="margin-top:36px">About this project</p>
-    <p class="docs-p">Built to make vendor onboarding reviews consistent and reusable across teams. The data exports as tidy CSV files for Tableau, and the data model maps directly onto Salesforce custom objects for a live feed. See the <a href="#demo" data-action="view" data-view="guide">Tableau export</a> tab.</p>
-  </div>
+  <div class="docs-in" id="docs"></div>
 </section>
 <div class="toast" id="toast" hidden></div>
 
 <script>
 (() => {
+// ---------- language ----------
+let LANG = 'en';
+try { LANG = localStorage.getItem('vrt.lang') || ((navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch { LANG = (navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en'; }
+const ES = {
+  'Vendor management': 'Gestión de proveedores',
+  'hero.lede': 'Una consola de competencia a 90 días para equipos tercerizados. Cualquier persona puede responder unas preguntas para elegir las métricas que importan para su proveedor. Luego registra resultados y ve, en lenguaje sencillo, si el equipo va al ritmo, necesita coaching o alcanzó la competencia en el día 90.',
+  'Try the live demo': 'Probar la demo en vivo', 'How it scores': 'Cómo se califica',
+  'Scorecard': 'Tablero', 'New program': 'Nuevo programa', 'Tableau export': 'Exportar a Tableau',
+  // reference data
+  'Customer support': 'Atención al cliente', 'Phone, chat, email or ticket queues': 'Colas de teléfono, chat, correo o tickets',
+  'Sales': 'Ventas', 'Inbound or outbound selling, upsell': 'Ventas entrantes o salientes, venta adicional',
+  'Operations / back office': 'Operaciones / back office', 'Processing, fulfillment, data work': 'Procesamiento, cumplimiento de pedidos, manejo de datos',
+  'Collections': 'Cobranza', 'Recovery, payment arrangements': 'Recuperación, acuerdos de pago',
+  'Something else': 'Otro tipo de trabajo', 'Start from general metrics and add your own': 'Parte de métricas generales y agrega las tuyas',
+  'Productivity': 'Productividad', 'Quality': 'Calidad', 'Speed': 'Rapidez', 'Customer experience': 'Experiencia del cliente', 'Compliance': 'Cumplimiento', 'Revenue': 'Ingresos', 'Custom': 'Personalizada',
+  'How much work gets done': 'Cuánto trabajo se completa', 'How accurate or correct the work is': 'Qué tan preciso o correcto es el trabajo', 'How fast work is completed': 'Qué tan rápido se completa el trabajo',
+  'How customers rate the experience': 'Cómo califican los clientes la experiencia', 'Following schedule, policy and regulation': 'Cumplir horarios, políticas y regulaciones', 'Money brought in or recovered': 'Dinero generado o recuperado',
+  'CSAT': 'CSAT', 'Average handle time': 'Tiempo promedio de atención', 'First contact resolution': 'Resolución en el primer contacto', 'QA score': 'Puntaje de calidad (QA)',
+  'Contacts per hour': 'Contactos por hora', 'Schedule adherence': 'Adherencia al horario', 'Transfer rate': 'Tasa de transferencia', 'NPS': 'NPS',
+  'Conversion rate': 'Tasa de conversión', 'Revenue per rep': 'Ingresos por asesor', 'Calls per day': 'Llamadas por día', 'Average deal size': 'Valor promedio de venta',
+  'Pipeline created': 'Pipeline generado', 'Speed to lead': 'Tiempo de respuesta al lead', 'CRM data accuracy': 'Exactitud de datos en CRM', 'Call QA score': 'Puntaje de calidad de llamadas',
+  'Units per hour': 'Unidades por hora', 'Error rate': 'Tasa de error', 'On-time completion': 'Cumplimiento a tiempo', 'Cycle time': 'Tiempo de ciclo', 'SLA compliance': 'Cumplimiento de SLA',
+  'Rework rate': 'Tasa de retrabajo', 'Internal customer rating': 'Calificación del cliente interno',
+  'Recovery rate': 'Tasa de recuperación', 'Dollars collected': 'Monto cobrado', 'Promise-to-pay kept': 'Promesas de pago cumplidas', 'Right-party contacts per hour': 'Contactos efectivos por hora',
+  'Compliance QA': 'Calidad de cumplimiento', 'Complaint rate': 'Tasa de quejas',
+  'Output per day': 'Producción por día', 'Quality score': 'Puntaje de calidad', 'Turnaround time': 'Tiempo de entrega', 'Customer rating': 'Calificación del cliente', 'Policy adherence': 'Apego a políticas', 'Revenue influenced': 'Ingresos influenciados',
+  'Gradual': 'Gradual', 'Steady': 'Constante', 'Fast': 'Rápida',
+  'Complex work, long learning curve': 'Trabajo complejo, curva de aprendizaje larga', 'Typical vendor onboarding': 'Incorporación típica de un proveedor', 'Experienced team, simple process': 'Equipo con experiencia, proceso sencillo',
+  'Days 1–30': 'Días 1–30', 'Days 31–60': 'Días 31–60', 'Days 61–90': 'Días 61–90', 'Day 91+': 'Día 91+',
+  'Learn': 'Aprender', 'Build': 'Desarrollar', 'Perform': 'Desempeñar', 'Sustain': 'Sostener',
+  'On track': 'En meta', 'Watch': 'Vigilar', 'At risk': 'En riesgo', 'No data': 'Sin datos',
+  // demo
+  'Northwind BPO (sample)': 'Northwind BPO (ejemplo)', 'Tier 1 voice — Manila': 'Voz nivel 1 — Manila', 'Vendor manager': 'Gerente de proveedores',
+  // store notices
+  'Loading programs…': 'Cargando programas…',
+  'Programs and results are saved in this browser only. Use Tableau export to share them or load them into Tableau.': 'Los programas y resultados se guardan solo en este navegador. Usa Exportar a Tableau para compartirlos o cargarlos en Tableau.',
+  'You can view this tracker but not change it. Ask the owner for Contributor access to log results.': 'Puedes ver este tablero pero no modificarlo. Pide al propietario acceso de Colaborador para registrar resultados.',
+  'demo.notice': '<b>Demo interactiva con un proveedor de ejemplo.</b> Northwind BPO está incorporando un equipo de voz de nivel 1. Presiona reproducir para ver sus primeros 98 días: las metas suben en los días 30, 60 y 90, las alertas cambian y llega el veredicto del día 90. Todos los números son datos de ejemplo, calificados con las mismas reglas que los programas reales.',
+  'Pause': 'Pausar', 'Replay from day 1': 'Repetir desde el día 1', 'Play the 90 days': 'Reproducir los 90 días', 'Set up your own vendor': 'Configura tu propio proveedor', 'Demo day': 'Día de la demo',
+  // assessment
+  'Proficient at day 90': 'Competente en el día 90', 'Close: needs a coaching plan': 'Cerca: necesita un plan de coaching', 'Not proficient at day 90': 'No competente en el día 90',
+  'Starts {d}': 'Inicia el {d}', 'Waiting for data': 'Esperando datos', 'On pace for proficiency': 'Al ritmo para ser competente', 'Slightly behind the ramp': 'Un poco atrás de la rampa', 'Behind the ramp': 'Atrás de la rampa',
+  'on pace': 'al ritmo', 'to watch': 'por vigilar', 'behind': 'atrasados', 'waiting for data': 'esperando datos',
+  // alerts
+  'Coaching needed': 'Se necesita coaching', '{name} phase': 'fase {name}', '{m} at {p}': '{m} al {p}', 'of target': 'de la meta',
+  'Below 90% of the target for this phase. ': 'Por debajo del 90% de la meta de esta fase. ', 'Between 90% and 99% of target. ': 'Entre 90% y 99% de la meta. ',
+  'step.quality': 'Realiza sesiones de calibración y revisiones de calidad lado a lado con el líder del proveedor.',
+  'step.speed': 'Revisa el proceso y las herramientas con alguien de alto desempeño y elimina pasos innecesarios.',
+  'step.cx': 'Escuchen juntos los contactos con baja calificación y den coaching en resolución y tono.',
+  'step.productivity': 'Revisa dotación, tiempo inactivo y accesos a sistemas antes de dar coaching sobre ritmo.',
+  'step.compliance': 'Refuerza la capacitación de políticas y audita el cumplimiento a diario hasta que se recupere.',
+  'step.revenue': 'Revisa el guion y las ofertas, y pide que los asesores acompañen a los que mejor convierten.',
+  'step.custom': 'Acuerda una acción correctiva y un responsable con el líder del proveedor esta semana.',
+  // program view
+  'Vendor program': 'Programa de proveedor', 'started {d}': 'inició el {d}', 'Owner: {o}': 'Responsable: {o}', '{n} metrics': '{n} métricas', '{r} ramp': 'Rampa {r}',
+  'Day {d}': 'Día {d}', ' of 90': ' de 90', 'Not started': 'Sin iniciar', 'Sustain (past day 90)': 'Sostener (después del día 90)', '{name} phase cap': 'Fase {name}',
+  'Day 90 proficiency score': 'Puntaje de competencia del día 90', 'Current phase score': 'Puntaje de la fase actual',
+  "Weighted attainment against this phase's ramp target. 100% means every metric is at target.": 'Cumplimiento ponderado contra la meta de rampa de esta fase. 100% significa que todas las métricas están en meta.',
+  'Upcoming': 'Próximo', 'In progress': 'En curso', 'upcoming': 'próximo', 'no data': 'sin datos',
+  'Metric review': 'Revisión de métricas', 'Before start': 'Antes del inicio', 'select a row to chart it': 'selecciona una fila para graficarla',
+  'Metric': 'Métrica', 'Goal': 'Meta final', 'Phase target': 'Meta de fase', 'Phase avg': 'Prom. fase', 'Latest': 'Último', 'Attain.': 'Cumpl.', 'Status': 'Estado', 'Trend': 'Tendencia',
+  'Higher is better': 'Mayor es mejor', 'Lower is better': 'Menor es mejor', 'weight {w}': 'peso {w}', 'No metrics yet.': 'Aún no hay métricas.',
+  'Actual': 'Real', 'Ramp target': 'Meta de rampa', 'Final goal': 'Meta final',
+  '30 / 60 / 90 checkpoint review': 'Revisión de hitos 30 / 60 / 90', "Phase average vs. that phase's target": 'Promedio de la fase vs. la meta de esa fase', '{p}% of goal': '{p}% de la meta',
+  'Log results': 'Registrar resultados', 'Leave a metric blank to skip it': 'Deja una métrica en blanco para omitirla', 'Date': 'Fecha', 'Note (optional)': 'Nota (opcional)',
+  'e.g. new script rolled out': 'p. ej. se lanzó un nuevo guion', 'Save results': 'Guardar resultados', 'The sample is read-only.': 'El ejemplo es de solo lectura.',
+  'Recent entries': 'Registros recientes', '{n} total': '{n} en total', 'Day': 'Día', 'Value': 'Valor', 'Note': 'Nota',
+  'Delete': 'Eliminar', 'Confirm delete': 'Confirmar', 'No results logged yet. Use the form to add the first ones.': 'Aún no hay resultados. Usa el formulario para agregar los primeros.',
+  'Export for Tableau': 'Exportar a Tableau', 'Edit goals and metrics': 'Editar metas y métricas', 'Delete program': 'Eliminar programa', 'Confirm: delete program and all results': 'Confirmar: eliminar el programa y todos sus resultados',
+  'No results logged for this metric yet': 'Aún no hay resultados para esta métrica', 'today': 'hoy', 'day': 'día', 'of target)': 'de la meta)',
+  // wizard
+  'Basics': 'Datos básicos', 'Type of work': 'Tipo de trabajo', 'Priorities': 'Prioridades', 'Metrics': 'Métricas', 'Goals & ramp': 'Metas y rampa', 'Review': 'Revisión',
+  'Who are you tracking?': '¿A quién vas a medir?',
+  'One program covers one vendor team ramping on one line of work. A person can be a team of one.': 'Un programa cubre a un equipo de un proveedor en una línea de trabajo. Una persona puede ser un equipo de uno.',
+  'Vendor name': 'Nombre del proveedor', 'e.g. Acme Outsourcing': 'p. ej. Acme Outsourcing', 'Team, site or person': 'Equipo, sede o persona', '(optional)': '(opcional)',
+  'e.g. Spanish chat, Bogotá': 'p. ej. chat en español, Bogotá', 'Program owner': 'Responsable del programa', 'Who reviews the results': 'Quién revisa los resultados', 'Day 1 of the 90 days': 'Día 1 de los 90 días',
+  'What kind of work is this vendor doing?': '¿Qué tipo de trabajo hace este proveedor?',
+  "This picks the metric suggestions you'll see next. You can always add your own.": 'Esto define las métricas sugeridas en el siguiente paso. Siempre puedes agregar las tuyas.',
+  'What matters most in the first 90 days?': '¿Qué es lo más importante en los primeros 90 días?',
+  'Choose one or more. Metrics in these areas get recommended and weighted higher in the score.': 'Elige una o más. Las métricas de estas áreas se recomiendan y pesan más en el puntaje.',
+  'Which metrics do you want to measure?': '¿Qué métricas quieres medir?',
+  'Pick 3 to 7 for a focused review. Recommended ones match your priorities.': 'Elige de 3 a 7 para una revisión enfocada. Las recomendadas coinciden con tus prioridades.',
+  'higher is better': 'mayor es mejor', 'lower is better': 'menor es mejor', 'typical goal {g}': 'meta típica {g}', 'Recommended': 'Recomendada', 'your metric': 'tu métrica',
+  'Add your own metric': 'Agrega tu propia métrica', 'Metric name': 'Nombre de la métrica', 'e.g. Orders entered without errors': 'p. ej. pedidos capturados sin errores',
+  'Unit': 'Unidad', 'Better when': 'Mejor cuando es', 'Higher': 'Mayor', 'Lower': 'Menor', 'Add metric': 'Agregar métrica',
+  'Set the goal and how fast they should ramp': 'Define la meta y qué tan rápido deben avanzar',
+  'ramp.help': 'La meta final es la competencia completa. La rampa define la meta de cada hito como una parte de esa meta. En métricas donde menor es mejor, las metas iniciales son más flexibles.',
+  'Weight': 'Peso', 'Day 30 / 60 / 90 targets': 'Metas día 30 / 60 / 90', 'high': 'alto', 'low': 'bajo',
+  'Review and save changes': 'Revisa y guarda los cambios', 'Review and create the program': 'Revisa y crea el programa',
+  'Vendor': 'Proveedor', 'Owner': 'Responsable', 'Work type': 'Tipo de trabajo', '90-day window': 'Ventana de 90 días', 'Ramp': 'Rampa',
+  '{pcts} of goal at days 30 / 60 / 90': '{pcts} de la meta en los días 30 / 60 / 90', 'Day 30': 'Día 30', 'Day 60': 'Día 60', 'Day 90 goal': 'Meta día 90',
+  'rule.day90': 'Regla del día 90: un equipo es <b>competente</b> cuando su puntaje ponderado de los días 61–90 es de al menos 100% y ninguna métrica está por debajo del 90% de su meta.',
+  'Edit program': 'Editar programa', 'New vendor program': 'Nuevo programa de proveedor', 'Cancel': 'Cancelar', 'Back': 'Atrás', 'Continue': 'Continuar', 'Save changes': 'Guardar cambios', 'Create program': 'Crear programa',
+  'Enter the vendor name.': 'Escribe el nombre del proveedor.', 'Choose the first day of the 90-day window.': 'Elige el primer día de la ventana de 90 días.',
+  'Choose the type of work.': 'Elige el tipo de trabajo.', 'Choose at least one priority.': 'Elige al menos una prioridad.', 'Pick at least one metric.': 'Elige al menos una métrica.',
+  'Enter a goal above zero for {m}.': 'Escribe una meta mayor que cero para {m}.', 'Give your metric a name.': 'Ponle nombre a tu métrica.',
+  "You don't have permission to save programs here.": 'No tienes permiso para guardar programas aquí.', "The program wasn't saved. Check your connection and try again.": 'No se guardó el programa. Revisa tu conexión e inténtalo de nuevo.',
+  // export
+  'Export two tidy CSV files and connect Tableau to them. Every number on the scorecard is calculated in the export too, so Tableau shows the same results.': 'Exporta dos archivos CSV ordenados y conecta Tableau a ellos. Cada número del tablero también se calcula en la exportación, así Tableau muestra los mismos resultados.',
+  'Programs': 'Programas', 'All programs': 'Todos los programas', 'Only {v}': 'Solo {v}', 'Download results CSV': 'Descargar CSV de resultados', 'Download ramp targets CSV': 'Descargar CSV de metas de rampa',
+  'No programs exist yet, so the export contains the sample program.': 'Aún no hay programas, así que la exportación incluye el programa de ejemplo.', 'Copy CSV': 'Copiar CSV',
+  'csv.note': 'Las columnas y los valores del CSV quedan en inglés para que los campos de Tableau sean los mismos en cualquier idioma.',
+  'Build the Tableau workbook': 'Arma el libro de Tableau',
+  'tab.1': 'En Tableau, elige <b>Conectar › Archivo de texto</b> y abre <code>vendor_results.csv</code>. Agrega <code>vendor_ramp_targets.csv</code> al lienzo.',
+  'tab.2': 'Relaciona ambos por <code>program_id</code>, <code>metric_id</code> y <code>phase</code>.', 'tab.3': 'Crea estos campos calculados:',
+  'tab.4': '<b>Tablero:</b> Proveedor y Métrica en Filas, Fase en Columnas, AVG(Attainment) como texto, con color por Estado.',
+  'tab.5': '<b>Curva de rampa:</b> Day Number en Columnas, Actual Value en Filas, y Target Value como eje doble dibujado en escalón. Filtra a una métrica.',
+  'tab.6': '<b>Ranking:</b> Proveedor en Filas, puntaje ponderado como barra, con una línea de referencia en 100%.',
+  'tab.7': 'Agrega filtros de Proveedor, Tipo de trabajo y Área de enfoque, y coloca las tres hojas en un dashboard.',
+  'Make it live with Salesforce': 'Conéctalo en vivo con Salesforce',
+  'sf.intro': 'La exportación CSV funciona hoy. Para datos que se actualicen solos, guarda los mismos tres registros en Salesforce y conecta Tableau a ellos. Tableau es un producto de Salesforce, así que el conector ya viene incluido.',
+  'sf.1': '<b>Ramp_Program__c</b>: proveedor (búsqueda a Account), equipo, responsable, fecha de inicio, % de rampa para los días 30, 60 y 90.',
+  'sf.2': '<b>Ramp_Metric__c</b> (hijo del programa): nombre, unidad, dirección, meta, peso, área de enfoque.',
+  'sf.3': '<b>Metric_Result__c</b> (hijo de la métrica): fecha, valor, nota. Campos de fórmula para número de día y fase.',
+  'sf.4': 'Reconstruye esta configuración guiada como un Screen Flow para que cualquiera cree programas de la misma forma. Luego conecta Tableau con <b>Conectar › Salesforce</b> y usa los cálculos de la izquierda. También puedes cargar estos CSV a los objetos con Data Loader.',
+  'Column reference': 'Referencia de columnas',
+  'col.day': 'Días desde el día 1 del programa (día 1 = fecha de inicio)', 'col.pct': 'Parte de la meta esperada en esa fase',
+  'col.target': 'La meta ajustada por el % de rampa. En métricas donde menor es mejor es meta ÷ % de rampa.', 'col.att': 'Real vs meta, donde 100 = en meta (tope de 150 en métricas donde menor es mejor)',
+  // toasts
+  "Download isn't available here. Copy the text below instead.": 'La descarga no está disponible aquí. Copia el texto de abajo.', 'Saved {f}': 'Se guardó {f}', 'Downloaded {f}': 'Se descargó {f}',
+  "The file wasn't saved. You can copy the text below.": 'No se guardó el archivo. Puedes copiar el texto de abajo.', 'CSV copied': 'CSV copiado', 'Press Ctrl+C (or ⌘C) to copy': 'Presiona Ctrl+C (o ⌘C) para copiar',
+  'Entry deleted': 'Registro eliminado', "Couldn't delete the entry. Try again.": 'No se pudo eliminar el registro. Inténtalo de nuevo.', 'Program deleted': 'Programa eliminado',
+  "Couldn't delete the program. Try again.": 'No se pudo eliminar el programa. Inténtalo de nuevo.', 'Changes saved': 'Cambios guardados', 'Program created': 'Programa creado',
+  'Choose a date for these results.': 'Elige una fecha para estos resultados.', 'Enter at least one value.': 'Escribe al menos un valor.',
+  'Saved {n} result(s) for {d}': 'Se guardaron {n} resultado(s) del {d}', "You don't have permission to log results here.": 'No tienes permiso para registrar resultados aquí.', "Results weren't saved. Try again.": 'No se guardaron los resultados. Inténtalo de nuevo.',
+  // docs section
+  'From a few questions to a day-90 verdict': 'De unas preguntas a un veredicto en el día 90',
+  'Step': 'Paso',
+  'Answer the setup questions': 'Responde las preguntas de configuración',
+  'doc.s1': 'Proveedor, fecha de inicio, tipo de trabajo y prioridades. Las respuestas filtran una biblioteca de métricas y recomiendan las que encajan.',
+  'Pick metrics and set goals': 'Elige métricas y define metas',
+  'doc.s2': 'Usa las métricas sugeridas o agrega las tuyas. Cada una tiene una meta, una dirección (mayor o menor es mejor) y un peso de 1 a 3.',
+  'Choose a ramp': 'Elige una rampa',
+  'doc.s3': 'Gradual, constante o rápida. La rampa define la meta de cada hito como una parte de la meta final, por ejemplo 70%, 85% y 100% en los días 30, 60 y 90.',
+  'doc.s4': 'Captura valores a diario o por semana. Cada valor se compara con la meta de su fase. En meta o arriba es "En meta", 90–99% es "Vigilar" y menos de 90% es "En riesgo".',
+  'Get the verdict': 'Obtén el veredicto',
+  'doc.s5': 'El puntaje ponderado de los días 61–90 define la competencia. El equipo necesita 100% o más en total, sin ninguna métrica por debajo del 90%.',
+  'Attainment': 'Cumplimiento', 'doc.att': 'Mayor es mejor: real ÷ meta. Menor es mejor: meta ÷ real. En métricas donde menor es mejor, las metas iniciales son más flexibles (meta ÷ % de rampa).',
+  'Weighted score': 'Puntaje ponderado', 'doc.ws': "Σ(peso × cumplimiento) ÷ Σ pesos. Cada métrica tiene un tope de 120%, para que una métrica fuerte no esconda una débil.",
+  'Coaching alerts': 'Alertas de coaching', 'doc.ca': 'Cualquier métrica en riesgo en la fase actual genera una alerta con un siguiente paso sugerido para su área, así la revisión termina con una acción.',
+  'About this project': 'Sobre este proyecto',
+  'doc.about': 'Creado para que las revisiones de incorporación de proveedores sean consistentes y reutilizables entre equipos. Los datos se exportan como archivos CSV ordenados para Tableau, y el modelo de datos corresponde directamente a objetos personalizados de Salesforce para un flujo en vivo. Consulta la pestaña <a href="#demo" data-action="view" data-view="guide">Exportar a Tableau</a>.',
+};
+const EN_LONG = {
+  'hero.lede': 'A 90-day proficiency console for outsourced teams. Anyone can answer a few questions to choose the metrics that matter for their vendor. Then they log results and see, in plain language, whether the team is on pace, needs coaching, or has reached proficiency at day 90.',
+  'demo.notice': '<b>Interactive demo with a sample vendor.</b> Northwind BPO is ramping a Tier 1 voice team. Press play to replay their first 98 days and watch the targets step up at days 30, 60 and 90, the alerts change, and the day-90 verdict land. All numbers are example data, scored by the same rules as real programs.',
+  'step.quality': 'Run calibration sessions and side-by-side QA reviews with the vendor lead.',
+  'step.speed': 'Walk through the process and tools with a top performer, and remove extra steps.',
+  'step.cx': 'Listen to low-rated contacts together and coach on resolution and tone.',
+  'step.productivity': 'Check staffing, idle time and system access before coaching on pace.',
+  'step.compliance': 'Refresh policy training and audit adherence daily until it recovers.',
+  'step.revenue': 'Review the call flow and offers, and have reps shadow the top converters.',
+  'step.custom': 'Agree a corrective action and an owner with the vendor lead this week.',
+  '{name} phase cap': '{name} phase',
+  'ramp.help': 'The goal is full proficiency. The ramp sets each checkpoint\'s target as a share of that goal. For "lower is better" metrics, the early targets are allowed to be higher.',
+  'rule.day90': 'Day 90 rule: a team is <b>proficient</b> when its weighted score for days 61–90 is at least 100% and no metric is below 90% of target.',
+  'csv.note': 'CSV columns and values stay in English so the Tableau fields are the same in either language.',
+  'tab.1': 'In Tableau, choose <b>Connect › Text file</b> and open <code>vendor_results.csv</code>. Add <code>vendor_ramp_targets.csv</code> to the canvas.',
+  'tab.2': 'Relate the two on <code>program_id</code>, <code>metric_id</code> and <code>phase</code>.', 'tab.3': 'Create these calculated fields:',
+  'tab.4': '<b>Scorecard:</b> Vendor and Metric on Rows, Phase on Columns, AVG(Attainment) as text, colored by Status.',
+  'tab.5': '<b>Ramp curve:</b> Day Number on Columns, Actual Value on Rows, with Target Value as a dual axis drawn as a step line. Filter to one metric.',
+  'tab.6': '<b>Leaderboard:</b> Vendor on Rows, weighted score as a bar, with a reference line at 100%.',
+  'tab.7': 'Add filters for Vendor, Work Type and Focus Area, then put the three sheets on a dashboard.',
+  'sf.intro': 'CSV export works today. For a feed that refreshes on its own, store the same three records in Salesforce and point Tableau at them. Tableau is a Salesforce product, so the connector is built in.',
+  'sf.1': '<b>Ramp_Program__c</b>: vendor (lookup to Account), team, owner, start date, ramp % for days 30, 60 and 90.',
+  'sf.2': '<b>Ramp_Metric__c</b> (child of the program): name, unit, direction, goal, weight, focus area.',
+  'sf.3': '<b>Metric_Result__c</b> (child of the metric): date, value, note. Formula fields for day number and phase.',
+  'sf.4': 'Rebuild this guided setup as a Screen Flow so anyone can create a program the same way. Then connect Tableau with <b>Connect › Salesforce</b> and use the calculations on the left. You can also bulk-load these CSVs into the objects with Data Loader.',
+  'col.day': 'Days since day 1 of the program (day 1 = start date)', 'col.pct': 'Share of the goal expected in that phase',
+  'col.target': 'The goal adjusted by the ramp %. For lower-is-better metrics it is goal ÷ ramp %.', 'col.att': 'Actual vs target, where 100 = at target (capped at 150 for lower-is-better)',
+  'doc.s1': 'Vendor, start date, type of work and priorities. The answers filter a library of metrics and recommend the ones that fit.',
+  'doc.s2': 'Use the suggested metrics or add your own. Each one gets a goal, a direction (higher or lower is better) and a weight from 1 to 3.',
+  'doc.s3': 'Gradual, steady or fast. The ramp sets each checkpoint\'s target as a share of the goal, for example 70%, 85% and 100% at days 30, 60 and 90.',
+  'doc.s4': 'Enter values daily or weekly. Each value is compared with the target for its phase. At or above target is on track, 90–99% is watch, and below 90% is at risk.',
+  'doc.s5': 'The weighted score for days 61–90 decides proficiency. The team needs 100% or more overall, with no single metric below 90%.',
+  'doc.att': 'Higher is better: actual ÷ target. Lower is better: target ÷ actual. For lower-is-better metrics, early targets are looser (goal ÷ ramp %).',
+  'doc.ws': "Σ(weight × attainment) ÷ Σ weights. Each metric is capped at 120%, so one strong metric can't hide a weak one.",
+  'doc.ca': 'Any metric at risk in the current phase raises an alert with a suggested next step for its focus area, so the review ends with an action.',
+  'doc.about': 'Built to make vendor onboarding reviews consistent and reusable across teams. The data exports as tidy CSV files for Tableau, and the data model maps directly onto Salesforce custom objects for a live feed. See the <a href="#demo" data-action="view" data-view="guide">Tableau export</a> tab.',
+};
+function T(s, vars) {
+  let out = LANG === 'es' && ES[s] != null ? ES[s] : (EN_LONG[s] ?? s);
+  if (vars) out = out.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+  return out;
+}
+const UNIT_ES = { sec: 'seg', hrs: 'h' };
+const unitLabel = (u) => LANG === 'es' && UNIT_ES[u] ? UNIT_ES[u] : u;
+const DATE_LOCALE = () => LANG === 'es' ? 'es-MX' : 'en-US';
+
 // ---------- reference data ----------
 const ROLES = {
   support: { label: 'Customer support', hint: 'Phone, chat, email or ticket queues' },
@@ -341,13 +520,15 @@ const attain = (m, v, pct) => {
 };
 const statusOf = (a) => a == null ? 'none' : a >= 1 ? 'good' : a >= 0.9 ? 'warn' : 'bad';
 const pct = (a) => a == null ? '—' : Math.round(a * 100) + '%';
+const mName = (m) => T(m.name);
+const dv = (p, k) => p.demo ? T(p[k]) : p[k];
 function fmt(v, unit) {
   if (v == null || isNaN(v)) return '—';
-  const n = Math.abs(v) >= 1000 ? Math.round(v).toLocaleString() : (+v.toFixed(Math.abs(v) < 10 ? 2 : 1)).toString();
+  const n = Math.abs(v) >= 1000 ? Math.round(v).toLocaleString(DATE_LOCALE()) : (+v.toFixed(Math.abs(v) < 10 ? 2 : 1)).toLocaleString(DATE_LOCALE());
   if (unit === '$') return '$' + n;
   if (unit === '%') return n + '%';
   if (unit === '#' || !unit) return n;
-  return n + ' ' + unit;
+  return n + ' ' + unitLabel(unit);
 }
 function toast(msg) { const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (t.hidden = true), 2600); }
 function lsGet(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }
@@ -461,30 +642,49 @@ function assess(p) {
   let verdict;
   const final = scores[2];
   if (today > 90 && final.score != null) {
-    verdict = final.score >= 1 && final.min >= 0.9 ? { s: 'good', t: 'Proficient at day 90' } : final.score >= 0.9 ? { s: 'warn', t: 'Close: needs a coaching plan' } : { s: 'bad', t: 'Not proficient at day 90' };
-  } else if (cur.score == null) verdict = { s: 'none', t: today < 1 ? 'Starts ' + p.start : 'Waiting for data' };
-  else verdict = cur.score >= 1 && cur.min >= 0.9 ? { s: 'good', t: 'On pace for proficiency' } : cur.score >= 0.9 ? { s: 'warn', t: 'Slightly behind the ramp' } : { s: 'bad', t: 'Behind the ramp' };
+    verdict = final.score >= 1 && final.min >= 0.9 ? { s: 'good', t: T('Proficient at day 90') } : final.score >= 0.9 ? { s: 'warn', t: T('Close: needs a coaching plan') } : { s: 'bad', t: T('Not proficient at day 90') };
+  } else if (cur.score == null) verdict = { s: 'none', t: today < 1 ? T('Starts {d}', { d: p.start }) : T('Waiting for data') };
+  else verdict = cur.score >= 1 && cur.min >= 0.9 ? { s: 'good', t: T('On pace for proficiency') } : cur.score >= 0.9 ? { s: 'warn', t: T('Slightly behind the ramp') } : { s: 'bad', t: T('Behind the ramp') };
   return { today, curPhase, metrics, scores, cur, verdict };
 }
 
 // ---------- rendering ----------
+function renderStatic() {
+  document.documentElement.lang = LANG;
+  document.querySelectorAll('[data-t]').forEach((el) => { el.innerHTML = T(el.dataset.t); });
+  $('#langEn').setAttribute('aria-pressed', LANG === 'en');
+  $('#langEs').setAttribute('aria-pressed', LANG === 'es');
+  const steps = [['Answer the setup questions', 'doc.s1'], ['Pick metrics and set goals', 'doc.s2'], ['Choose a ramp', 'doc.s3'], ['Log results', 'doc.s4'], ['Get the verdict', 'doc.s5']];
+  $('#docs').innerHTML = `
+    <p class="eyebrow">${T('How it scores')}</p>
+    <h2 class="docs-h">${T('From a few questions to a day-90 verdict')}</h2>
+    <ol class="flow">${steps.map(([h, b], i) => `<li><small class="flow-n">${T('Step')} ${i + 1}</small><b>${T(h)}</b><span>${T(b)}</span></li>`).join('')}</ol>
+    <div class="docs-grid">
+      <div><h3>${T('Attainment')}</h3><p>${T('doc.att')}</p></div>
+      <div><h3>${T('Weighted score')}</h3><p>${T('doc.ws')}</p></div>
+      <div><h3>${T('Coaching alerts')}</h3><p>${T('doc.ca')}</p></div>
+    </div>
+    <p class="eyebrow" style="margin-top:36px">${T('About this project')}</p>
+    <p class="docs-p">${T('doc.about')}</p>`;
+}
+
 function render() {
   const sel = $('#progSel');
   const progs = allPrograms();
   if (!getProgram(ui.progId)) ui.progId = store.programs[0]?.id || 'demo';
-  sel.innerHTML = progs.map((p) => `<option value="${esc(p.id)}" ${p.id === ui.progId ? 'selected' : ''}>${esc(p.vendor)}${p.team ? ' · ' + esc(p.team) : ''}</option>`).join('');
+  sel.innerHTML = progs.map((p) => `<option value="${esc(p.id)}" ${p.id === ui.progId ? 'selected' : ''}>${esc(dv(p, 'vendor'))}${p.team ? ' · ' + esc(dv(p, 'team')) : ''}</option>`).join('');
   sel.hidden = ui.view === 'wizard';
   const pool = store.programs.length ? store.programs : [DEMO.program];
   const cnt = { good: 0, warn: 0, bad: 0, none: 0 };
   pool.forEach((p) => cnt[assess(p).verdict.s]++);
   const lbl = { good: 'on pace', warn: 'to watch', bad: 'behind', none: 'waiting for data' };
-  $('#pills').innerHTML = ['bad', 'warn', 'good', 'none'].filter((k) => cnt[k]).map((k) => `<span class="pill ${k}">${cnt[k]} ${lbl[k]}</span>`).join('');
+  $('#pills').innerHTML = ['bad', 'warn', 'good', 'none'].filter((k) => cnt[k]).map((k) => `<span class="pill ${k}">${cnt[k]} ${T(lbl[k])}</span>`).join('');
   $('#tabProgram').setAttribute('aria-pressed', ui.view === 'program');
   $('#tabWizard').setAttribute('aria-pressed', ui.view === 'wizard');
   $('#tabGuide').setAttribute('aria-pressed', ui.view === 'guide');
   lsSet('vrt.view', ui.view === 'wizard' ? 'program' : ui.view); lsSet('vrt.prog', ui.progId);
   const app = $('#app');
-  if (store.mode === 'loading') { app.innerHTML = `<div class="card empty"><p class="muted">Loading programs…</p></div>`; return; }
+  if (store.mode === 'loading') { app.innerHTML = `<div class="card empty"><p class="muted">${T('Loading programs…')}</p></div>`; return; }
   if (ui.view === 'wizard') app.innerHTML = renderWizard();
   else if (ui.view === 'guide') app.innerHTML = renderGuide();
   else app.innerHTML = renderProgram(getProgram(ui.progId));
@@ -492,25 +692,17 @@ function render() {
 
 function banner(p) {
   const out = [];
-  if (store.mode === 'local') out.push(`<div class="notice warn">Programs and results are saved in this browser only. Use Tableau export to share them or load them into Tableau.</div>`);
-  if (!store.canWrite && !p.demo) out.push(`<div class="notice warn">You can view this tracker but not change it. Ask the owner for Contributor access to log results.</div>`);
-  if (p.demo) out.push(`<div class="notice" style="display:grid;gap:10px"><p><b>Interactive demo with a sample vendor.</b> Northwind BPO is ramping a Tier 1 voice team. Press play to replay their first 98 days and watch the targets step up at days 30, 60 and 90, the alerts change, and the day-90 verdict land. All numbers are example data, scored by the same rules as real programs. <a href="#how">How it scores</a></p>
-    <div class="player"><button class="btn primary" data-action="play">${ui.playing ? 'Pause' : ui.demoDay >= 98 ? 'Replay from day 1' : 'Play the 90 days'}</button>
-      <input type="range" id="demoRange" min="1" max="98" value="${ui.demoDay}" aria-label="Demo day">
-      <b class="num" style="min-width:70px">Day ${ui.demoDay}</b>
-      <button class="btn" data-action="new">Set up your own vendor</button></div></div>`);
+  if (store.mode === 'local') out.push(`<div class="notice warn">${T('Programs and results are saved in this browser only. Use Tableau export to share them or load them into Tableau.')}</div>`);
+  if (!store.canWrite && !p.demo) out.push(`<div class="notice warn">${T('You can view this tracker but not change it. Ask the owner for Contributor access to log results.')}</div>`);
+  if (p.demo) out.push(`<div class="notice" style="display:grid;gap:10px"><p>${T('demo.notice')} <a href="#how">${T('How it scores')}</a></p>
+    <div class="player"><button class="btn primary" data-action="play">${ui.playing ? T('Pause') : ui.demoDay >= 98 ? T('Replay from day 1') : T('Play the 90 days')}</button>
+      <input type="range" id="demoRange" min="1" max="98" value="${ui.demoDay}" aria-label="${T('Demo day')}">
+      <b class="num" style="min-width:70px">${T('Day {d}', { d: ui.demoDay })}</b>
+      <button class="btn" data-action="new">${T('Set up your own vendor')}</button></div></div>`);
   return out.join('');
 }
 
-const NEXT_STEP = {
-  quality: 'Run calibration sessions and side-by-side QA reviews with the vendor lead.',
-  speed: 'Walk through the process and tools with a top performer, and remove extra steps.',
-  cx: 'Listen to low-rated contacts together and coach on resolution and tone.',
-  productivity: 'Check staffing, idle time and system access before coaching on pace.',
-  compliance: 'Refresh policy training and audit adherence daily until it recovers.',
-  revenue: 'Review the call flow and offers, and have reps shadow the top converters.',
-  custom: 'Agree a corrective action and an owner with the vendor lead this week.',
-};
+const STEP_KEY = { quality: 'step.quality', speed: 'step.speed', cx: 'step.cx', productivity: 'step.productivity', compliance: 'step.compliance', revenue: 'step.revenue', custom: 'step.custom' };
 function alerts(p, A) {
   if (A.today < 1) return '';
   const ph = PHASES[A.curPhase];
@@ -518,9 +710,9 @@ function alerts(p, A) {
   for (const [lvl, head] of [['bad', 'Coaching needed'], ['warn', 'Watch']]) {
     const rows = A.metrics.filter((r) => statusOf(r.cur.att) === lvl);
     if (!rows.length) continue;
-    const steps = [...new Set(rows.map((r) => NEXT_STEP[r.m.focus] || NEXT_STEP.custom))];
-    out.push(`<div class="alert ${lvl === 'warn' ? 'warn' : ''}"><div><b class="h">${head} · ${esc(ph.name)} phase</b>: ${rows.map((r) => `${esc(r.m.name)} at ${pct(r.cur.att)}`).join(', ')} of target</div>
-      <p>${lvl === 'bad' ? 'Below 90% of the target for this phase. ' : 'Between 90% and 99% of target. '}${esc(steps.join(' '))}</p></div>`);
+    const steps = [...new Set(rows.map((r) => T(STEP_KEY[r.m.focus] || STEP_KEY.custom)))];
+    out.push(`<div class="alert ${lvl === 'warn' ? 'warn' : ''}"><div><b class="h">${T(head)} · ${T('{name} phase', { name: T(ph.name) })}</b>: ${rows.map((r) => T('{m} at {p}', { m: esc(mName(r.m)), p: pct(r.cur.att) })).join(', ')} ${T('of target')}</div>
+      <p>${lvl === 'bad' ? T('Below 90% of the target for this phase. ') : T('Between 90% and 99% of target. ')}${esc(steps.join(' '))}</p></div>`);
   }
   return out.join('');
 }
@@ -541,32 +733,33 @@ function renderProgram(p) {
   const sel = A.metrics.find((r) => r.m.id === ui.metricId);
   const d = A.today, ph = A.curPhase;
   const markerLeft = Math.min(Math.max(d, 0), 90) / 90 * 100;
-  const phaseName = d < 1 ? 'Not started' : d > 90 ? 'Sustain (past day 90)' : PHASES[ph].name + ' phase';
+  const phaseName = d < 1 ? T('Not started') : d > 90 ? T('Sustain (past day 90)') : T('{name} phase cap', { name: T(PHASES[ph].name) });
   const ro = p.demo || !store.canWrite;
+  const dirTxt = (m) => m.dir === 'up' ? T('Higher is better') : T('Lower is better');
 
   const scoreRows = A.metrics.map((r) => {
     const st = statusOf(r.cur.att);
     return `<tr class="click ${r.m.id === ui.metricId ? 'sel' : ''}" data-action="metric" data-id="${esc(r.m.id)}">
-      <td><div class="mname">${esc(r.m.name)}</div><div class="dir">${r.m.dir === 'up' ? 'Higher is better' : 'Lower is better'} · weight ${r.m.weight}</div></td>
+      <td><div class="mname">${esc(mName(r.m))}</div><div class="dir">${dirTxt(r.m)} · ${T('weight {w}', { w: r.m.weight })}</div></td>
       <td class="n">${fmt(r.m.goal, r.m.unit)}</td>
       <td class="n">${fmt(r.cur.target, r.m.unit)}</td>
       <td class="n">${fmt(r.cur.avg, r.m.unit)}</td>
       <td class="n">${r.latest ? fmt(+r.latest.value, r.m.unit) : '—'}</td>
       <td class="n">${pct(r.cur.att)}</td>
-      <td><span class="chip ${st}">${STATUS[st]}</span></td>
+      <td><span class="chip ${st}">${T(STATUS[st])}</span></td>
       <td>${spark(r, r.m)}</td></tr>`;
   }).join('');
 
-  const heatRows = A.metrics.map((r) => `<tr><td class="mname">${esc(r.m.name)}</td>${r.phases.slice(0, 3).map((x, i) => {
+  const heatRows = A.metrics.map((r) => `<tr><td class="mname">${esc(mName(r.m))}</td>${r.phases.slice(0, 3).map((x, i) => {
     const st = statusOf(x.att);
-    return `<td class="cell ${st}" title="Target ${esc(fmt(x.target, r.m.unit))}">${x.att == null ? (i > ph ? 'upcoming' : 'no data') : pct(x.att)}<br><span style="font-size:.72rem">${fmt(x.avg, r.m.unit)} vs ${fmt(x.target, r.m.unit)}</span></td>`;
+    return `<td class="cell ${st}">${x.att == null ? (i > ph ? T('upcoming') : T('no data')) : pct(x.att)}<br><span style="font-size:.72rem">${fmt(x.avg, r.m.unit)} vs ${fmt(x.target, r.m.unit)}</span></td>`;
   }).join('')}</tr>`).join('');
 
   const cps = [0, 1, 2].map((i) => {
     const s = A.scores[i];
     const st = s.score == null ? 'none' : statusOf(s.score);
-    const label = s.score == null ? (i > ph || d < 1 ? 'Upcoming' : 'No data') : pct(s.score);
-    return `<div class="cp"><span class="eyebrow">Day ${(i + 1) * 30}</span><span class="v">${label}</span><span class="chip ${st}" style="justify-self:start">${s.score == null ? '—' : i === ph && d <= 90 ? 'In progress' : STATUS[st]}</span></div>`;
+    const label = s.score == null ? (i > ph || d < 1 ? T('Upcoming') : T('No data')) : pct(s.score);
+    return `<div class="cp"><span class="eyebrow">${T('Day {d}', { d: (i + 1) * 30 })}</span><span class="v">${label}</span><span class="chip ${st}" style="justify-self:start">${s.score == null ? '—' : i === ph && d <= 90 ? T('In progress') : T(STATUS[st])}</span></div>`;
   }).join('');
 
   const recent = entriesFor(p).slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 25);
@@ -575,83 +768,83 @@ function renderProgram(p) {
     const m = mById[e.metricId]; if (!m) return '';
     const dn = dayNum(p.start, e.date), pi = phaseIdx(dn);
     const a = pi < 0 ? null : attain(m, +e.value, pctFor(p, pi));
-    return `<tr><td class="n">${esc(e.date)}</td><td class="n">${dn}</td><td>${esc(m.name)}</td><td class="n">${fmt(+e.value, m.unit)}</td><td class="n">${pct(a)}</td><td class="muted">${esc(e.note)}</td>
-      <td class="n">${ro ? '' : `<button class="btn ghost danger ${ui.armed === 'e' + e.id ? 'armed' : ''}" data-action="delEntry" data-id="${esc(e.id)}">${ui.armed === 'e' + e.id ? 'Confirm delete' : 'Delete'}</button>`}</td></tr>`;
+    return `<tr><td class="n">${esc(e.date)}</td><td class="n">${dn}</td><td>${esc(mName(m))}</td><td class="n">${fmt(+e.value, m.unit)}</td><td class="n">${pct(a)}</td><td class="muted">${esc(e.note)}</td>
+      <td class="n">${ro ? '' : `<button class="btn ghost danger ${ui.armed === 'e' + e.id ? 'armed' : ''}" data-action="delEntry" data-id="${esc(e.id)}">${ui.armed === 'e' + e.id ? T('Confirm delete') : T('Delete')}</button>`}</td></tr>`;
   }).join('');
 
   return `${banner(p)}${alerts(p, A)}
   <section class="card">
     <div class="summary">
       <div>
-        <span class="eyebrow">${esc(ROLES[p.role]?.label || 'Vendor program')} · started ${esc(p.start)}</span>
-        <h1>${esc(p.vendor)}</h1>
-        <div class="meta">${p.team ? `<span>${esc(p.team)}</span>` : ''}${p.owner ? `<span>Owner: ${esc(p.owner)}</span>` : ''}<span>${p.metrics.length} metrics</span><span>${esc(RAMPS[p.rampKey]?.label || 'Custom')} ramp</span></div>
+        <span class="eyebrow">${esc(T(ROLES[p.role]?.label || 'Vendor program'))} · ${T('started {d}', { d: esc(p.start) })}</span>
+        <h1>${esc(dv(p, 'vendor'))}</h1>
+        <div class="meta">${p.team ? `<span>${esc(dv(p, 'team'))}</span>` : ''}${p.owner ? `<span>${T('Owner: {o}', { o: esc(dv(p, 'owner')) })}</span>` : ''}<span>${T('{n} metrics', { n: p.metrics.length })}</span><span>${T('{r} ramp', { r: esc(T(RAMPS[p.rampKey]?.label || 'Custom')) })}</span></div>
         <div class="timeline">
-          <div class="row" style="justify-content:space-between;margin-bottom:8px"><b class="num">${d < 1 ? 'Day 0' : 'Day ' + d}${d <= 90 ? ' of 90' : ''}</b><span class="muted">${phaseName}</span></div>
-          <div class="tl-track">${PHASES.slice(0, 3).map((x, i) => `<div class="tl-seg ${i < ph || d > 90 ? 'done' : i === ph && d >= 1 ? 'now' : ''}">${x.name} · ${Math.round(p.ramp[i] * 100)}%</div>`).join('')}
+          <div class="row" style="justify-content:space-between;margin-bottom:8px"><b class="num">${T('Day {d}', { d: Math.max(d, 0) })}${d <= 90 ? T(' of 90') : ''}</b><span class="muted">${phaseName}</span></div>
+          <div class="tl-track">${PHASES.slice(0, 3).map((x, i) => `<div class="tl-seg ${i < ph || d > 90 ? 'done' : i === ph && d >= 1 ? 'now' : ''}">${T(x.name)} · ${Math.round(p.ramp[i] * 100)}%</div>`).join('')}
             <div class="tl-marker" style="left:calc(${markerLeft}% - 1.5px)" aria-hidden="true"></div></div>
           <div class="tl-axis"><span>30</span><span>60</span><span>90</span></div>
         </div>
       </div>
       <div class="scorebox">
-        <span class="eyebrow">${d > 90 ? 'Day 90 proficiency score' : 'Current phase score'}</span>
+        <span class="eyebrow">${d > 90 ? T('Day 90 proficiency score') : T('Current phase score')}</span>
         <div class="row" style="align-items:center;gap:14px"><span class="bignum">${pct(d > 90 ? A.scores[2].score : A.cur.score)}</span><span class="chip ${A.verdict.s}">${esc(A.verdict.t)}</span></div>
-        <p class="muted" style="font-size:.85rem">Weighted attainment against this phase's ramp target. 100% means every metric is at target.</p>
+        <p class="muted" style="font-size:.85rem">${T("Weighted attainment against this phase's ramp target. 100% means every metric is at target.")}</p>
         <div class="checkpoints">${cps}</div>
       </div>
     </div>
   </section>
 
   <section class="card">
-      <header><h2>Metric review</h2><span class="muted" style="font-size:.85rem">${d < 1 ? 'Before start' : PHASES[ph].label} · select a row to chart it</span></header>
+      <header><h2>${T('Metric review')}</h2><span class="muted" style="font-size:.85rem">${d < 1 ? T('Before start') : T(PHASES[ph].label)} · ${T('select a row to chart it')}</span></header>
       <div class="tbl-wrap"><table>
-        <thead><tr><th>Metric</th><th class="n">Goal</th><th class="n">Phase target</th><th class="n">Phase avg</th><th class="n">Latest</th><th class="n">Attain.</th><th>Status</th><th>Trend</th></tr></thead>
-        <tbody>${scoreRows || `<tr><td colspan="8" class="muted">No metrics yet.</td></tr>`}</tbody></table></div>
-    </section>
+        <thead><tr><th>${T('Metric')}</th><th class="n">${T('Goal')}</th><th class="n">${T('Phase target')}</th><th class="n">${T('Phase avg')}</th><th class="n">${T('Latest')}</th><th class="n">${T('Attain.')}</th><th>${T('Status')}</th><th>${T('Trend')}</th></tr></thead>
+        <tbody>${scoreRows || `<tr><td colspan="8" class="muted">${T('No metrics yet.')}</td></tr>`}</tbody></table></div>
+  </section>
 
   <div class="grid2">
     <section class="card chart">
-      <header><h2>${esc(sel?.m.name || 'Trend')}</h2><span class="muted" style="font-size:.85rem">${sel ? (sel.m.dir === 'up' ? 'Higher is better' : 'Lower is better') : ''}</span></header>
+      <header><h2>${esc(sel ? mName(sel.m) : T('Trend'))}</h2><span class="muted" style="font-size:.85rem">${sel ? dirTxt(sel.m) : ''}</span></header>
       ${sel ? chart(p, sel, d) : ''}
-      <div class="legend"><span><i style="border-color:var(--accent)"></i>Actual</span><span><i style="border-color:var(--ink)"></i>Ramp target</span><span><i style="border-color:var(--muted);border-top-style:dashed"></i>Final goal</span></div>
+      <div class="legend"><span><i style="border-color:var(--accent)"></i>${T('Actual')}</span><span><i style="border-color:var(--ink)"></i>${T('Ramp target')}</span><span><i style="border-color:var(--muted);border-top-style:dashed"></i>${T('Final goal')}</span></div>
     </section>
-  <section class="card">
-    <header><h2>30 / 60 / 90 checkpoint review</h2><span class="muted" style="font-size:.85rem">Phase average vs. that phase's target</span></header>
-    <div class="tbl-wrap"><table class="heat"><thead><tr><th>Metric</th>${PHASES.slice(0, 3).map((x, i) => `<th style="text-align:center">${x.label} · ${Math.round(p.ramp[i] * 100)}% of goal</th>`).join('')}</tr></thead><tbody>${heatRows}</tbody></table></div>
-  </section>
+    <section class="card">
+      <header><h2>${T('30 / 60 / 90 checkpoint review')}</h2><span class="muted" style="font-size:.85rem">${T("Phase average vs. that phase's target")}</span></header>
+      <div class="tbl-wrap"><table class="heat"><thead><tr><th>${T('Metric')}</th>${PHASES.slice(0, 3).map((x, i) => `<th style="text-align:center">${T(x.label)} · ${T('{p}% of goal', { p: Math.round(p.ramp[i] * 100) })}</th>`).join('')}</tr></thead><tbody>${heatRows}</tbody></table></div>
+    </section>
   </div>
 
   <div class="grid2">
     <section class="card">
-      <header><h2>Log results</h2><span class="muted" style="font-size:.85rem">Leave a metric blank to skip it</span></header>
+      <header><h2>${T('Log results')}</h2><span class="muted" style="font-size:.85rem">${T('Leave a metric blank to skip it')}</span></header>
       <form class="logform" id="logForm">
-        <div class="row"><label class="f" style="width:180px">Date<input type="date" id="logDate" value="${todayISO()}" ${ro ? 'disabled' : ''}></label>
-          <label class="f" style="flex:1;min-width:180px">Note (optional)<input type="text" id="logNote" placeholder="e.g. new script rolled out" ${ro ? 'disabled' : ''}></label></div>
-        <div class="loggrid">${p.metrics.map((m) => `<label class="f">${esc(m.name)} <span>(${esc(m.unit)})</span><input type="number" step="any" id="log_${esc(m.id)}" data-mid="${esc(m.id)}" ${ro ? 'disabled' : ''}></label>`).join('')}</div>
-        <div class="row"><button class="btn primary" type="submit" ${ro ? 'disabled' : ''}>Save results</button>${p.demo ? '<span class="muted" style="font-size:.85rem">The sample is read-only.</span>' : ''}</div>
+        <div class="row"><label class="f" style="width:180px">${T('Date')}<input type="date" id="logDate" value="${todayISO()}" ${ro ? 'disabled' : ''}></label>
+          <label class="f" style="flex:1;min-width:180px">${T('Note (optional)')}<input type="text" id="logNote" placeholder="${esc(T('e.g. new script rolled out'))}" ${ro ? 'disabled' : ''}></label></div>
+        <div class="loggrid">${p.metrics.map((m) => `<label class="f">${esc(mName(m))} <span>(${esc(unitLabel(m.unit))})</span><input type="number" step="any" id="log_${esc(m.id)}" data-mid="${esc(m.id)}" ${ro ? 'disabled' : ''}></label>`).join('')}</div>
+        <div class="row"><button class="btn primary" type="submit" ${ro ? 'disabled' : ''}>${T('Save results')}</button>${p.demo ? `<span class="muted" style="font-size:.85rem">${T('The sample is read-only.')}</span>` : ''}</div>
       </form>
     </section>
     <section class="card">
-      <header><h2>Recent entries</h2><span class="muted" style="font-size:.85rem">${entriesFor(p).length} total</span></header>
-      <div class="tbl-wrap"><table><thead><tr><th class="n">Date</th><th class="n">Day</th><th>Metric</th><th class="n">Value</th><th class="n">Attain.</th><th>Note</th><th></th></tr></thead>
-      <tbody>${entryRows || `<tr><td colspan="7" class="muted">No results logged yet. Use the form to add the first ones.</td></tr>`}</tbody></table></div>
+      <header><h2>${T('Recent entries')}</h2><span class="muted" style="font-size:.85rem">${T('{n} total', { n: entriesFor(p).length })}</span></header>
+      <div class="tbl-wrap"><table><thead><tr><th class="n">${T('Date')}</th><th class="n">${T('Day')}</th><th>${T('Metric')}</th><th class="n">${T('Value')}</th><th class="n">${T('Attain.')}</th><th>${T('Note')}</th><th></th></tr></thead>
+      <tbody>${entryRows || `<tr><td colspan="7" class="muted">${T('No results logged yet. Use the form to add the first ones.')}</td></tr>`}</tbody></table></div>
     </section>
   </div>
 
   <div class="row">
-    <button class="btn" data-action="view" data-view="guide">Export for Tableau</button>
-    ${ro ? '' : `<button class="btn" data-action="edit">Edit goals and metrics</button>
-    <button class="btn danger ${ui.armed === 'p' + p.id ? 'armed' : ''}" data-action="delProgram">${ui.armed === 'p' + p.id ? 'Confirm: delete program and all results' : 'Delete program'}</button>`}
+    <button class="btn" data-action="view" data-view="guide">${T('Export for Tableau')}</button>
+    ${ro ? '' : `<button class="btn" data-action="edit">${T('Edit goals and metrics')}</button>
+    <button class="btn danger ${ui.armed === 'p' + p.id ? 'armed' : ''}" data-action="delProgram">${ui.armed === 'p' + p.id ? T('Confirm: delete program and all results') : T('Delete program')}</button>`}
   </div>`;
 }
 
 function chart(p, r, today) {
-  const W = 640, H = 250, L = 56, R = 14, T = 14, B = 30;
+  const W = 640, H = 250, L = 56, R = 14, T0 = 14, B = 30;
   const m = r.m;
   const lastDay = r.entries.length ? r.entries.at(-1).day : 0;
   const maxDay = Math.min(Math.max(90, lastDay + 4, today + 2), 180);
   const tg = [0, 1, 2, 3].map((i) => targetVal(m, pctFor(p, i)));
-  const vals = r.entries.map((e) => +e.value);
+  const vals = r.entries.filter((e) => e.day <= maxDay).map((e) => +e.value);
   let lo = Math.min(...vals, ...tg), hi = Math.max(...vals, ...tg);
   if (lo === hi) { lo -= 1; hi += 1; }
   const pad = (hi - lo) * 0.08; lo -= pad; hi += pad;
@@ -659,30 +852,30 @@ function chart(p, r, today) {
   const step = (nn < 1.5 ? 1 : nn < 3 ? 2 : nn < 7 ? 5 : 10) * mag;
   lo = Math.floor(lo / step) * step; hi = Math.ceil(hi / step) * step;
   const x = (d) => L + (d / maxDay) * (W - L - R);
-  const y = (v) => T + (1 - (v - lo) / (hi - lo)) * (H - T - B);
+  const y = (v) => T0 + (1 - (v - lo) / (hi - lo)) * (H - T0 - B);
   let g = '';
-  [[1, 30], [61, 90]].forEach(([a, b]) => { g += `<rect x="${x(a - 1)}" y="${T}" width="${x(b) - x(a - 1)}" height="${H - T - B}" fill="var(--band)"/>`; });
+  [[1, 30], [61, 90]].forEach(([a, b]) => { g += `<rect x="${x(a - 1)}" y="${T0}" width="${x(b) - x(a - 1)}" height="${H - T0 - B}" fill="var(--band)"/>`; });
   for (let v = lo; v <= hi + step / 2; v += step) {
     g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/>`;
     g += `<text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="JetBrains Mono, monospace">${esc(fmt(round(v, 2), m.unit === '%' || m.unit === '$' ? m.unit : '#'))}</text>`;
   }
   [0, 30, 60, 90].concat(maxDay > 120 ? [120] : []).concat(maxDay > 150 ? [150] : []).forEach((d) => {
-    g += `<text x="${x(d)}" y="${H - 10}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="JetBrains Mono, monospace">${d === 0 ? 'Day 0' : d}</text>`;
+    g += `<text x="${x(d)}" y="${H - 10}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="JetBrains Mono, monospace">${d === 0 ? T('Day {d}', { d: 0 }) : d}</text>`;
   });
   g += `<line x1="${L}" x2="${W - R}" y1="${y(m.goal)}" y2="${y(m.goal)}" stroke="var(--muted)" stroke-dasharray="5 4" stroke-width="1.2"/>`;
   const segs = [[0, 30, tg[0]], [30, 60, tg[1]], [60, 90, tg[2]], [90, maxDay, tg[3]]];
   let path = '';
   segs.forEach(([a, b, v], i) => { path += (i ? 'L' : 'M') + x(a) + ',' + y(v) + 'L' + x(b) + ',' + y(v); });
   g += `<path d="${path}" fill="none" stroke="var(--ink)" stroke-width="1.8"/>`;
-  if (today >= 1 && today <= maxDay) g += `<line x1="${x(today)}" x2="${x(today)}" y1="${T}" y2="${H - B}" stroke="var(--accent)" stroke-width="1" stroke-dasharray="2 3"/><text x="${x(today) + 4}" y="${T + 11}" font-size="11" fill="var(--accent)">today</text>`;
+  if (today >= 1 && today <= maxDay) g += `<line x1="${x(today)}" x2="${x(today)}" y1="${T0}" y2="${H - B}" stroke="var(--accent)" stroke-width="1" stroke-dasharray="2 3"/><text x="${x(today) + 4}" y="${T0 + 11}" font-size="11" fill="var(--accent)">${T('today')}</text>`;
   const pts = r.entries.filter((e) => e.day >= 0 && e.day <= maxDay).map((e) => [x(e.day), y(+e.value), e]);
   if (pts.length > 1) g += `<polyline points="${pts.map((q) => q[0] + ',' + q[1]).join(' ')}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>`;
   pts.forEach(([px, py, e], i) => {
     const a = attain(m, +e.value, pctFor(p, phaseIdx(e.day)));
-    g += `<circle cx="${px}" cy="${py}" r="${i === pts.length - 1 ? 4.5 : 3}" fill="${i === pts.length - 1 ? 'var(--accent)' : 'var(--surface)'}" stroke="var(--accent)" stroke-width="1.6"><title>${esc(e.date)} · day ${e.day} · ${esc(fmt(+e.value, m.unit))} (${pct(a)} of target)</title></circle>`;
+    g += `<circle cx="${px}" cy="${py}" r="${i === pts.length - 1 ? 4.5 : 3}" fill="${i === pts.length - 1 ? 'var(--accent)' : 'var(--surface)'}" stroke="var(--accent)" stroke-width="1.6"><title>${esc(e.date)} · ${T('day')} ${e.day} · ${esc(fmt(+e.value, m.unit))} (${pct(a)} ${T('of target)')}</title></circle>`;
   });
-  if (!pts.length) g += `<text x="${(L + W - R) / 2}" y="${H / 2}" text-anchor="middle" font-size="13" fill="var(--muted)">No results logged for this metric yet</text>`;
-  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(m.name)} actual results against the 30/60/90 ramp target">${g}</svg>`;
+  if (!pts.length) g += `<text x="${(L + W - R) / 2}" y="${H / 2}" text-anchor="middle" font-size="13" fill="var(--muted)">${T('No results logged for this metric yet')}</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(mName(m))}">${g}</svg>`;
 }
 
 // ---------- wizard (decision tree) ----------
@@ -697,97 +890,98 @@ function suggestions(w) {
 }
 function renderWizard() {
   const w = ui.wz, d = w.d;
-  const stepsHtml = WZ_STEPS.map((s, i) => `<li class="${i === w.step ? 'on' : i < w.step ? 'done' : ''}">${s}</li>`).join('');
+  const stepsHtml = WZ_STEPS.map((s, i) => `<li class="${i === w.step ? 'on' : i < w.step ? 'done' : ''}">${T(s)}</li>`).join('');
+  const dirLow = (m) => m.dir === 'up' ? T('higher is better') : T('lower is better');
   let body = '';
   if (w.step === 0) body = `
-    <p class="q">Who are you tracking?</p>
-    <p class="muted">One program covers one vendor team ramping on one line of work. A person can be a team of one.</p>
+    <p class="q">${T('Who are you tracking?')}</p>
+    <p class="muted">${T('One program covers one vendor team ramping on one line of work. A person can be a team of one.')}</p>
     <div class="loggrid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
-      <label class="f">Vendor name<input type="text" id="wz_vendor" data-f="vendor" value="${esc(d.vendor)}" placeholder="e.g. Acme Outsourcing"></label>
-      <label class="f">Team, site or person <span>(optional)</span><input type="text" id="wz_team" data-f="team" value="${esc(d.team)}" placeholder="e.g. Spanish chat, Bogotá"></label>
-      <label class="f">Program owner <span>(optional)</span><input type="text" id="wz_owner" data-f="owner" value="${esc(d.owner)}" placeholder="Who reviews the results"></label>
-      <label class="f">Day 1 of the 90 days<input type="date" id="wz_start" data-f="start" value="${esc(d.start)}"></label>
+      <label class="f">${T('Vendor name')}<input type="text" id="wz_vendor" data-f="vendor" value="${esc(d.vendor)}" placeholder="${esc(T('e.g. Acme Outsourcing'))}"></label>
+      <label class="f">${T('Team, site or person')} <span>${T('(optional)')}</span><input type="text" id="wz_team" data-f="team" value="${esc(d.team)}" placeholder="${esc(T('e.g. Spanish chat, Bogotá'))}"></label>
+      <label class="f">${T('Program owner')} <span>${T('(optional)')}</span><input type="text" id="wz_owner" data-f="owner" value="${esc(d.owner)}" placeholder="${esc(T('Who reviews the results'))}"></label>
+      <label class="f">${T('Day 1 of the 90 days')}<input type="date" id="wz_start" data-f="start" value="${esc(d.start)}"></label>
     </div>`;
   else if (w.step === 1) body = `
-    <p class="q">What kind of work is this vendor doing?</p>
-    <p class="muted">This picks the metric suggestions you'll see next. You can always add your own.</p>
-    <div class="choices">${Object.entries(ROLES).map(([k, r]) => `<button type="button" class="choice" data-action="wzRole" data-k="${k}" aria-pressed="${d.role === k}"><b>${r.label}</b><small>${r.hint}</small></button>`).join('')}</div>`;
+    <p class="q">${T('What kind of work is this vendor doing?')}</p>
+    <p class="muted">${T("This picks the metric suggestions you'll see next. You can always add your own.")}</p>
+    <div class="choices">${Object.entries(ROLES).map(([k, r]) => `<button type="button" class="choice" data-action="wzRole" data-k="${k}" aria-pressed="${d.role === k}"><b>${T(r.label)}</b><small>${T(r.hint)}</small></button>`).join('')}</div>`;
   else if (w.step === 2) body = `
-    <p class="q">What matters most in the first 90 days?</p>
-    <p class="muted">Choose one or more. Metrics in these areas get recommended and weighted higher in the score.</p>
-    <div class="choices">${Object.entries(FOCUS).map(([k, l]) => `<button type="button" class="choice" data-action="wzFocus" data-k="${k}" aria-pressed="${d.focus.includes(k)}"><b>${l}</b><small>${FOCUS_HINT[k]}</small></button>`).join('')}</div>`;
+    <p class="q">${T('What matters most in the first 90 days?')}</p>
+    <p class="muted">${T('Choose one or more. Metrics in these areas get recommended and weighted higher in the score.')}</p>
+    <div class="choices">${Object.entries(FOCUS).map(([k, l]) => `<button type="button" class="choice" data-action="wzFocus" data-k="${k}" aria-pressed="${d.focus.includes(k)}"><b>${T(l)}</b><small>${T(FOCUS_HINT[k])}</small></button>`).join('')}</div>`;
   else if (w.step === 3) {
     const sug = suggestions(w);
     const ids = new Set(d.metrics.map((m) => m.id));
     const custom = d.metrics.filter((m) => !sug.some((s) => s.id === m.id));
     body = `
-    <p class="q">Which metrics do you want to measure?</p>
-    <p class="muted">Pick 3 to 7 for a focused review. Recommended ones match your priorities.</p>
+    <p class="q">${T('Which metrics do you want to measure?')}</p>
+    <p class="muted">${T('Pick 3 to 7 for a focused review. Recommended ones match your priorities.')}</p>
     <div class="mlist">${sug.map((s) => `<label class="mopt"><input type="checkbox" data-action="wzPick" data-id="${s.id}" ${ids.has(s.id) ? 'checked' : ''}>
-      <span><b>${esc(s.name)}</b> <span class="muted" style="font-size:.85rem">· ${esc(FOCUS[s.focus])} · ${s.dir === 'up' ? 'higher is better' : 'lower is better'} · typical goal ${esc(fmt(s.goal, s.unit))}</span></span>
-      ${d.focus.includes(s.focus) ? '<span class="tag">Recommended</span>' : '<span></span>'}</label>`).join('')}
-      ${custom.map((m) => `<label class="mopt"><input type="checkbox" data-action="wzPick" data-id="${esc(m.id)}" checked><span><b>${esc(m.name)}</b> <span class="muted" style="font-size:.85rem">· your metric · ${m.dir === 'up' ? 'higher is better' : 'lower is better'}</span></span><span class="tag">Custom</span></label>`).join('')}
+      <span><b>${esc(mName(s))}</b> <span class="muted" style="font-size:.85rem">· ${esc(T(FOCUS[s.focus]))} · ${dirLow(s)} · ${T('typical goal {g}', { g: esc(fmt(s.goal, s.unit)) })}</span></span>
+      ${d.focus.includes(s.focus) ? `<span class="tag">${T('Recommended')}</span>` : '<span></span>'}</label>`).join('')}
+      ${custom.map((m) => `<label class="mopt"><input type="checkbox" data-action="wzPick" data-id="${esc(m.id)}" checked><span><b>${esc(mName(m))}</b> <span class="muted" style="font-size:.85rem">· ${T('your metric')} · ${dirLow(m)}</span></span><span class="tag">${T('Custom')}</span></label>`).join('')}
     </div>
     <div class="card" style="background:var(--sunk);border:0">
-      <h3 style="margin-bottom:10px">Add your own metric</h3>
+      <h3 style="margin-bottom:10px">${T('Add your own metric')}</h3>
       <div class="row">
-        <label class="f" style="flex:2;min-width:180px">Metric name<input type="text" id="wz_cname" data-c="name" value="${esc(w.custom.name)}" placeholder="e.g. Orders entered without errors"></label>
-        <label class="f" style="width:110px">Unit<select id="wz_cunit" data-c="unit">${['#', '%', '$', 'sec', 'min', 'hrs', 'pts'].map((u) => `<option ${w.custom.unit === u ? 'selected' : ''}>${u}</option>`).join('')}</select></label>
-        <label class="f" style="width:170px">Better when<select id="wz_cdir" data-c="dir"><option value="up" ${w.custom.dir === 'up' ? 'selected' : ''}>Higher</option><option value="down" ${w.custom.dir === 'down' ? 'selected' : ''}>Lower</option></select></label>
-        <button type="button" class="btn" data-action="wzAddCustom">Add metric</button>
+        <label class="f" style="flex:2;min-width:180px">${T('Metric name')}<input type="text" id="wz_cname" data-c="name" value="${esc(w.custom.name)}" placeholder="${esc(T('e.g. Orders entered without errors'))}"></label>
+        <label class="f" style="width:110px">${T('Unit')}<select id="wz_cunit" data-c="unit">${['#', '%', '$', 'sec', 'min', 'hrs', 'pts'].map((u) => `<option value="${u}" ${w.custom.unit === u ? 'selected' : ''}>${unitLabel(u)}</option>`).join('')}</select></label>
+        <label class="f" style="width:170px">${T('Better when')}<select id="wz_cdir" data-c="dir"><option value="up" ${w.custom.dir === 'up' ? 'selected' : ''}>${T('Higher')}</option><option value="down" ${w.custom.dir === 'down' ? 'selected' : ''}>${T('Lower')}</option></select></label>
+        <button type="button" class="btn" data-action="wzAddCustom">${T('Add metric')}</button>
       </div>
     </div>`;
   } else if (w.step === 4) {
     body = `
-    <p class="q">Set the goal and how fast they should ramp</p>
-    <p class="muted">The goal is full proficiency. The ramp sets each checkpoint's target as a share of that goal. For "lower is better" metrics, the early targets are allowed to be higher.</p>
-    <div class="choices">${Object.entries(RAMPS).map(([k, r]) => `<button type="button" class="choice" data-action="wzRamp" data-k="${k}" aria-pressed="${d.rampKey === k}"><b>${r.label}: ${r.pcts.map((x) => Math.round(x * 100) + '%').join(' / ')}</b><small>${r.hint}</small></button>`).join('')}</div>
+    <p class="q">${T('Set the goal and how fast they should ramp')}</p>
+    <p class="muted">${T('ramp.help')}</p>
+    <div class="choices">${Object.entries(RAMPS).map(([k, r]) => `<button type="button" class="choice" data-action="wzRamp" data-k="${k}" aria-pressed="${d.rampKey === k}"><b>${T(r.label)}: ${r.pcts.map((x) => Math.round(x * 100) + '%').join(' / ')}</b><small>${T(r.hint)}</small></button>`).join('')}</div>
     <div>
-      <div class="goalrow head"><span>Metric</span><span>Better when</span><span>Goal</span><span>Unit</span><span>Weight</span><span>Day 30 / 60 / 90 targets</span></div>
+      <div class="goalrow head"><span>${T('Metric')}</span><span>${T('Better when')}</span><span>${T('Goal')}</span><span>${T('Unit')}</span><span>${T('Weight')}</span><span>${T('Day 30 / 60 / 90 targets')}</span></div>
       ${d.metrics.map((m, i) => `<div class="goalrow">
-        <b class="gname">${esc(m.name)}</b>
-        <select id="g_dir_${i}" data-g="${i}" data-k="dir" aria-label="Better when"><option value="up" ${m.dir === 'up' ? 'selected' : ''}>Higher</option><option value="down" ${m.dir === 'down' ? 'selected' : ''}>Lower</option></select>
-        <input type="number" step="any" id="g_goal_${i}" data-g="${i}" data-k="goal" value="${esc(m.goal)}" aria-label="Goal">
-        <span class="muted">${esc(m.unit)}</span>
-        <select id="g_w_${i}" data-g="${i}" data-k="weight" aria-label="Weight">${[1, 2, 3].map((x) => `<option value="${x}" ${+m.weight === x ? 'selected' : ''}>${x}${x === 3 ? ' high' : x === 1 ? ' low' : ''}</option>`).join('')}</select>
-        <span class="ramp-prev" id="rp_${i}">${rampPreview(m, d.ramp)}</span></div>`).join('')}
+        <b class="gname">${esc(mName(m))}</b>
+        <select id="g_dir_${i}" data-g="${i}" data-k="dir" aria-label="${T('Better when')}"><option value="up" ${m.dir === 'up' ? 'selected' : ''}>${T('Higher')}</option><option value="down" ${m.dir === 'down' ? 'selected' : ''}>${T('Lower')}</option></select>
+        <input type="number" step="any" id="g_goal_${i}" data-g="${i}" data-k="goal" value="${esc(m.goal)}" aria-label="${T('Goal')}">
+        <span class="muted">${esc(unitLabel(m.unit))}</span>
+        <select id="g_w_${i}" data-g="${i}" data-k="weight" aria-label="${T('Weight')}">${[1, 2, 3].map((x) => `<option value="${x}" ${+m.weight === x ? 'selected' : ''}>${x}${x === 3 ? ' ' + T('high') : x === 1 ? ' ' + T('low') : ''}</option>`).join('')}</select>
+        <span class="ramp-prev" id="rp_${i}">${+m.goal > 0 ? rampPreview({ ...m, goal: +m.goal }, d.ramp) : '—'}</span></div>`).join('')}
     </div>`;
   } else {
     body = `
-    <p class="q">Review and ${w.editingId ? 'save changes' : 'create the program'}</p>
+    <p class="q">${w.editingId ? T('Review and save changes') : T('Review and create the program')}</p>
     <div class="card review"><dl>
-      <dt>Vendor</dt><dd>${esc(d.vendor)}${d.team ? ' · ' + esc(d.team) : ''}</dd>
-      <dt>Owner</dt><dd>${esc(d.owner || '—')}</dd>
-      <dt>Work type</dt><dd>${esc(ROLES[d.role]?.label)}</dd>
-      <dt>Priorities</dt><dd>${d.focus.map((f) => FOCUS[f]).join(', ')}</dd>
-      <dt>90-day window</dt><dd class="num">${esc(d.start)} → ${esc(addDays(d.start, 89))}</dd>
-      <dt>Ramp</dt><dd>${esc(RAMPS[d.rampKey].label)}: ${d.ramp.map((x) => Math.round(x * 100) + '%').join(' / ')} of goal at days 30 / 60 / 90</dd>
+      <dt>${T('Vendor')}</dt><dd>${esc(d.vendor)}${d.team ? ' · ' + esc(d.team) : ''}</dd>
+      <dt>${T('Owner')}</dt><dd>${esc(d.owner || '—')}</dd>
+      <dt>${T('Work type')}</dt><dd>${esc(T(ROLES[d.role]?.label))}</dd>
+      <dt>${T('Priorities')}</dt><dd>${d.focus.map((f) => T(FOCUS[f])).join(', ')}</dd>
+      <dt>${T('90-day window')}</dt><dd class="num">${esc(d.start)} → ${esc(addDays(d.start, 89))}</dd>
+      <dt>${T('Ramp')}</dt><dd>${esc(T(RAMPS[d.rampKey].label))}: ${T('{pcts} of goal at days 30 / 60 / 90', { pcts: d.ramp.map((x) => Math.round(x * 100) + '%').join(' / ') })}</dd>
     </dl></div>
-    <div class="tbl-wrap"><table><thead><tr><th>Metric</th><th class="n">Day 30</th><th class="n">Day 60</th><th class="n">Day 90 goal</th><th class="n">Weight</th></tr></thead>
-    <tbody>${d.metrics.map((m) => `<tr><td><b>${esc(m.name)}</b> <span class="dir">${m.dir === 'up' ? 'higher is better' : 'lower is better'}</span></td>${d.ramp.map((x) => `<td class="n">${fmt(targetVal(m, x), m.unit)}</td>`).join('')}<td class="n">${m.weight}</td></tr>`).join('')}</tbody></table></div>
-    <p class="muted" style="font-size:.88rem">Day 90 rule: a team is <b>proficient</b> when its weighted score for days 61–90 is at least 100% and no metric is below 90% of target.</p>`;
+    <div class="tbl-wrap"><table><thead><tr><th>${T('Metric')}</th><th class="n">${T('Day 30')}</th><th class="n">${T('Day 60')}</th><th class="n">${T('Day 90 goal')}</th><th class="n">${T('Weight')}</th></tr></thead>
+    <tbody>${d.metrics.map((m) => `<tr><td><b>${esc(mName(m))}</b> <span class="dir">${dirLow(m)}</span></td>${d.ramp.map((x) => `<td class="n">${fmt(targetVal({ ...m, goal: +m.goal }, x), m.unit)}</td>`).join('')}<td class="n">${m.weight}</td></tr>`).join('')}</tbody></table></div>
+    <p class="muted" style="font-size:.88rem">${T('rule.day90')}</p>`;
   }
   return `<div class="wz">
-    <div class="row" style="justify-content:space-between;align-items:center"><h1>${w.editingId ? 'Edit program' : 'New vendor program'}</h1><button class="btn ghost" data-action="wzCancel">Cancel</button></div>
+    <div class="row" style="justify-content:space-between;align-items:center"><h1>${w.editingId ? T('Edit program') : T('New vendor program')}</h1><button class="btn ghost" data-action="wzCancel">${T('Cancel')}</button></div>
     <ol class="steps">${stepsHtml}</ol>
     <section class="card" style="display:grid;gap:14px">${body}</section>
     ${w.err ? `<p class="err" role="alert">${esc(w.err)}</p>` : ''}
-    <div class="wz-nav"><button class="btn" data-action="wzBack" ${w.step === 0 ? 'disabled' : ''}>Back</button>
-      ${w.step < 5 ? `<button class="btn primary" data-action="wzNext">Continue</button>` : `<button class="btn primary" data-action="wzSave">${w.editingId ? 'Save changes' : 'Create program'}</button>`}</div>
+    <div class="wz-nav"><button class="btn" data-action="wzBack" ${w.step === 0 ? 'disabled' : ''}>${T('Back')}</button>
+      ${w.step < 5 ? `<button class="btn primary" data-action="wzNext">${T('Continue')}</button>` : `<button class="btn primary" data-action="wzSave">${w.editingId ? T('Save changes') : T('Create program')}</button>`}</div>
   </div>`;
 }
 function rampPreview(m, ramp) { return ramp.map((x) => esc(fmt(targetVal(m, x), m.unit))).join(' / '); }
 function wzValidate(w) {
   const d = w.d;
-  if (w.step === 0) { if (!d.vendor.trim()) return 'Enter the vendor name.'; if (!/^\d{4}-\d{2}-\d{2}$/.test(d.start)) return 'Choose the first day of the 90-day window.'; }
-  if (w.step === 1 && !d.role) return 'Choose the type of work.';
-  if (w.step === 2 && !d.focus.length) return 'Choose at least one priority.';
-  if (w.step === 3 && !d.metrics.length) return 'Pick at least one metric.';
-  if (w.step === 4) { const bad = d.metrics.find((m) => !(+m.goal > 0)); if (bad) return `Enter a goal above zero for ${bad.name}.`; }
+  if (w.step === 0) { if (!d.vendor.trim()) return T('Enter the vendor name.'); if (!/^\d{4}-\d{2}-\d{2}$/.test(d.start)) return T('Choose the first day of the 90-day window.'); }
+  if (w.step === 1 && !d.role) return T('Choose the type of work.');
+  if (w.step === 2 && !d.focus.length) return T('Choose at least one priority.');
+  if (w.step === 3 && !d.metrics.length) return T('Pick at least one metric.');
+  if (w.step === 4) { const bad = d.metrics.find((m) => !(+m.goal > 0)); if (bad) return T('Enter a goal above zero for {m}.', { m: mName(bad) }); }
   return '';
 }
 
-// ---------- export ----------
+// ---------- export (columns and values stay in English for stable Tableau fields) ----------
 function csvCell(v) { const s = String(v ?? ''); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
 function toCSV(rows) { return rows.map((r) => r.map(csvCell).join(',')).join('\n') + '\n'; }
 function exportScope() { return ui.exportScope === 'current' ? [getProgram(ui.progId)] : store.programs.length ? store.programs : [DEMO.program]; }
@@ -819,42 +1013,18 @@ async function offer(name, text) {
   try {
     const dl = await window.claude?.use?.('downloads');
     if (!dl) {
-      if (window.claude) { toast('Download isn\'t available here. Copy the text below instead.'); return; }
+      if (window.claude) { toast(T("Download isn't available here. Copy the text below instead.")); return; }
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv' })); a.download = name;
       document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-      toast('Downloaded ' + name); return;
+      toast(T('Downloaded {f}', { f: name })); return;
     }
     await dl.save({ filename: name, data: text });
-    toast('Saved ' + name);
-  } catch (e) { if (e?.code !== 'declined' && e?.code !== 'cancelled') toast('The file wasn\'t saved. You can copy the text below.'); }
+    toast(T('Saved {f}', { f: name }));
+  } catch (e) { if (e?.code !== 'declined' && e?.code !== 'cancelled') toast(T("The file wasn't saved. You can copy the text below.")); }
 }
 
-function renderGuide() {
-  const scopeAll = ui.exportScope !== 'current';
-  const usingSample = scopeAll && !store.programs.length;
-  return `<div class="guide">
-  <section class="card">
-    <header><h1>Export for Tableau</h1></header>
-    <p>Export two tidy CSV files and connect Tableau to them. Every number on the scorecard is calculated in the export too, so Tableau shows the same results.</p>
-    <div class="row" style="margin-top:14px">
-      <label class="f" style="width:240px">Programs<select id="expScope"><option value="all" ${scopeAll ? 'selected' : ''}>All programs</option><option value="current" ${!scopeAll ? 'selected' : ''}>Only ${esc(getProgram(ui.progId)?.vendor)}</option></select></label>
-      <button class="btn primary" data-action="exp" data-k="results">Download results CSV</button>
-      <button class="btn" data-action="exp" data-k="targets">Download ramp targets CSV</button>
-    </div>
-    ${usingSample ? '<p class="muted" style="margin-top:8px;font-size:.88rem">No programs exist yet, so the export contains the sample program.</p>' : ''}
-    ${ui.exportText ? `<div style="margin-top:14px;display:grid;gap:8px"><div class="row" style="justify-content:space-between;align-items:center"><b class="mono">${esc(ui.exportName)}</b><button class="btn" data-action="copy">Copy CSV</button></div>
-      <textarea id="expText" rows="8" readonly>${esc(ui.exportText)}</textarea></div>` : ''}
-  </section>
-  <div class="grid2">
-  <section class="card">
-    <h2>Build the Tableau workbook</h2>
-    <ol>
-      <li>In Tableau, choose <b>Connect › Text file</b> and open <code>vendor_results.csv</code>. Add <code>vendor_ramp_targets.csv</code> to the canvas.</li>
-      <li>Relate the two on <code>program_id</code>, <code>metric_id</code> and <code>phase</code>.</li>
-      <li>Create these calculated fields:</li>
-    </ol>
-    <pre class="code">// Attainment (recomputes if you edit goals in Tableau)
+const CODE_EN = `// Attainment (recomputes if you edit goals in Tableau)
 IF [Direction] = "Higher is better"
 THEN [Actual Value] / [Target Value]
 ELSE [Target Value] / [Actual Value] END
@@ -870,29 +1040,46 @@ ELSE "At risk" END
 // Day 90 verdict (filter Phase = "Days 61–90")
 IF [Weighted proficiency score] >= 1
  AND MIN([Attainment]) >= 0.9 THEN "Proficient"
-ELSE "Not yet" END</pre>
-    <ol start="4">
-      <li><b>Scorecard:</b> Vendor and Metric on Rows, Phase on Columns, AVG(Attainment) as text, colored by Status.</li>
-      <li><b>Ramp curve:</b> Day Number on Columns, Actual Value on Rows, with Target Value as a dual axis drawn as a step line. Filter to one metric.</li>
-      <li><b>Leaderboard:</b> Vendor on Rows, weighted score as a bar, with a reference line at 100%.</li>
-      <li>Add filters for Vendor, Work Type and Focus Area, then put the three sheets on a dashboard.</li>
-    </ol>
+ELSE "Not yet" END`;
+const CODE_ES = CODE_EN.replace('// Attainment (recomputes if you edit goals in Tableau)', '// Cumplimiento (se recalcula si editas metas en Tableau)')
+  .replace('// Weighted proficiency score', '// Puntaje ponderado de competencia').replace('// Status', '// Estado')
+  .replace('// Day 90 verdict (filter Phase = "Days 61–90")', '// Veredicto del día 90 (filtra Phase = "Days 61–90")');
+
+function renderGuide() {
+  const scopeAll = ui.exportScope !== 'current';
+  const usingSample = scopeAll && !store.programs.length;
+  return `<div class="guide">
+  <section class="card">
+    <header><h1>${T('Export for Tableau')}</h1></header>
+    <p>${T('Export two tidy CSV files and connect Tableau to them. Every number on the scorecard is calculated in the export too, so Tableau shows the same results.')}</p>
+    <div class="row" style="margin-top:14px">
+      <label class="f" style="width:240px">${T('Programs')}<select id="expScope"><option value="all" ${scopeAll ? 'selected' : ''}>${T('All programs')}</option><option value="current" ${!scopeAll ? 'selected' : ''}>${T('Only {v}', { v: esc(dv(getProgram(ui.progId), 'vendor')) })}</option></select></label>
+      <button class="btn primary" data-action="exp" data-k="results">${T('Download results CSV')}</button>
+      <button class="btn" data-action="exp" data-k="targets">${T('Download ramp targets CSV')}</button>
+    </div>
+    ${usingSample ? `<p class="muted" style="margin-top:8px;font-size:.88rem">${T('No programs exist yet, so the export contains the sample program.')}</p>` : ''}
+    ${LANG === 'es' ? `<p class="muted" style="margin-top:8px;font-size:.88rem">${T('csv.note')}</p>` : ''}
+    ${ui.exportText ? `<div style="margin-top:14px;display:grid;gap:8px"><div class="row" style="justify-content:space-between;align-items:center"><b class="mono">${esc(ui.exportName)}</b><button class="btn" data-action="copy">${T('Copy CSV')}</button></div>
+      <textarea id="expText" rows="8" readonly>${esc(ui.exportText)}</textarea></div>` : ''}
+  </section>
+  <div class="grid2">
+  <section class="card">
+    <h2>${T('Build the Tableau workbook')}</h2>
+    <ol><li>${T('tab.1')}</li><li>${T('tab.2')}</li><li>${T('tab.3')}</li></ol>
+    <pre class="code">${esc(LANG === 'es' ? CODE_ES : CODE_EN)}</pre>
+    <ol start="4"><li>${T('tab.4')}</li><li>${T('tab.5')}</li><li>${T('tab.6')}</li><li>${T('tab.7')}</li></ol>
   </section>
   <section class="card">
-    <h2>Make it live with Salesforce</h2>
-    <p>CSV export works today. For a feed that refreshes on its own, store the same three records in Salesforce and point Tableau at them. Tableau is a Salesforce product, so the connector is built in.</p>
-    <ul>
-      <li><b>Ramp_Program__c</b>: vendor (lookup to Account), team, owner, start date, ramp % for days 30, 60 and 90.</li>
-      <li><b>Ramp_Metric__c</b> (child of the program): name, unit, direction, goal, weight, focus area.</li>
-      <li><b>Metric_Result__c</b> (child of the metric): date, value, note. Formula fields for day number and phase.</li>
-    </ul>
-    <p>Rebuild this guided setup as a Screen Flow so anyone can create a program the same way. Then connect Tableau with <b>Connect › Salesforce</b> and use the calculations on the left. You can also bulk-load these CSVs into the objects with Data Loader.</p>
-    <h3 style="margin-top:16px">Column reference</h3>
+    <h2>${T('Make it live with Salesforce')}</h2>
+    <p>${T('sf.intro')}</p>
+    <ul><li>${T('sf.1')}</li><li>${T('sf.2')}</li><li>${T('sf.3')}</li></ul>
+    <p>${T('sf.4')}</p>
+    <h3 style="margin-top:16px">${T('Column reference')}</h3>
     <div class="tbl-wrap"><table><tbody>
-      <tr><td class="mono">day_number</td><td>Days since day 1 of the program (day 1 = start date)</td></tr>
-      <tr><td class="mono">phase_target_pct</td><td>Share of the goal expected in that phase</td></tr>
-      <tr><td class="mono">target_value</td><td>The goal adjusted by the ramp %. For lower-is-better metrics it is goal ÷ ramp %.</td></tr>
-      <tr><td class="mono">attainment_pct</td><td>Actual vs target, where 100 = at target (capped at 150 for lower-is-better)</td></tr>
+      <tr><td class="mono">day_number</td><td>${T('col.day')}</td></tr>
+      <tr><td class="mono">phase_target_pct</td><td>${T('col.pct')}</td></tr>
+      <tr><td class="mono">target_value</td><td>${T('col.target')}</td></tr>
+      <tr><td class="mono">attainment_pct</td><td>${T('col.att')}</td></tr>
     </tbody></table></div>
   </section>
   </div></div>`;
@@ -905,9 +1092,10 @@ document.addEventListener('click', async (ev) => {
   if (a !== 'delEntry' && a !== 'delProgram') ui.armed = null;
   const w = ui.wz;
   switch (a) {
-    case 'view': ui.view = el.dataset.view; ui.exportText = ''; render(); window.scrollTo(0, 0); break;
-    case 'new': ui.wz = newWizard(); ui.view = 'wizard'; render(); window.scrollTo(0, 0); break;
-    case 'edit': ui.wz = newWizard(getProgram(ui.progId)); ui.view = 'wizard'; render(); window.scrollTo(0, 0); break;
+    case 'lang': LANG = el.dataset.lang; try { localStorage.setItem('vrt.lang', LANG); } catch {} if (ui.wz) ui.wz.err = ''; renderStatic(); render(); break;
+    case 'view': ui.view = el.dataset.view; ui.exportText = ''; render(); break;
+    case 'new': ui.wz = newWizard(); ui.view = 'wizard'; render(); $('#demo').scrollIntoView(); break;
+    case 'edit': ui.wz = newWizard(getProgram(ui.progId)); ui.view = 'wizard'; render(); $('#demo').scrollIntoView(); break;
     case 'metric': ui.metricId = el.dataset.id; render(); break;
     case 'playDemo': ui.view = 'program'; ui.progId = 'demo'; ui.metricId = null; ui.demoDay = 1; startPlay(); break;
     case 'play': if (ui.playing) stopPlay(); else { if (ui.demoDay >= 98) ui.demoDay = 1; startPlay(); } break;
@@ -915,14 +1103,14 @@ document.addEventListener('click', async (ev) => {
       const key = 'e' + el.dataset.id;
       if (ui.armed !== key) { ui.armed = key; render(); break; }
       ui.armed = null;
-      try { await store.deleteEntry(el.dataset.id); toast('Entry deleted'); } catch { toast('Couldn\'t delete the entry. Try again.'); }
+      try { await store.deleteEntry(el.dataset.id); toast(T('Entry deleted')); } catch { toast(T("Couldn't delete the entry. Try again.")); }
       break;
     }
     case 'delProgram': {
       const key = 'p' + ui.progId;
       if (ui.armed !== key) { ui.armed = key; render(); break; }
       ui.armed = null; const id = ui.progId; ui.progId = null;
-      try { await store.deleteProgram(id); toast('Program deleted'); } catch { toast('Couldn\'t delete the program. Try again.'); }
+      try { await store.deleteProgram(id); toast(T('Program deleted')); } catch { toast(T("Couldn't delete the program. Try again.")); }
       render(); break;
     }
     case 'wzCancel': ui.wz = null; ui.view = 'program'; render(); break;
@@ -936,7 +1124,7 @@ document.addEventListener('click', async (ev) => {
       w.err = ''; render(); break;
     }
     case 'wzAddCustom': {
-      const c = w.custom; if (!c.name.trim()) { w.err = 'Give your metric a name.'; render(); break; }
+      const c = w.custom; if (!c.name.trim()) { w.err = T('Give your metric a name.'); render(); break; }
       w.d.metrics.push({ id: 'c_' + uid(), name: c.name.trim(), unit: c.unit, dir: c.dir, goal: '', weight: 2, focus: 'custom' });
       w.custom = { name: '', unit: '#', dir: 'up' }; w.err = ''; render(); break;
     }
@@ -945,56 +1133,55 @@ document.addEventListener('click', async (ev) => {
       const err = wzValidate(w); w.err = err; if (err) { render(); break; }
       w.step++;
       if (w.step === 3 && !w.picked) { const rec = suggestions(w).filter((s) => w.d.focus.includes(s.focus)); const keep = w.d.metrics.filter((m) => !m.id.startsWith('lib_')); w.d.metrics = [...rec, ...keep]; w.picked = true; }
-      render(); window.scrollTo(0, 0); break;
+      render(); $('#demo').scrollIntoView(); break;
     }
     case 'wzSave': {
-      if (!store.canWrite) { w.err = 'You don\'t have permission to save programs here.'; render(); break; }
+      if (!store.canWrite) { w.err = T("You don't have permission to save programs here."); render(); break; }
       const d = w.d;
       const prog = { id: w.editingId || 'p_' + uid(), vendor: d.vendor.trim(), team: d.team.trim(), owner: d.owner.trim(), role: d.role, focus: d.focus, start: d.start,
         rampKey: d.rampKey, ramp: d.ramp, metrics: d.metrics.map((m) => ({ id: m.id, name: m.name, unit: m.unit, dir: m.dir, goal: +m.goal, weight: +m.weight, focus: m.focus })) };
-      if (!w.editingId) prog.createdAt = new Date().toISOString(); else prog.createdAt = getProgram(w.editingId)?.createdAt || prog.updatedAt || new Date().toISOString();
+      prog.createdAt = (w.editingId && getProgram(w.editingId)?.createdAt) || new Date().toISOString();
       el.disabled = true;
-      try { await store.saveProgram(prog); ui.progId = prog.id; ui.wz = null; ui.view = 'program'; toast(w.editingId ? 'Changes saved' : 'Program created'); render(); window.scrollTo(0, 0); }
-      catch (e) { el.disabled = false; w.err = e?.code === 'invalid_argument' ? 'You don\'t have permission to save programs here.' : 'The program wasn\'t saved. Check your connection and try again.'; render(); }
+      try { await store.saveProgram(prog); ui.progId = prog.id; ui.wz = null; ui.view = 'program'; toast(w.editingId ? T('Changes saved') : T('Program created')); render(); $('#demo').scrollIntoView(); }
+      catch (e) { el.disabled = false; w.err = e?.code === 'invalid_argument' ? T("You don't have permission to save programs here.") : T("The program wasn't saved. Check your connection and try again."); render(); }
       break;
     }
     case 'exp': offer(el.dataset.k === 'results' ? 'vendor_results.csv' : 'vendor_ramp_targets.csv', el.dataset.k === 'results' ? resultsCSV() : targetsCSV()); break;
     case 'copy': {
       const t = $('#expText');
-      try { await navigator.clipboard.writeText(ui.exportText); toast('CSV copied'); } catch { t.focus(); t.select(); toast('Press Ctrl+C (or ⌘C) to copy'); }
+      try { await navigator.clipboard.writeText(ui.exportText); toast(T('CSV copied')); } catch { t.focus(); t.select(); toast(T('Press Ctrl+C (or ⌘C) to copy')); }
       break;
     }
   }
 });
 document.addEventListener('input', (ev) => {
   const t = ev.target, w = ui.wz;
+  if (t.id === 'demoRange') { const b = t.parentElement.querySelector('b.num'); if (b) b.textContent = T('Day {d}', { d: t.value }); return; }
   if (w && t.dataset.f) w.d[t.dataset.f] = t.value;
   if (w && t.dataset.c) w.custom[t.dataset.c] = t.value;
   if (w && t.dataset.g != null) {
-    const m = w.d.metrics[+t.dataset.g]; m[t.dataset.k] = t.dataset.k === 'goal' ? t.value : t.value;
-    const rp = document.getElementById('rp_' + t.dataset.g); if (rp && +m.goal > 0) rp.innerHTML = rampPreview({ ...m, goal: +m.goal }, w.d.ramp);
+    const m = w.d.metrics[+t.dataset.g]; m[t.dataset.k] = t.value;
+    const rp = document.getElementById('rp_' + t.dataset.g); if (rp) rp.innerHTML = +m.goal > 0 ? rampPreview({ ...m, goal: +m.goal }, w.d.ramp) : '—';
   }
 });
 document.addEventListener('change', (ev) => {
   const t = ev.target;
   if (t.id === 'progSel') { ui.progId = t.value; ui.metricId = null; ui.armed = null; ui.exportText = ''; render(); }
-  if (t.id === 'demoRange') { stopPlay(); ui.demoDay = +t.value; render(); }
   if (t.id === 'expScope') { ui.exportScope = t.value; ui.exportText = ''; render(); }
-  if (ui.wz && t.dataset.c) ui.wz.custom[t.dataset.c] = t.value;
-  if (ui.wz && t.dataset.g != null && t.tagName === 'SELECT') { const i = +t.dataset.g, m = ui.wz.d.metrics[i]; m[t.dataset.k] = t.value; const rp = document.getElementById('rp_' + i); if (rp && +m.goal > 0) rp.innerHTML = rampPreview({ ...m, goal: +m.goal }, ui.wz.d.ramp); }
+  if (t.id === 'demoRange') { stopPlay(); ui.demoDay = +t.value; render(); }
 });
 document.addEventListener('submit', async (ev) => {
   if (ev.target.id !== 'logForm') return;
   ev.preventDefault();
   const p = getProgram(ui.progId); if (!p || p.demo || !store.canWrite) return;
   const date = $('#logDate').value, note = $('#logNote').value.trim();
-  if (!date) { toast('Choose a date for these results.'); return; }
+  if (!date) { toast(T('Choose a date for these results.')); return; }
   const list = [...document.querySelectorAll('#logForm [data-mid]')].filter((i) => i.value !== '' && !isNaN(+i.value))
     .map((i) => ({ programId: p.id, metricId: i.dataset.mid, date, value: +i.value, note, createdAt: new Date().toISOString() }));
-  if (!list.length) { toast('Enter at least one value.'); return; }
+  if (!list.length) { toast(T('Enter at least one value.')); return; }
   const btn = ev.target.querySelector('button[type=submit]'); btn.disabled = true;
-  try { await store.addEntries(list); toast(`Saved ${list.length} result${list.length > 1 ? 's' : ''} for ${date}`); }
-  catch (e) { btn.disabled = false; toast(e?.code === 'invalid_argument' ? 'You don\'t have permission to log results here.' : 'Results weren\'t saved. Try again.'); }
+  try { await store.addEntries(list); toast(T('Saved {n} result(s) for {d}', { n: list.length, d: date })); }
+  catch (e) { btn.disabled = false; toast(e?.code === 'invalid_argument' ? T("You don't have permission to log results here.") : T("Results weren't saved. Try again.")); }
 });
 
 function startPlay() {
@@ -1008,9 +1195,9 @@ function startPlay() {
   render();
 }
 function stopPlay() { clearInterval(ui.playing); ui.playing = null; render(); }
-document.addEventListener('input', (ev) => { if (ev.target.id === 'demoRange') { const b = ev.target.parentElement.querySelector('b.num'); if (b) b.textContent = 'Day ' + ev.target.value; } });
 
 if (ui.view === 'wizard') ui.view = 'program';
+renderStatic();
 render();
 store.init();
 })();

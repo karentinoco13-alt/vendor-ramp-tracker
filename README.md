@@ -1,6 +1,6 @@
 # Vendor Ramp Tracker
 
-A 90-day proficiency console for outsourced vendor teams. Anyone can answer a few guided questions to choose the metrics that matter for their vendor, set goals and a ramp, log results, and see whether the team is on pace, needs coaching, or is proficient at day 90.
+Available in English and Spanish (EN/ES toggle). A 90-day proficiency console for outsourced vendor teams. Anyone can answer a few guided questions to choose the metrics that matter for their vendor, set goals and a ramp, log results, and see whether the team is on pace, needs coaching, or is proficient at day 90.
 
 **Live site:** https://karentinoco13-alt.github.io/vendor-ramp-tracker/
 
