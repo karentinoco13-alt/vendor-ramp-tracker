@@ -30,4 +30,4 @@ Vendor Ramp Tracker by Karen Tinoco. Designed and directed by the author; implem
 
 Required Notice: Copyright (c) 2026 Karen Tinoco (https://www.thehumanelement.live)
 
-Free to read, run and adapt for non-commercial purposes (personal projects, research, teaching, evaluation) under the [PolyForm Noncommercial License 1.0.0](LICENSE.md). For commercial use, contact the author.
+Vendor Ramp Tracker by Karen Tinoco · © 2026 Karen Tinoco. Licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE.md): free to use, share and adapt for non-commercial purposes, with credit. Commercial use by permission only.
