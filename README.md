@@ -21,3 +21,13 @@ On GitHub Pages, programs and results are saved in each visitor's own browser (l
 ## Run locally
 
 It is a single static file. Open `index.html` in a browser.
+
+## Credits
+
+Vendor Ramp Tracker by Karen Tinoco. Designed and directed by the author; implemented with Claude Code as an AI pair programmer. All sample vendor data is simulated.
+
+## License
+
+Required Notice: Copyright (c) 2026 Karen Tinoco (https://www.thehumanelement.live)
+
+Free to read, run and adapt for non-commercial purposes (personal projects, research, teaching, evaluation) under the [PolyForm Noncommercial License 1.0.0](LICENSE.md). For commercial use, contact the author.
