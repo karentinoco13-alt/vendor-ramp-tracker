@@ -58,6 +58,15 @@ a { color: var(--accent); }
 .pill.warn { color: var(--warn); background: var(--warn-soft); }
 .pill.bad { color: var(--bad); background: var(--bad-soft); }
 .pill.none { color: var(--muted); background: var(--sunk); }
+.plan-t td { vertical-align: top; }
+.plan-t td:first-child { min-width: 200px; }
+.pms { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.pm { font-size: 0.76rem; font-family: var(--f-mono); padding: 1px 7px; border-radius: 5px; background: var(--sunk); }
+.pm.bad { color: var(--bad); background: var(--bad-soft); }
+.pm.warn { color: var(--warn); background: var(--warn-soft); }
+.pm.good { color: var(--good); background: var(--good-soft); }
+.strengths { margin-top: 12px; font-size: 0.9rem; color: var(--muted); }
+.strengths b { color: var(--good); }
 .alert { border: 1.5px solid var(--bad); background: var(--bad-soft); border-radius: 10px; padding: 12px 16px; display: grid; gap: 3px; }
 .alert.warn { border-color: var(--warn); background: var(--warn-soft); }
 .alert b.h { color: var(--bad); }
@@ -265,7 +274,7 @@ let LANG = 'en';
 try { LANG = localStorage.getItem('vrt.lang') || ((navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch { LANG = (navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en'; }
 const ES = {
   'Vendor management': 'Gestión de proveedores',
-  'hero.lede': 'Una consola de competencia a 90 días para equipos tercerizados. Cualquier persona puede responder unas preguntas para elegir las métricas que importan para su proveedor. Luego registra resultados y ve, en lenguaje sencillo, si el equipo va al ritmo, necesita coaching o alcanzó la competencia en el día 90.',
+  'hero.lede': 'Una consola de competencia a 90 días para equipos tercerizados. Cuando contratas a un proveedor, la confianza ya existe; el trabajo es construir una colaboración sólida. Cualquier persona puede elegir las métricas que importan, registrar resultados y ver en lenguaje sencillo dónde el equipo necesita coaching, dónde necesita apoyo de tu parte y cuándo está listo en el día 90.',
   'Try the live demo': 'Probar la demo en vivo', 'How it scores': 'Cómo se califica',
   'Scorecard': 'Tablero', 'New program': 'Nuevo programa', 'Tableau export': 'Exportar a Tableau',
   // reference data
@@ -290,29 +299,38 @@ const ES = {
   'Complex work, long learning curve': 'Trabajo complejo, curva de aprendizaje larga', 'Typical vendor onboarding': 'Incorporación típica de un proveedor', 'Experienced team, simple process': 'Equipo con experiencia, proceso sencillo',
   'Days 1–30': 'Días 1–30', 'Days 31–60': 'Días 31–60', 'Days 61–90': 'Días 61–90', 'Day 91+': 'Día 91+',
   'Learn': 'Aprender', 'Build': 'Desarrollar', 'Perform': 'Desempeñar', 'Sustain': 'Sostener',
-  'On track': 'En meta', 'Watch': 'Vigilar', 'At risk': 'En riesgo', 'No data': 'Sin datos',
+  'On track': 'En meta', 'Fine-tune': 'Ajustar', 'Needs support': 'Necesita apoyo', 'No data': 'Sin datos',
   // demo
   'Northwind BPO (sample)': 'Northwind BPO (ejemplo)', 'Tier 1 voice — Manila': 'Voz nivel 1 — Manila', 'Vendor manager': 'Gerente de proveedores',
   // store notices
   'Loading programs…': 'Cargando programas…',
   'Programs and results are saved in this browser only. Use Tableau export to share them or load them into Tableau.': 'Los programas y resultados se guardan solo en este navegador. Usa Exportar a Tableau para compartirlos o cargarlos en Tableau.',
   'You can view this tracker but not change it. Ask the owner for Contributor access to log results.': 'Puedes ver este tablero pero no modificarlo. Pide al propietario acceso de Colaborador para registrar resultados.',
-  'demo.notice': '<b>Demo interactiva con un proveedor de ejemplo.</b> Northwind BPO está incorporando un equipo de voz de nivel 1. Presiona reproducir para ver sus primeros 98 días: las metas suben en los días 30, 60 y 90, las alertas cambian y llega el veredicto del día 90. Todos los números son datos de ejemplo, calificados con las mismas reglas que los programas reales.',
+  'demo.notice': '<b>Demo interactiva con un proveedor de ejemplo.</b> Northwind BPO está incorporando un equipo de voz de nivel 1. Presiona reproducir para ver sus primeros 98 días: las metas suben en los días 30, 60 y 90, el plan de colaboración cambia y llega el veredicto del día 90. Todos los números son datos de ejemplo, calificados con las mismas reglas que los programas reales.',
   'Pause': 'Pausar', 'Replay from day 1': 'Repetir desde el día 1', 'Play the 90 days': 'Reproducir los 90 días', 'Set up your own vendor': 'Configura tu propio proveedor', 'Demo day': 'Día de la demo',
   // assessment
-  'Proficient at day 90': 'Competente en el día 90', 'Close: needs a coaching plan': 'Cerca: necesita un plan de coaching', 'Not proficient at day 90': 'No competente en el día 90',
-  'Starts {d}': 'Inicia el {d}', 'Waiting for data': 'Esperando datos', 'On pace for proficiency': 'Al ritmo para ser competente', 'Slightly behind the ramp': 'Un poco atrás de la rampa', 'Behind the ramp': 'Atrás de la rampa',
-  'on pace': 'al ritmo', 'to watch': 'por vigilar', 'behind': 'atrasados', 'waiting for data': 'esperando datos',
-  // alerts
-  'Coaching needed': 'Se necesita coaching', '{name} phase': 'fase {name}', '{m} at {p}': '{m} al {p}', 'of target': 'de la meta',
-  'Below 90% of the target for this phase. ': 'Por debajo del 90% de la meta de esta fase. ', 'Between 90% and 99% of target. ': 'Entre 90% y 99% de la meta. ',
-  'step.quality': 'Realiza sesiones de calibración y revisiones de calidad lado a lado con el líder del proveedor.',
-  'step.speed': 'Revisa el proceso y las herramientas con alguien de alto desempeño y elimina pasos innecesarios.',
-  'step.cx': 'Escuchen juntos los contactos con baja calificación y den coaching en resolución y tono.',
-  'step.productivity': 'Revisa dotación, tiempo inactivo y accesos a sistemas antes de dar coaching sobre ritmo.',
-  'step.compliance': 'Refuerza la capacitación de políticas y audita el cumplimiento a diario hasta que se recupere.',
-  'step.revenue': 'Revisa el guion y las ofertas, y pide que los asesores acompañen a los que mejor convierten.',
-  'step.custom': 'Acuerda una acción correctiva y un responsable con el líder del proveedor esta semana.',
+  'Proficient at day 90': 'Competente en el día 90', 'Nearly there: targeted coaching': 'Casi listo: coaching focalizado', 'Extend the ramp with a joint support plan': 'Extender la rampa con un plan de apoyo conjunto',
+  'Starts {d}': 'Inicia el {d}', 'Waiting for data': 'Esperando datos', 'On pace for proficiency': 'Al ritmo para ser competente', 'Coaching in a few areas': 'Coaching en algunas áreas', 'Needs joint support': 'Necesita apoyo conjunto',
+  'on pace': 'al ritmo', 'fine-tuning': 'en ajuste', 'need support': 'necesitan apoyo', 'waiting for data': 'esperando datos',
+  // partnership plan
+  'Partnership plan': 'Plan de colaboración', '{name} phase': 'fase {name}', 'Your metrics': 'Tus métricas',
+  'Where the team needs coaching, and where they need support from us. Areas on track are listed as strengths.': 'Dónde el equipo necesita coaching y dónde necesita apoyo de nuestra parte. Las áreas en meta aparecen como fortalezas.',
+  'Area': 'Área', 'Coaching for the vendor team': 'Coaching para el equipo del proveedor', 'Support from us': 'Apoyo de nuestra parte',
+  'Strengths to recognize': 'Fortalezas para reconocer', 'Every area is on track. Recognize the team and keep the regular review cadence.': 'Todas las áreas están en meta. Reconoce al equipo y mantén la cadencia de revisión.',
+  'coach.quality': 'Calibración semanal y revisiones de calidad lado a lado con el líder del proveedor.',
+  'coach.speed': 'Acompañamiento con asesores de alto desempeño en atajos del proceso y uso de herramientas.',
+  'coach.cx': 'Escuchar juntos contactos con baja calificación y dar coaching en resolución y tono.',
+  'coach.productivity': 'Coaching en flujo de trabajo y ritmo, una vez resueltos los bloqueos.',
+  'coach.compliance': 'Repaso de políticas y reuniones breves diarias de adherencia.',
+  'coach.revenue': 'Role-play de la oferta y acompañamiento a quienes mejor convierten.',
+  'coach.custom': 'Acordar una acción de coaching y un responsable con el líder del proveedor.',
+  'help.quality': 'Compartir guías más claras, ejemplos de buen trabajo y respuestas rápidas a dudas de políticas.',
+  'help.speed': 'Revisar herramientas, accesos y pasos de nuestro lado que los hacen más lentos.',
+  'help.cx': 'Compartir retroalimentación de clientes y rutas de escalamiento, y mantener al día la base de conocimiento.',
+  'help.productivity': 'Compartir pronósticos de volumen, confirmar el plan de dotación y quitar bloqueos de acceso.',
+  'help.compliance': 'Confirmar que las políticas estén documentadas y que los cambios se comuniquen a tiempo.',
+  'help.revenue': 'Revisar las ofertas, herramientas de precios y calidad de leads que les damos.',
+  'help.custom': 'Preguntar al líder del proveedor qué necesita de nosotros para llegar a la meta.',
   // program view
   'Vendor program': 'Programa de proveedor', 'started {d}': 'inició el {d}', 'Owner: {o}': 'Responsable: {o}', '{n} metrics': '{n} métricas', '{r} ramp': 'Rampa {r}',
   'Day {d}': 'Día {d}', ' of 90': ' de 90', 'Not started': 'Sin iniciar', 'Sustain (past day 90)': 'Sostener (después del día 90)', '{name} phase cap': 'Fase {name}',
@@ -394,25 +412,32 @@ const ES = {
   'doc.s2': 'Usa las métricas sugeridas o agrega las tuyas. Cada una tiene una meta, una dirección (mayor o menor es mejor) y un peso de 1 a 3.',
   'Choose a ramp': 'Elige una rampa',
   'doc.s3': 'Gradual, constante o rápida. La rampa define la meta de cada hito como una parte de la meta final, por ejemplo 70%, 85% y 100% en los días 30, 60 y 90.',
-  'doc.s4': 'Captura valores a diario o por semana. Cada valor se compara con la meta de su fase. En meta o arriba es "En meta", 90–99% es "Vigilar" y menos de 90% es "En riesgo".',
+  'doc.s4': 'Captura valores a diario o por semana. Cada valor se compara con la meta de su fase. En meta o arriba es "En meta", 90–99% es "Ajustar" (coaching) y menos de 90% es "Necesita apoyo" (coaching más apoyo de nuestra parte).',
   'Get the verdict': 'Obtén el veredicto',
   'doc.s5': 'El puntaje ponderado de los días 61–90 define la competencia. El equipo necesita 100% o más en total, sin ninguna métrica por debajo del 90%.',
   'Attainment': 'Cumplimiento', 'doc.att': 'Mayor es mejor: real ÷ meta. Menor es mejor: meta ÷ real. En métricas donde menor es mejor, las metas iniciales son más flexibles (meta ÷ % de rampa).',
   'Weighted score': 'Puntaje ponderado', 'doc.ws': "Σ(peso × cumplimiento) ÷ Σ pesos. Cada métrica tiene un tope de 120%, para que una métrica fuerte no esconda una débil.",
-  'Coaching alerts': 'Alertas de coaching', 'doc.ca': 'Cualquier métrica en riesgo en la fase actual genera una alerta con un siguiente paso sugerido para su área, así la revisión termina con una acción.',
+  'Partnership plan': 'Plan de colaboración', 'doc.ca': 'Las métricas se agrupan por área. Cada área que no está en meta muestra coaching para el equipo del proveedor y, cuando hace falta, el apoyo que nos toca dar: herramientas, accesos, guías o pronósticos. Las áreas en meta se reconocen como fortalezas.',
   'About this project': 'Sobre este proyecto',
   'doc.about': 'Creado para que las revisiones de incorporación de proveedores sean consistentes y reutilizables entre equipos. Los datos se exportan como archivos CSV ordenados para Tableau, y el modelo de datos corresponde directamente a objetos personalizados de Salesforce para un flujo en vivo. Consulta la pestaña <a href="#demo" data-action="view" data-view="guide">Exportar a Tableau</a>.',
 };
 const EN_LONG = {
-  'hero.lede': 'A 90-day proficiency console for outsourced teams. Anyone can answer a few questions to choose the metrics that matter for their vendor. Then they log results and see, in plain language, whether the team is on pace, needs coaching, or has reached proficiency at day 90.',
-  'demo.notice': '<b>Interactive demo with a sample vendor.</b> Northwind BPO is ramping a Tier 1 voice team. Press play to replay their first 98 days and watch the targets step up at days 30, 60 and 90, the alerts change, and the day-90 verdict land. All numbers are example data, scored by the same rules as real programs.',
-  'step.quality': 'Run calibration sessions and side-by-side QA reviews with the vendor lead.',
-  'step.speed': 'Walk through the process and tools with a top performer, and remove extra steps.',
-  'step.cx': 'Listen to low-rated contacts together and coach on resolution and tone.',
-  'step.productivity': 'Check staffing, idle time and system access before coaching on pace.',
-  'step.compliance': 'Refresh policy training and audit adherence daily until it recovers.',
-  'step.revenue': 'Review the call flow and offers, and have reps shadow the top converters.',
-  'step.custom': 'Agree a corrective action and an owner with the vendor lead this week.',
+  'hero.lede': 'A 90-day proficiency console for outsourced teams. When you hire a vendor the trust is already there; the work is building a partnership strong enough to drive results. Anyone can choose the metrics that matter, log results, and see in plain language where the team needs coaching, where they need support from you, and when they are ready at day 90.',
+  'demo.notice': '<b>Interactive demo with a sample vendor.</b> Northwind BPO is ramping a Tier 1 voice team. Press play to replay their first 98 days and watch the targets step up at days 30, 60 and 90, the partnership plan change, and the day-90 verdict land. All numbers are example data, scored by the same rules as real programs.',
+  'coach.quality': 'Weekly calibration and side-by-side QA reviews with the vendor lead.',
+  'coach.speed': 'Pair with top performers on process shortcuts and tool use.',
+  'coach.cx': 'Listen to low-rated contacts together and coach on resolution and tone.',
+  'coach.productivity': 'Coach on workflow and pacing once blockers are cleared.',
+  'coach.compliance': 'Refresh policy training and hold short daily adherence huddles.',
+  'coach.revenue': 'Role-play the offer and shadow the top converters.',
+  'coach.custom': 'Agree one coaching action and an owner with the vendor lead.',
+  'help.quality': 'Share clearer guidelines, examples of good work and fast answers to policy questions.',
+  'help.speed': 'Check tools, system access and process steps on our side that slow them down.',
+  'help.cx': 'Share customer feedback and escalation paths, and keep the knowledge base current.',
+  'help.productivity': 'Share volume forecasts, confirm the staffing plan and remove access blockers.',
+  'help.compliance': 'Confirm policies are documented and changes are communicated in time.',
+  'help.revenue': 'Review the offers, pricing tools and lead quality we provide.',
+  'help.custom': 'Ask the vendor lead what they need from us to reach the goal.',
   '{name} phase cap': '{name} phase',
   'ramp.help': 'The goal is full proficiency. The ramp sets each checkpoint\'s target as a share of that goal. For "lower is better" metrics, the early targets are allowed to be higher.',
   'rule.day90': 'Day 90 rule: a team is <b>proficient</b> when its weighted score for days 61–90 is at least 100% and no metric is below 90% of target.',
@@ -433,11 +458,11 @@ const EN_LONG = {
   'doc.s1': 'Vendor, start date, type of work and priorities. The answers filter a library of metrics and recommend the ones that fit.',
   'doc.s2': 'Use the suggested metrics or add your own. Each one gets a goal, a direction (higher or lower is better) and a weight from 1 to 3.',
   'doc.s3': 'Gradual, steady or fast. The ramp sets each checkpoint\'s target as a share of the goal, for example 70%, 85% and 100% at days 30, 60 and 90.',
-  'doc.s4': 'Enter values daily or weekly. Each value is compared with the target for its phase. At or above target is on track, 90–99% is watch, and below 90% is at risk.',
+  'doc.s4': 'Enter values daily or weekly. Each value is compared with the target for its phase. At or above target is on track, 90–99% is fine-tune (coaching), and below 90% is needs support (coaching plus support from us).',
   'doc.s5': 'The weighted score for days 61–90 decides proficiency. The team needs 100% or more overall, with no single metric below 90%.',
   'doc.att': 'Higher is better: actual ÷ target. Lower is better: target ÷ actual. For lower-is-better metrics, early targets are looser (goal ÷ ramp %).',
   'doc.ws': "Σ(weight × attainment) ÷ Σ weights. Each metric is capped at 120%, so one strong metric can't hide a weak one.",
-  'doc.ca': 'Any metric at risk in the current phase raises an alert with a suggested next step for its focus area, so the review ends with an action.',
+  'doc.ca': 'Metrics are grouped by area. Each area that is not on track shows coaching for the vendor team and, when needed, the support that is ours to give: tools, access, guidelines or forecasts. Areas on track are recognized as strengths.',
   'doc.about': 'Built to make vendor onboarding reviews consistent and reusable across teams. The data exports as tidy CSV files for Tableau, and the data model maps directly onto Salesforce custom objects for a live feed. See the <a href="#demo" data-action="view" data-view="guide">Tableau export</a> tab.',
 };
 function T(s, vars) {
@@ -498,7 +523,7 @@ const PHASES = [
   { label: 'Days 61–90', name: 'Perform', start: 61, end: 90 },
   { label: 'Day 91+', name: 'Sustain', start: 91, end: Infinity },
 ];
-const STATUS = { good: 'On track', warn: 'Watch', bad: 'At risk', none: 'No data' };
+const STATUS = { good: 'On track', warn: 'Fine-tune', bad: 'Needs support', none: 'No data' };
 
 // ---------- helpers ----------
 const $ = (s) => document.querySelector(s);
@@ -642,9 +667,9 @@ function assess(p) {
   let verdict;
   const final = scores[2];
   if (today > 90 && final.score != null) {
-    verdict = final.score >= 1 && final.min >= 0.9 ? { s: 'good', t: T('Proficient at day 90') } : final.score >= 0.9 ? { s: 'warn', t: T('Close: needs a coaching plan') } : { s: 'bad', t: T('Not proficient at day 90') };
+    verdict = final.score >= 1 && final.min >= 0.9 ? { s: 'good', t: T('Proficient at day 90') } : final.score >= 0.9 ? { s: 'warn', t: T('Nearly there: targeted coaching') } : { s: 'bad', t: T('Extend the ramp with a joint support plan') };
   } else if (cur.score == null) verdict = { s: 'none', t: today < 1 ? T('Starts {d}', { d: p.start }) : T('Waiting for data') };
-  else verdict = cur.score >= 1 && cur.min >= 0.9 ? { s: 'good', t: T('On pace for proficiency') } : cur.score >= 0.9 ? { s: 'warn', t: T('Slightly behind the ramp') } : { s: 'bad', t: T('Behind the ramp') };
+  else verdict = cur.score >= 1 && cur.min >= 0.9 ? { s: 'good', t: T('On pace for proficiency') } : cur.score >= 0.9 ? { s: 'warn', t: T('Coaching in a few areas') } : { s: 'bad', t: T('Needs joint support') };
   return { today, curPhase, metrics, scores, cur, verdict };
 }
 
@@ -662,7 +687,7 @@ function renderStatic() {
     <div class="docs-grid">
       <div><h3>${T('Attainment')}</h3><p>${T('doc.att')}</p></div>
       <div><h3>${T('Weighted score')}</h3><p>${T('doc.ws')}</p></div>
-      <div><h3>${T('Coaching alerts')}</h3><p>${T('doc.ca')}</p></div>
+      <div><h3>${T('Partnership plan')}</h3><p>${T('doc.ca')}</p></div>
     </div>
     <p class="eyebrow" style="margin-top:36px">${T('About this project')}</p>
     <p class="docs-p">${T('doc.about')}</p>`;
@@ -677,7 +702,7 @@ function render() {
   const pool = store.programs.length ? store.programs : [DEMO.program];
   const cnt = { good: 0, warn: 0, bad: 0, none: 0 };
   pool.forEach((p) => cnt[assess(p).verdict.s]++);
-  const lbl = { good: 'on pace', warn: 'to watch', bad: 'behind', none: 'waiting for data' };
+  const lbl = { good: 'on pace', warn: 'fine-tuning', bad: 'need support', none: 'waiting for data' };
   $('#pills').innerHTML = ['bad', 'warn', 'good', 'none'].filter((k) => cnt[k]).map((k) => `<span class="pill ${k}">${cnt[k]} ${T(lbl[k])}</span>`).join('');
   $('#tabProgram').setAttribute('aria-pressed', ui.view === 'program');
   $('#tabWizard').setAttribute('aria-pressed', ui.view === 'wizard');
@@ -702,19 +727,31 @@ function banner(p) {
   return out.join('');
 }
 
-const STEP_KEY = { quality: 'step.quality', speed: 'step.speed', cx: 'step.cx', productivity: 'step.productivity', compliance: 'step.compliance', revenue: 'step.revenue', custom: 'step.custom' };
-function alerts(p, A) {
+const AREA_ORDER = ['quality', 'speed', 'cx', 'productivity', 'compliance', 'revenue', 'custom'];
+const areaName = (k) => k === 'custom' ? T('Your metrics') : T(FOCUS[k]);
+function plan(p, A) {
   if (A.today < 1) return '';
-  const ph = PHASES[A.curPhase];
-  const out = [];
-  for (const [lvl, head] of [['bad', 'Coaching needed'], ['warn', 'Watch']]) {
-    const rows = A.metrics.filter((r) => statusOf(r.cur.att) === lvl);
-    if (!rows.length) continue;
-    const steps = [...new Set(rows.map((r) => T(STEP_KEY[r.m.focus] || STEP_KEY.custom)))];
-    out.push(`<div class="alert ${lvl === 'warn' ? 'warn' : ''}"><div><b class="h">${T(head)} · ${T('{name} phase', { name: T(ph.name) })}</b>: ${rows.map((r) => T('{m} at {p}', { m: esc(mName(r.m)), p: pct(r.cur.att) })).join(', ')} ${T('of target')}</div>
-      <p>${lvl === 'bad' ? T('Below 90% of the target for this phase. ') : T('Between 90% and 99% of target. ')}${esc(steps.join(' '))}</p></div>`);
+  const rank = { bad: 2, warn: 1, good: 0 };
+  const areas = {};
+  for (const r of A.metrics) {
+    const st = statusOf(r.cur.att); if (st === 'none') continue;
+    const k = FOCUS[r.m.focus] ? r.m.focus : 'custom';
+    (areas[k] ||= { k, rows: [], level: 'good' }).rows.push({ r, st });
+    if (rank[st] > rank[areas[k].level]) areas[k].level = st;
   }
-  return out.join('');
+  const list = AREA_ORDER.filter((k) => areas[k]).map((k) => areas[k]);
+  if (!list.length) return '';
+  const focusRows = list.filter((a) => a.level !== 'good').sort((a, b) => rank[b.level] - rank[a.level]);
+  const strengths = list.filter((a) => a.level === 'good');
+  const mlist = (a) => a.rows.map(({ r, st }) => `<span class="pm ${st}">${esc(mName(r.m))} ${pct(r.cur.att)}</span>`).join('');
+  return `<section class="card plan">
+    <header><h2>${T('Partnership plan')} · ${T('{name} phase', { name: T(PHASES[A.curPhase].name) })}</h2><span class="muted" style="font-size:.85rem">${T('Where the team needs coaching, and where they need support from us. Areas on track are listed as strengths.')}</span></header>
+    ${focusRows.length ? `<div class="tbl-wrap"><table class="plan-t"><thead><tr><th>${T('Area')}</th><th>${T('Coaching for the vendor team')}</th><th>${T('Support from us')}</th></tr></thead><tbody>
+      ${focusRows.map((a) => `<tr><td><div class="row" style="gap:8px;align-items:center"><b>${areaName(a.k)}</b><span class="chip ${a.level}">${T(STATUS[a.level])}</span></div><div class="pms">${mlist(a)}</div></td>
+        <td>${T('coach.' + a.k)}</td><td>${a.level === 'bad' ? T('help.' + a.k) : '<span class="muted">—</span>'}</td></tr>`).join('')}
+    </tbody></table></div>` : `<p>${T('Every area is on track. Recognize the team and keep the regular review cadence.')}</p>`}
+    ${strengths.length && focusRows.length ? `<p class="strengths"><b>${T('Strengths to recognize')}:</b> ${strengths.map((a) => `${areaName(a.k)} (${a.rows.map(({ r }) => esc(mName(r.m)) + ' ' + pct(r.cur.att)).join(', ')})`).join(' · ')}</p>` : ''}
+  </section>`;
 }
 
 function spark(r, m) {
@@ -772,7 +809,7 @@ function renderProgram(p) {
       <td class="n">${ro ? '' : `<button class="btn ghost danger ${ui.armed === 'e' + e.id ? 'armed' : ''}" data-action="delEntry" data-id="${esc(e.id)}">${ui.armed === 'e' + e.id ? T('Confirm delete') : T('Delete')}</button>`}</td></tr>`;
   }).join('');
 
-  return `${banner(p)}${alerts(p, A)}
+  return `${banner(p)}${plan(p, A)}
   <section class="card">
     <div class="summary">
       <div>
@@ -1034,13 +1071,13 @@ SUM([Weight] * MIN([Attainment], 1.2)) / SUM([Weight])
 
 // Status
 IF [Attainment] >= 1 THEN "On track"
-ELSEIF [Attainment] >= 0.9 THEN "Watch"
-ELSE "At risk" END
+ELSEIF [Attainment] >= 0.9 THEN "Fine-tune"
+ELSE "Needs support" END
 
 // Day 90 verdict (filter Phase = "Days 61–90")
 IF [Weighted proficiency score] >= 1
  AND MIN([Attainment]) >= 0.9 THEN "Proficient"
-ELSE "Not yet" END`;
+ELSE "Extend ramp with support plan" END`;
 const CODE_ES = CODE_EN.replace('// Attainment (recomputes if you edit goals in Tableau)', '// Cumplimiento (se recalcula si editas metas en Tableau)')
   .replace('// Weighted proficiency score', '// Puntaje ponderado de competencia').replace('// Status', '// Estado')
   .replace('// Day 90 verdict (filter Phase = "Days 61–90")', '// Veredicto del día 90 (filtra Phase = "Days 61–90")');

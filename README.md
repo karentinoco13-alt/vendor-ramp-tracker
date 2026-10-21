@@ -7,9 +7,10 @@ Available in English and Spanish (EN/ES toggle). A 90-day proficiency console fo
 ## Features
 
 - **Guided setup:** vendor and start date, type of work, priorities, recommended metrics (or your own), then goals, weights and ramp speed.
-- **30/60/90 assessment:** each phase's target is a share of the final goal (e.g. 70% / 85% / 100%). Results are marked on track (≥100% of target), watch (90–99%) or at risk (<90%).
+- **30/60/90 assessment:** each phase's target is a share of the final goal (e.g. 70% / 85% / 100%). Results are marked on track (≥100% of target), fine-tune (90–99%, coaching) or needs support (<90%, coaching plus support from the client side).
 - **Day-90 verdict:** proficient when the weighted score for days 61–90 is at least 100% and no metric is below 90%.
-- **Metric review:** scorecard with trends, ramp chart, checkpoint grid, and coaching alerts with a suggested next step.
+- **Partnership plan:** metrics grouped by area, with coaching for the vendor team, the support the client provides (tools, access, guidelines, forecasts), and strengths to recognize.
+- **Metric review:** scorecard with trends, ramp chart and 30/60/90 checkpoint grid.
 - **Live demo:** replay a sample vendor's first 98 days.
 - **Tableau export:** two tidy CSV files (results and ramp targets) plus the calculated fields to build the workbook.
 
