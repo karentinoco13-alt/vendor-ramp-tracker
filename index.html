@@ -37,23 +37,52 @@
   --f-body: "Public Sans", "Segoe UI", system-ui, sans-serif;
   --f-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
   --r: 10px;
+  --c-quality: #7c3aed; --c-speed: #0284c7; --c-cx: #db2777; --c-productivity: #d97706; --c-compliance: #0d9488; --c-revenue: #16a34a; --c-custom: #64748b; --p1: #0ea5e9; --p2: #7c3aed; --p3: #ea580c;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0d1518; --surface: #142024; --sunk: #0f1a1d; --ink: #e2eaed; --muted: #92a4ac; --line: #25353b;
   --accent: #52b6c7; --accent-soft: #163a42; --accent-ink: #061316;
   --good: #57c98a; --good-soft: #143425; --warn: #e3ac52; --warn-soft: #3a2c12; --bad: #f07a6b; --bad-soft: #42201b;
-  --band: rgba(82, 182, 199, 0.07); --page: #0a1114; --navy: #0c1f33; color-scheme: dark; } }
+  --band: rgba(82, 182, 199, 0.07); --page: #0a1114; --navy: #0c1f33; --c-quality: #a78bfa; --c-speed: #38bdf8; --c-cx: #f472b6; --c-productivity: #fbbf24; --c-compliance: #2dd4bf; --c-revenue: #4ade80; --c-custom: #94a3b8; --p1: #38bdf8; --p2: #a78bfa; --p3: #fb923c; color-scheme: dark; } }
 :root[data-theme="dark"] {
   --bg: #0d1518; --surface: #142024; --sunk: #0f1a1d; --ink: #e2eaed; --muted: #92a4ac; --line: #25353b;
   --accent: #52b6c7; --accent-soft: #163a42; --accent-ink: #061316;
   --good: #57c98a; --good-soft: #143425; --warn: #e3ac52; --warn-soft: #3a2c12; --bad: #f07a6b; --bad-soft: #42201b;
-  --band: rgba(82, 182, 199, 0.07); --page: #0a1114; --navy: #0c1f33; color-scheme: dark; }
+  --band: rgba(82, 182, 199, 0.07); --page: #0a1114; --navy: #0c1f33; --c-quality: #a78bfa; --c-speed: #38bdf8; --c-cx: #f472b6; --c-productivity: #fbbf24; --c-compliance: #2dd4bf; --c-revenue: #4ade80; --c-custom: #94a3b8; --p1: #38bdf8; --p2: #a78bfa; --p3: #fb923c; color-scheme: dark; }
 
 * { box-sizing: border-box; }
 body { background: var(--page); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5; }
 a { color: var(--accent); }
 /* hero + console frame, after the portfolio layout */
-.hero { background: var(--navy); color: #fff; }
+.hero { color: #fff; background:
+  radial-gradient(55% 75% at 88% 8%, rgba(124, 58, 237, 0.42), transparent 62%),
+  radial-gradient(45% 65% at 100% 85%, rgba(219, 39, 119, 0.30), transparent 62%),
+  radial-gradient(40% 60% at 55% 105%, rgba(14, 165, 233, 0.30), transparent 62%),
+  var(--navy); }
+.grad { background: linear-gradient(90deg, #38bdf8, #a78bfa 50%, #f472b6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero-phases { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.hp { display: inline-flex; align-items: center; gap: 7px; padding: 5px 12px; border-radius: 99px; font-size: 0.85rem; font-weight: 600; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16); color: #fff; }
+.hp::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--hc); box-shadow: 0 0 10px var(--hc); }
+.hp.h1 { --hc: #38bdf8; } .hp.h2 { --hc: #a78bfa; } .hp.h3 { --hc: #fb923c; }
+.console::before { content: ""; display: block; height: 5px; background: linear-gradient(90deg, var(--p1), var(--p2) 50%, var(--p3)); }
+/* area + phase color system */
+.a-quality { --ac: var(--c-quality); } .a-speed { --ac: var(--c-speed); } .a-cx { --ac: var(--c-cx); } .a-productivity { --ac: var(--c-productivity); }
+.a-compliance { --ac: var(--c-compliance); } .a-revenue { --ac: var(--c-revenue); } .a-custom { --ac: var(--c-custom); }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--ac, var(--accent)); margin-right: 7px; vertical-align: 1px; flex: none; }
+.area { display: inline-flex; align-items: center; }
+.plan-t tr[class^="a-"] td:first-child { box-shadow: inset 4px 0 0 var(--ac); padding-left: 14px; }
+.choice.fchoice { border-left: 5px solid var(--ac); }
+.choice.fchoice:hover { border-color: var(--ac); }
+.choice.fchoice[aria-pressed=true] { border-color: var(--ac); background: color-mix(in srgb, var(--ac) 16%, var(--surface)); }
+.tl-seg.p1 { --pc: var(--p1); } .tl-seg.p2 { --pc: var(--p2); } .tl-seg.p3 { --pc: var(--p3); }
+.cp.p1 { --pc: var(--p1); } .cp.p2 { --pc: var(--p2); } .cp.p3 { --pc: var(--p3); }
+.cp { border-top: 4px solid var(--pc); }
+.cp .eyebrow { color: var(--pc); }
+.flow li.fl1 { --fc: var(--p1); } .flow li.fl2 { --fc: var(--p2); } .flow li.fl3 { --fc: var(--c-cx); } .flow li.fl4 { --fc: var(--p3); } .flow li.fl5 { --fc: var(--c-revenue); }
+.flow li { border-top: 4px solid var(--fc); }
+.flow li .flow-n { color: var(--fc); }
+.docs-grid > div { border-left: 4px solid var(--dc); padding-left: 14px; }
+.docs-grid > div:nth-child(1) { --dc: var(--p1); } .docs-grid > div:nth-child(2) { --dc: var(--p2); } .docs-grid > div:nth-child(3) { --dc: var(--c-cx); }
 .hero-in, .docs-in { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .hero-in { padding-block: 64px 120px; }
 .hero-eyebrow { color: #8fc3ee; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.85rem; }
@@ -157,8 +186,8 @@ label.f span { color: var(--muted); }
 .timeline { margin-top: 18px; }
 .tl-track { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; height: 30px; }
 .tl-seg { background: var(--sunk); border-radius: 5px; display: flex; align-items: center; padding: 0 8px; font-size: 0.75rem; color: var(--muted); font-weight: 600; overflow: hidden; white-space: nowrap; }
-.tl-seg.done { background: var(--accent-soft); color: var(--ink); }
-.tl-seg.now { background: var(--accent); color: var(--accent-ink); }
+.tl-seg.done { background: color-mix(in srgb, var(--pc, var(--accent)) 22%, var(--surface)); color: var(--ink); }
+.tl-seg.now { background: var(--pc, var(--accent)); color: #fff; }
 .tl-marker { position: absolute; top: -5px; bottom: -5px; width: 3px; background: var(--ink); border-radius: 2px; }
 .tl-axis { display: grid; grid-template-columns: repeat(3, 1fr); font-size: 0.72rem; color: var(--muted); margin-top: 4px; font-family: var(--f-mono); }
 .tl-axis span { text-align: right; }
@@ -205,8 +234,8 @@ tr.click:hover td { background: var(--band); }
 .steps { display: flex; gap: 6px; flex-wrap: wrap; counter-reset: s; list-style: none; padding: 0; margin: 0; }
 .steps li { counter-increment: s; font-size: 0.8rem; color: var(--muted); padding: 4px 10px 4px 6px; border-radius: 99px; background: var(--sunk); display: flex; gap: 6px; align-items: center; }
 .steps li::before { content: counter(s); width: 18px; height: 18px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; font-size: 0.7rem; font-weight: 700; }
-.steps li.on { background: var(--accent); color: var(--accent-ink); }
-.steps li.on::before { color: var(--accent); }
+.steps li.on { background: linear-gradient(90deg, var(--p1), var(--p2)); color: #fff; }
+.steps li.on::before { color: var(--p2); }
 .steps li.done { color: var(--ink); }
 .q { font-family: var(--f-display); font-size: 1.45rem; font-weight: 700; }
 .choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
@@ -251,8 +280,9 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
 <header class="hero">
   <div class="hero-in">
     <p class="hero-eyebrow" data-t="Vendor management">Vendor management</p>
-    <h1 class="hero-title">Vendor Ramp Tracker</h1>
+    <h1 class="hero-title">Vendor <span class="grad">Ramp</span> Tracker</h1>
     <p class="hero-lede" data-t="hero.lede">A 90-day proficiency console for outsourced teams. Anyone can answer a few questions to choose the metrics that matter for their vendor. Then they log results and see, in plain language, whether the team is on pace, needs coaching, or has reached proficiency at day 90.</p>
+    <div class="hero-phases"><span class="hp h1" data-t="Day 30 · Learn">Day 30 · Learn</span><span class="hp h2" data-t="Day 60 · Build">Day 60 · Build</span><span class="hp h3" data-t="Day 90 · Perform">Day 90 · Perform</span></div>
     <div class="hero-cta">
       <a class="hbtn solid" href="#demo" data-action="playDemo" data-t="Try the live demo">Try the live demo</a>
       <a class="hbtn line" href="#how" data-t="How it scores">How it scores</a>
@@ -449,6 +479,7 @@ const ES = {
   'Weighted score': 'Puntaje ponderado', 'doc.ws': "Σ(peso × cumplimiento) ÷ Σ pesos. Cada métrica tiene un tope de 120%, para que una métrica fuerte no esconda una débil.",
   'Partnership plan': 'Plan de colaboración', 'doc.ca': 'Las métricas se agrupan por área. Cada área que no está en meta muestra coaching para el equipo del proveedor y, cuando hace falta, el apoyo que nos toca dar: herramientas, accesos, guías o pronósticos. Las áreas en meta se reconocen como fortalezas.',
   'About this project': 'Sobre este proyecto',
+  'Day 30 · Learn': 'Día 30 · Aprender', 'Day 60 · Build': 'Día 60 · Desarrollar', 'Day 90 · Perform': 'Día 90 · Desempeñar',
   'Privacy and data': 'Privacidad y datos', 'Privacy': 'Privacidad',
   'priv.local.intro': 'Todo lo que escribes se queda en tu propio navegador. Este sitio no tiene base de datos ni cuentas, así que nadie más, ni siquiera la autora, puede ver tus programas o resultados.',
   'priv.db.intro': 'Esta versión usa un espacio de equipo compartido. Todas las personas a las que el propietario da acceso ven los mismos programas y resultados.',
@@ -613,6 +644,8 @@ const attain = (m, v, pct) => {
 const statusOf = (a) => a == null ? 'none' : a >= 1 ? 'good' : a >= 0.9 ? 'warn' : 'bad';
 const pct = (a) => a == null ? '—' : Math.round(a * 100) + '%';
 const mName = (m) => T(m.name);
+const areaKey = (m) => FOCUS[m.focus] ? m.focus : 'custom';
+const ROLE_AREA = { support: 'cx', sales: 'revenue', ops: 'productivity', collections: 'compliance', other: 'custom' };
 const dv = (p, k) => p.demo ? T(p[k]) : p[k];
 function fmt(v, unit) {
   if (v == null || isNaN(v)) return '—';
@@ -763,7 +796,7 @@ function renderDocs() {
   $('#docs').innerHTML = `
     <p class="eyebrow">${T('How it scores')}</p>
     <h2 class="docs-h">${T('From a few questions to a day-90 verdict')}</h2>
-    <ol class="flow">${steps.map(([h, b], i) => `<li><small class="flow-n">${T('Step')} ${i + 1}</small><b>${T(h)}</b><span>${T(b)}</span></li>`).join('')}</ol>
+    <ol class="flow">${steps.map(([h, b], i) => `<li class="fl${i + 1}"><small class="flow-n">${T('Step')} ${i + 1}</small><b>${T(h)}</b><span>${T(b)}</span></li>`).join('')}</ol>
     <div class="docs-grid">
       <div><h3>${T('Attainment')}</h3><p>${T('doc.att')}</p></div>
       <div><h3>${T('Weighted score')}</h3><p>${T('doc.ws')}</p></div>
@@ -836,10 +869,10 @@ function plan(p, A) {
   return `<section class="card plan">
     <header><h2>${T('Partnership plan')} · ${T('{name} phase', { name: T(PHASES[A.curPhase].name) })}</h2><span class="muted" style="font-size:.85rem">${T('Where the team needs coaching, and where they need support from us. Areas on track are listed as strengths.')}</span></header>
     ${focusRows.length ? `<div class="tbl-wrap"><table class="plan-t"><thead><tr><th>${T('Area')}</th><th>${T('Coaching for the vendor team')}</th><th>${T('Support from us')}</th></tr></thead><tbody>
-      ${focusRows.map((a) => `<tr><td><div class="row" style="gap:8px;align-items:center"><b>${areaName(a.k)}</b><span class="chip ${a.level}">${T(STATUS[a.level])}</span></div><div class="pms">${mlist(a)}</div></td>
+      ${focusRows.map((a) => `<tr class="a-${a.k}"><td><div class="row" style="gap:8px;align-items:center"><b class="area"><i class="dot"></i>${areaName(a.k)}</b><span class="chip ${a.level}">${T(STATUS[a.level])}</span></div><div class="pms">${mlist(a)}</div></td>
         <td>${T('coach.' + a.k)}</td><td>${a.level === 'bad' ? T('help.' + a.k) : '<span class="muted">—</span>'}</td></tr>`).join('')}
     </tbody></table></div>` : `<p>${T('Every area is on track. Recognize the team and keep the regular review cadence.')}</p>`}
-    ${strengths.length && focusRows.length ? `<p class="strengths"><b>${T('Strengths to recognize')}:</b> ${strengths.map((a) => `${areaName(a.k)} (${a.rows.map(({ r }) => esc(mName(r.m)) + ' ' + pct(r.cur.att)).join(', ')})`).join(' · ')}</p>` : ''}
+    ${strengths.length && focusRows.length ? `<p class="strengths"><b>${T('Strengths to recognize')}:</b> ${strengths.map((a) => `<span class="a-${a.k}"><i class="dot"></i></span>${areaName(a.k)} (${a.rows.map(({ r }) => esc(mName(r.m)) + ' ' + pct(r.cur.att)).join(', ')})`).join(' · ')}</p>` : ''}
   </section>`;
 }
 
@@ -866,7 +899,7 @@ function renderProgram(p) {
   const scoreRows = A.metrics.map((r) => {
     const st = statusOf(r.cur.att);
     return `<tr class="click ${r.m.id === ui.metricId ? 'sel' : ''}" data-action="metric" data-id="${esc(r.m.id)}">
-      <td><div class="mname">${esc(mName(r.m))}</div><div class="dir">${dirTxt(r.m)} · ${T('weight {w}', { w: r.m.weight })}</div></td>
+      <td><div class="mname"><i class="dot a-${areaKey(r.m)}"></i>${esc(mName(r.m))}</div><div class="dir">${dirTxt(r.m)} · ${T('weight {w}', { w: r.m.weight })}</div></td>
       <td class="n">${fmt(r.m.goal, r.m.unit)}</td>
       <td class="n">${fmt(r.cur.target, r.m.unit)}</td>
       <td class="n">${fmt(r.cur.avg, r.m.unit)}</td>
@@ -876,7 +909,7 @@ function renderProgram(p) {
       <td>${spark(r, r.m)}</td></tr>`;
   }).join('');
 
-  const heatRows = A.metrics.map((r) => `<tr><td class="mname">${esc(mName(r.m))}</td>${r.phases.slice(0, 3).map((x, i) => {
+  const heatRows = A.metrics.map((r) => `<tr><td class="mname"><i class="dot a-${areaKey(r.m)}"></i>${esc(mName(r.m))}</td>${r.phases.slice(0, 3).map((x, i) => {
     const st = statusOf(x.att);
     return `<td class="cell ${st}">${x.att == null ? (i > ph ? T('upcoming') : T('no data')) : pct(x.att)}<br><span style="font-size:.72rem">${fmt(x.avg, r.m.unit)} vs ${fmt(x.target, r.m.unit)}</span></td>`;
   }).join('')}</tr>`).join('');
@@ -885,7 +918,7 @@ function renderProgram(p) {
     const s = A.scores[i];
     const st = s.score == null ? 'none' : statusOf(s.score);
     const label = s.score == null ? (i > ph || d < 1 ? T('Upcoming') : T('No data')) : pct(s.score);
-    return `<div class="cp"><span class="eyebrow">${T('Day {d}', { d: (i + 1) * 30 })}</span><span class="v">${label}</span><span class="chip ${st}" style="justify-self:start">${s.score == null ? '—' : i === ph && d <= 90 ? T('In progress') : T(STATUS[st])}</span></div>`;
+    return `<div class="cp p${i + 1}"><span class="eyebrow">${T('Day {d}', { d: (i + 1) * 30 })}</span><span class="v">${label}</span><span class="chip ${st}" style="justify-self:start">${s.score == null ? '—' : i === ph && d <= 90 ? T('In progress') : T(STATUS[st])}</span></div>`;
   }).join('');
 
   const recent = entriesFor(p).slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 25);
@@ -907,7 +940,7 @@ function renderProgram(p) {
         <div class="meta">${p.team ? `<span>${esc(dv(p, 'team'))}</span>` : ''}${p.owner ? `<span>${T('Owner: {o}', { o: esc(dv(p, 'owner')) })}</span>` : ''}<span>${T('{n} metrics', { n: p.metrics.length })}</span><span>${T('{r} ramp', { r: esc(T(RAMPS[p.rampKey]?.label || 'Custom')) })}</span></div>
         <div class="timeline">
           <div class="row" style="justify-content:space-between;margin-bottom:8px"><b class="num">${T('Day {d}', { d: Math.max(d, 0) })}${d <= 90 ? T(' of 90') : ''}</b><span class="muted">${phaseName}</span></div>
-          <div class="tl-track">${PHASES.slice(0, 3).map((x, i) => `<div class="tl-seg ${i < ph || d > 90 ? 'done' : i === ph && d >= 1 ? 'now' : ''}">${T(x.name)} · ${Math.round(p.ramp[i] * 100)}%</div>`).join('')}
+          <div class="tl-track">${PHASES.slice(0, 3).map((x, i) => `<div class="tl-seg p${i + 1} ${i < ph || d > 90 ? 'done' : i === ph && d >= 1 ? 'now' : ''}">${T(x.name)} · ${Math.round(p.ramp[i] * 100)}%</div>`).join('')}
             <div class="tl-marker" style="left:calc(${markerLeft}% - 1.5px)" aria-hidden="true"></div></div>
           <div class="tl-axis"><span>30</span><span>60</span><span>90</span></div>
         </div>
@@ -929,10 +962,10 @@ function renderProgram(p) {
   </section>
 
   <div class="grid2">
-    <section class="card chart">
+    <section class="card chart a-${sel ? areaKey(sel.m) : 'custom'}">
       <header><h2>${esc(sel ? mName(sel.m) : T('Trend'))}</h2><span class="muted" style="font-size:.85rem">${sel ? dirTxt(sel.m) : ''}</span></header>
       ${sel ? chart(p, sel, d) : ''}
-      <div class="legend"><span><i style="border-color:var(--accent)"></i>${T('Actual')}</span><span><i style="border-color:var(--ink)"></i>${T('Ramp target')}</span><span><i style="border-color:var(--muted);border-top-style:dashed"></i>${T('Final goal')}</span></div>
+      <div class="legend"><span><i style="border-color:var(--ac)"></i>${T('Actual')}</span><span><i style="border-color:var(--ink)"></i>${T('Ramp target')}</span><span><i style="border-color:var(--muted);border-top-style:dashed"></i>${T('Final goal')}</span></div>
     </section>
     <section class="card">
       <header><h2>${T('30 / 60 / 90 checkpoint review')}</h2><span class="muted" style="font-size:.85rem">${T("Phase average vs. that phase's target")}</span></header>
@@ -995,10 +1028,10 @@ function chart(p, r, today) {
   g += `<path d="${path}" fill="none" stroke="var(--ink)" stroke-width="1.8"/>`;
   if (today >= 1 && today <= maxDay) g += `<line x1="${x(today)}" x2="${x(today)}" y1="${T0}" y2="${H - B}" stroke="var(--accent)" stroke-width="1" stroke-dasharray="2 3"/><text x="${x(today) + 4}" y="${T0 + 11}" font-size="11" fill="var(--accent)">${T('today')}</text>`;
   const pts = r.entries.filter((e) => e.day >= 0 && e.day <= maxDay).map((e) => [x(e.day), y(+e.value), e]);
-  if (pts.length > 1) g += `<polyline points="${pts.map((q) => q[0] + ',' + q[1]).join(' ')}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>`;
+  if (pts.length > 1) g += `<polyline points="${pts.map((q) => q[0] + ',' + q[1]).join(' ')}" fill="none" stroke="var(--ac)" stroke-width="2.2" stroke-linejoin="round"/>`;
   pts.forEach(([px, py, e], i) => {
     const a = attain(m, +e.value, pctFor(p, phaseIdx(e.day)));
-    g += `<circle cx="${px}" cy="${py}" r="${i === pts.length - 1 ? 4.5 : 3}" fill="${i === pts.length - 1 ? 'var(--accent)' : 'var(--surface)'}" stroke="var(--accent)" stroke-width="1.6"><title>${esc(e.date)} · ${T('day')} ${e.day} · ${esc(fmt(+e.value, m.unit))} (${pct(a)} ${T('of target)')}</title></circle>`;
+    g += `<circle cx="${px}" cy="${py}" r="${i === pts.length - 1 ? 4.5 : 3}" fill="${i === pts.length - 1 ? 'var(--ac)' : 'var(--surface)'}" stroke="var(--ac)" stroke-width="1.6"><title>${esc(e.date)} · ${T('day')} ${e.day} · ${esc(fmt(+e.value, m.unit))} (${pct(a)} ${T('of target)')}</title></circle>`;
   });
   if (!pts.length) g += `<text x="${(L + W - R) / 2}" y="${H / 2}" text-anchor="middle" font-size="13" fill="var(--muted)">${T('No results logged for this metric yet')}</text>`;
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(mName(m))}">${g}</svg>`;
@@ -1031,11 +1064,11 @@ function renderWizard() {
   else if (w.step === 1) body = `
     <p class="q">${T('What kind of work is this vendor doing?')}</p>
     <p class="muted">${T("This picks the metric suggestions you'll see next. You can always add your own.")}</p>
-    <div class="choices">${Object.entries(ROLES).map(([k, r]) => `<button type="button" class="choice" data-action="wzRole" data-k="${k}" aria-pressed="${d.role === k}"><b>${T(r.label)}</b><small>${T(r.hint)}</small></button>`).join('')}</div>`;
+    <div class="choices">${Object.entries(ROLES).map(([k, r]) => `<button type="button" class="choice fchoice a-${ROLE_AREA[k]}" data-action="wzRole" data-k="${k}" aria-pressed="${d.role === k}"><b>${T(r.label)}</b><small>${T(r.hint)}</small></button>`).join('')}</div>`;
   else if (w.step === 2) body = `
     <p class="q">${T('What matters most in the first 90 days?')}</p>
     <p class="muted">${T('Choose one or more. Metrics in these areas get recommended and weighted higher in the score.')}</p>
-    <div class="choices">${Object.entries(FOCUS).map(([k, l]) => `<button type="button" class="choice" data-action="wzFocus" data-k="${k}" aria-pressed="${d.focus.includes(k)}"><b>${T(l)}</b><small>${T(FOCUS_HINT[k])}</small></button>`).join('')}</div>`;
+    <div class="choices">${Object.entries(FOCUS).map(([k, l]) => `<button type="button" class="choice fchoice a-${k}" data-action="wzFocus" data-k="${k}" aria-pressed="${d.focus.includes(k)}"><b>${T(l)}</b><small>${T(FOCUS_HINT[k])}</small></button>`).join('')}</div>`;
   else if (w.step === 3) {
     const sug = suggestions(w);
     const ids = new Set(d.metrics.map((m) => m.id));
@@ -1044,9 +1077,9 @@ function renderWizard() {
     <p class="q">${T('Which metrics do you want to measure?')}</p>
     <p class="muted">${T('Pick 3 to 7 for a focused review. Recommended ones match your priorities.')}</p>
     <div class="mlist">${sug.map((s) => `<label class="mopt"><input type="checkbox" data-action="wzPick" data-id="${s.id}" ${ids.has(s.id) ? 'checked' : ''}>
-      <span><b>${esc(mName(s))}</b> <span class="muted" style="font-size:.85rem">· ${esc(T(FOCUS[s.focus]))} · ${dirLow(s)} · ${T('typical goal {g}', { g: esc(fmt(s.goal, s.unit)) })}</span></span>
+      <span><i class="dot a-${s.focus}"></i><b>${esc(mName(s))}</b> <span class="muted" style="font-size:.85rem">· ${esc(T(FOCUS[s.focus]))} · ${dirLow(s)} · ${T('typical goal {g}', { g: esc(fmt(s.goal, s.unit)) })}</span></span>
       ${d.focus.includes(s.focus) ? `<span class="tag">${T('Recommended')}</span>` : '<span></span>'}</label>`).join('')}
-      ${custom.map((m) => `<label class="mopt"><input type="checkbox" data-action="wzPick" data-id="${esc(m.id)}" checked><span><b>${esc(mName(m))}</b> <span class="muted" style="font-size:.85rem">· ${T('your metric')} · ${dirLow(m)}</span></span><span class="tag">${T('Custom')}</span></label>`).join('')}
+      ${custom.map((m) => `<label class="mopt"><input type="checkbox" data-action="wzPick" data-id="${esc(m.id)}" checked><span><i class="dot a-custom"></i><b>${esc(mName(m))}</b> <span class="muted" style="font-size:.85rem">· ${T('your metric')} · ${dirLow(m)}</span></span><span class="tag">${T('Custom')}</span></label>`).join('')}
     </div>
     <div class="card" style="background:var(--sunk);border:0">
       <h3 style="margin-bottom:10px">${T('Add your own metric')}</h3>
@@ -1065,7 +1098,7 @@ function renderWizard() {
     <div>
       <div class="goalrow head"><span>${T('Metric')}</span><span>${T('Better when')}</span><span>${T('Goal')}</span><span>${T('Unit')}</span><span>${T('Weight')}</span><span>${T('Day 30 / 60 / 90 targets')}</span></div>
       ${d.metrics.map((m, i) => `<div class="goalrow">
-        <b class="gname">${esc(mName(m))}</b>
+        <b class="gname"><i class="dot a-${areaKey(m)}"></i>${esc(mName(m))}</b>
         <select id="g_dir_${i}" data-g="${i}" data-k="dir" aria-label="${T('Better when')}"><option value="up" ${m.dir === 'up' ? 'selected' : ''}>${T('Higher')}</option><option value="down" ${m.dir === 'down' ? 'selected' : ''}>${T('Lower')}</option></select>
         <input type="number" step="any" id="g_goal_${i}" data-g="${i}" data-k="goal" value="${esc(m.goal)}" aria-label="${T('Goal')}">
         <span class="muted">${esc(unitLabel(m.unit))}</span>
