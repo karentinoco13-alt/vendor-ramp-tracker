@@ -14,7 +14,9 @@ Available in English and Spanish (EN/ES toggle). A 90-day proficiency console fo
 - **Live demo:** replay a sample vendor's first 98 days.
 - **Tableau export:** two tidy CSV files (results and ramp targets) plus the calculated fields to build the workbook.
 
-## Privacy and data
+## Privacy and security
+
+The app has a **Privacy & security** tab with these notes in English and Spanish.
 
 On the public site (GitHub Pages) everything you enter stays in your own web browser. The site has no database and no accounts, so nobody else, including the author, can see your programs or results.
 
@@ -24,6 +26,11 @@ On the public site (GitHub Pages) everything you enter stays in your own web bro
 - **Sharing the link:** gives people the app, not your data. Each person starts with the sample vendor and their own programs.
 - **Hosting:** the site is hosted on GitHub Pages and loads fonts from Google Fonts. Like any website, these services receive standard request details such as your IP address, never what you type.
 - **Good practice:** log team-level metrics. Avoid entering personal details about individual agents.
+- **Access:** no accounts or passwords; the app never asks for login details.
+- **Tracking:** no cookies, analytics or advertising trackers.
+- **Shared computers:** anyone using the same browser profile can see saved programs. Export your CSVs and clear browser data when you finish.
+- **Deleting data:** Delete program removes a program and its results right away; clearing browser data removes everything.
+- **Exported files:** CSVs are plain text; store and share them according to your company's data policy.
 
 For a shared, live team workspace, the same data model maps onto three Salesforce custom objects (`Ramp_Program__c`, `Ramp_Metric__c`, `Metric_Result__c`) that Tableau can read with its Salesforce connector.
 
