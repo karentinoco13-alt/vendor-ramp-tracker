@@ -119,9 +119,20 @@ a { color: var(--accent); }
 .player input[type=range] { flex: 1; min-width: 160px; accent-color: var(--accent); }
 .docs { padding-block: 56px 48px; }
 .copyright { text-align: center; color: var(--muted); font-size: 12px; padding: 8px 16px 24px; margin: 0; }
-.privacy { display: grid; gap: 12px; }
-.priv-h { display: flex; align-items: center; margin-top: 10px; }
-.priv-list { max-width: 900px; }
+.modal-back { position: fixed; inset: 0; z-index: 30; background: rgba(8, 18, 30, 0.55); display: grid; place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.modal-back[hidden] { display: none; }
+.modal { background: var(--surface); color: var(--ink); border-radius: 14px; width: min(760px, 100%); max-height: 100%; overflow-y: auto; padding: clamp(20px, 4vw, 36px); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35); outline: none; }
+.modal::before { content: ""; display: block; height: 5px; margin: calc(-1 * clamp(20px, 4vw, 36px)) calc(-1 * clamp(20px, 4vw, 36px)) clamp(18px, 3vw, 28px); background: linear-gradient(90deg, var(--p1), var(--p2) 50%, var(--p3)); border-radius: 14px 14px 0 0; }
+.modal h1 { font-size: clamp(1.6rem, 4vw, 2.1rem); margin-bottom: 16px; }
+.modal h2 { font-size: 1.15rem; margin: 22px 0 6px; }
+.modal p { line-height: 1.6; max-width: 66ch; }
+.pm-lead { background: var(--good-soft); border-radius: 10px; padding: 14px 18px; font-size: 1.02rem; line-height: 1.55; }
+.pm-lead.shared { background: var(--warn-soft); }
+.pm-now { background: var(--accent-soft); border-radius: 10px; padding: 12px 18px; margin-top: 10px; line-height: 1.55; }
+.pm-switch { margin-top: 22px; font-size: 0.9rem; }
+.pm-foot { display: flex; justify-content: flex-end; margin-top: 22px; }
+.btn.navy { background: var(--navy); border-color: var(--navy); color: #fff; padding: 9px 20px; font-weight: 600; }
 .priv-intro { font-size: 1.05rem; font-weight: 500; }
 .priv-list { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px 20px; margin: 6px 0; }
 .priv-list dt { font-weight: 600; }
@@ -304,7 +315,7 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
           <button id="tabProgram" data-action="view" data-view="program" data-t="Scorecard">Scorecard</button>
           <button id="tabWizard" data-action="new" data-t="New program">New program</button>
           <button id="tabGuide" data-action="view" data-view="guide" data-t="Tableau export">Tableau export</button>
-          <button id="tabPrivacy" data-action="view" data-view="privacy" data-t="Privacy & security">Privacy &amp; security</button>
+          <button id="tabPrivacy" data-action="privacy" data-t="Privacy & security">Privacy &amp; security</button>
         </div>
         <div class="pills" id="pills"></div>
         <select id="progSel" aria-label="Program"></select>
@@ -325,9 +336,10 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
 <footer class="foot">
   <div class="docs-in">
     <p data-t="foot.by">foot.by</p>
-    <p><span data-t="foot.copy">foot.copy</span> · <a href="#demo" data-action="view" data-view="privacy" data-t="Privacy & security">Privacy &amp; security</a></p>
+    <p><span data-t="foot.copy">foot.copy</span> · <a href="#demo" data-action="privacy" data-t="Privacy & security">Privacy &amp; security</a></p>
   </div>
 </footer>
+<div class="modal-back" id="privModal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="privTitle" tabindex="-1" id="privBox"></div></div>
 <div class="toast" id="toast" hidden></div>
 
 <script>
@@ -484,7 +496,16 @@ const ES = {
   'About this project': 'Sobre este proyecto',
   'Day 30 · Learn': 'Día 30 · Aprender', 'Day 60 · Build': 'Día 60 · Desarrollar', 'Day 90 · Perform': 'Día 90 · Desempeñar',
   'Privacy and data': 'Privacidad y datos',
-  'Privacy & security': 'Privacidad y seguridad', 'Security': 'Seguridad', 'Shared team workspace': 'Espacio de equipo compartido', 'Saved in this browser only': 'Guardado solo en este navegador',
+  'Privacy & security': 'Privacidad y seguridad',
+  'Right now:': 'Ahora mismo:', 'Close': 'Cerrar',
+  'pm.local.lead': 'Tus programas son privados. Este sitio no tiene base de datos ni cuentas, así que otras personas que usan la app no pueden ver lo que escribes, y tampoco la dueña de la app.',
+  'pm.db.lead': 'Los programas de esta página se comparten con tu equipo. Todas las personas a las que el propietario da acceso ven los mismos programas y resultados.',
+  'pm.local.now': 'tus programas se guardan solo en este navegador.', 'pm.db.now': 'tus programas se guardan en el espacio de equipo compartido de esta página.',
+  'pm.h.saved': 'Dónde se guarda tu trabajo', 'pm.h.claude': 'Cuándo tus datos van a Claude', 'pm.h.export': 'Exportar a Tableau', 'pm.h.delete': 'Eliminar un programa',
+  'pm.claude': 'Nunca. La app no envía tus programas ni resultados a Claude ni a ningún otro servicio de IA. Todos los cálculos se hacen en tu navegador.',
+  'pm.local.security': 'No hay cuentas ni contraseñas, y la app nunca pide datos de inicio de sesión. No usa cookies, analítica ni rastreadores de publicidad. El sitio se entrega por HTTPS.',
+  'pm.db.security': 'El acceso se controla desde el menú Compartir de claude.ai: solo las personas invitadas pueden abrir la página, y su nivel de acceso define si pueden cambiar datos. Sin cookies de la app, analítica ni rastreadores de publicidad. La página se entrega por HTTPS.',
+  'pm.tip': 'Describe a los equipos del proveedor por rol o sede, no por el nombre de cada agente, y deja fuera datos de salud, financieros u otros datos personales. La calificación funciona igual sin ellos.', 'Security': 'Seguridad', 'Shared team workspace': 'Espacio de equipo compartido', 'Saved in this browser only': 'Guardado solo en este navegador',
   'sec.h.access': 'Acceso', 'sec.h.track': 'Rastreo', 'sec.h.conn': 'Conexión', 'sec.h.device': 'Computadoras compartidas', 'sec.h.delete': 'Eliminar datos', 'sec.h.files': 'Archivos exportados',
   'sec.local.access': 'No hay cuentas ni contraseñas. La app nunca pide datos de inicio de sesión.',
   'sec.db.access': 'El acceso se controla desde el menú Compartir de claude.ai. Solo las personas que invita el propietario pueden abrir la página, y su nivel de acceso define si pueden cambiar datos.',
@@ -517,6 +538,14 @@ const ES = {
   'doc.about': 'Creado para que las revisiones de incorporación de proveedores sean consistentes y reutilizables entre equipos. Los datos se exportan como archivos CSV ordenados para Tableau, y el modelo de datos corresponde directamente a objetos personalizados de Salesforce para un flujo en vivo. Consulta la pestaña <a href="#demo" data-action="view" data-view="guide">Exportar a Tableau</a>.',
 };
 const EN_LONG = {
+  'pm.local.lead': "Your programs are private to you. This site has no database or accounts, so other people who use the app can't see what you enter, and neither can the app's owner.",
+  'pm.db.lead': 'Programs on this page are shared with your team. Everyone the owner gives access to sees the same programs and results.',
+  'pm.local.now': 'your programs are saved in this browser only.', 'pm.db.now': "your programs are saving to this page's shared team workspace.",
+  'pm.h.saved': 'Where your work is saved', 'pm.h.claude': 'When your data goes to Claude', 'pm.h.export': 'Export for Tableau', 'pm.h.delete': 'Deleting a program',
+  'pm.claude': "Never. The app doesn't send your programs or results to Claude or any other AI service. All scoring runs in your browser.",
+  'pm.local.security': 'There are no accounts or passwords, and the app never asks for login details. It uses no cookies, analytics or advertising trackers. The site is served over HTTPS.',
+  'pm.db.security': 'Access is controlled by the claude.ai Share menu: only invited people can open the page, and their access level decides whether they can change data. No app cookies, analytics or advertising trackers. The page is served over HTTPS.',
+  'pm.tip': 'Describe vendor teams by role or site, not by agent name, and leave out health, financial or other personal details. The scoring works just as well without them.',
   'sec.h.access': 'Access', 'sec.h.track': 'Tracking', 'sec.h.conn': 'Connection', 'sec.h.device': 'Shared computers', 'sec.h.delete': 'Deleting data', 'sec.h.files': 'Exported files',
   'sec.local.access': 'There are no accounts or passwords. The app never asks for login details.',
   'sec.db.access': "Access is controlled by the claude.ai Share menu. Only people the owner invites can open the page, and their access level decides whether they can change data.",
@@ -805,22 +834,39 @@ function privacyHtml() {
   const shared = store.mode === 'db' || (store.mode === 'loading' && !!window.claude);
   const k = shared ? 'db' : 'local';
   const host = T('priv.host', { gh: window.claude ? '' : T('priv.host.gh') });
-  const items = [['priv.h.save', T('priv.' + k + '.save')], ['priv.h.who', T('priv.' + k + '.who')], ['priv.h.ai', T('priv.ai')], ['priv.h.export', T('priv.export')],
-    ['priv.h.share', T('priv.' + k + '.share')], ['priv.h.host', host], ['priv.h.tip', T('priv.tip')]];
-  const sec = [['sec.h.access', T('sec.' + k + '.access')], ['sec.h.track', T('sec.track')], ['sec.h.conn', T('sec.' + k + '.conn')],
-    ['sec.h.device', T('sec.' + k + '.device')], ['sec.h.delete', T('sec.' + k + '.delete')], ['sec.h.files', T('sec.files')]];
-  const list = (rows) => `<dl class="priv-list">${rows.map(([h, b]) => `<dt>${T(h)}</dt><dd>${b}</dd>`).join('')}</dl>`;
-  return `<section class="card privacy" id="privacy">
-      <header><h1>${T('Privacy & security')}</h1><span class="chip ${shared ? 'warn' : 'good'}">${shared ? T('Shared team workspace') : T('Saved in this browser only')}</span></header>
-      <p class="priv-intro">${T('priv.' + k + '.intro')}</p>
-      <h2 class="priv-h a-cx"><i class="dot"></i>${T('Privacy')}</h2>
-      ${list(items)}
-      <h2 class="priv-h a-quality"><i class="dot"></i>${T('Security')}</h2>
-      ${list(sec)}
-      <p class="muted">${T('priv.switch')}</p>
-    </section>`;
+  const sections = [
+    ['pm.h.saved', T('priv.' + k + '.save')],
+    ['pm.h.claude', T('pm.claude')],
+    ['pm.h.export', T('priv.export')],
+    ['priv.h.share', T('priv.' + k + '.share')],
+    ['pm.h.delete', T('sec.' + k + '.delete')],
+    ['Security', T('pm.' + k + '.security')],
+    ['sec.h.device', T('sec.' + k + '.device')],
+    ['priv.h.host', host],
+    ['priv.h.tip', T('pm.tip')],
+  ];
+  return `<h1 id="privTitle">${T('Privacy & security')}</h1>
+    <div class="pm-lead ${shared ? 'shared' : ''}">${T('pm.' + k + '.lead')}</div>
+    <div class="pm-now"><b>${T('Right now:')}</b> ${T('pm.' + k + '.now')}</div>
+    ${sections.map(([h, b]) => `<h2>${T(h)}</h2><p>${b}</p>`).join('')}
+    <p class="muted pm-switch">${T('priv.switch')}</p>
+    <div class="pm-foot"><button class="btn navy" data-action="privClose">${T('Close')}</button></div>`;
 }
-const renderPrivacy = () => privacyHtml();
+let lastFocus = null;
+function openPrivacy() {
+  lastFocus = document.activeElement;
+  $('#privBox').innerHTML = privacyHtml();
+  $('#privModal').hidden = false; document.body.style.overflow = 'hidden';
+  $('#tabPrivacy').setAttribute('aria-pressed', 'true');
+  $('#privBox').focus();
+}
+function closePrivacy() {
+  $('#privModal').hidden = true; document.body.style.overflow = '';
+  $('#tabPrivacy').setAttribute('aria-pressed', 'false');
+  lastFocus?.focus?.();
+}
+document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !$('#privModal').hidden) closePrivacy(); });
+$('#privModal').addEventListener('click', (ev) => { if (ev.target.id === 'privModal') closePrivacy(); });
 function renderDocs() {
   const key = LANG + store.mode;
   if (key === docsKey) return;
@@ -861,13 +907,12 @@ function render() {
   $('#tabProgram').setAttribute('aria-pressed', ui.view === 'program');
   $('#tabWizard').setAttribute('aria-pressed', ui.view === 'wizard');
   $('#tabGuide').setAttribute('aria-pressed', ui.view === 'guide');
-  $('#tabPrivacy').setAttribute('aria-pressed', ui.view === 'privacy');
+  $('#tabPrivacy').setAttribute('aria-pressed', !$('#privModal').hidden);
   lsSet('vrt.view', ui.view === 'wizard' ? 'program' : ui.view); lsSet('vrt.prog', ui.progId);
   const app = $('#app');
   if (store.mode === 'loading') { app.innerHTML = `<div class="card empty"><p class="muted">${T('Loading programs…')}</p></div>`; return; }
   if (ui.view === 'wizard') app.innerHTML = renderWizard();
   else if (ui.view === 'guide') app.innerHTML = renderGuide();
-  else if (ui.view === 'privacy') app.innerHTML = renderPrivacy();
   else app.innerHTML = renderProgram(getProgram(ui.progId));
 }
 
@@ -1285,7 +1330,9 @@ document.addEventListener('click', async (ev) => {
   if (a !== 'delEntry' && a !== 'delProgram') ui.armed = null;
   const w = ui.wz;
   switch (a) {
-    case 'lang': LANG = el.dataset.lang; try { localStorage.setItem('vrt.lang', LANG); } catch {} if (ui.wz) ui.wz.err = ''; renderStatic(); render(); break;
+    case 'lang': LANG = el.dataset.lang; try { localStorage.setItem('vrt.lang', LANG); } catch {} if (ui.wz) ui.wz.err = ''; renderStatic(); render(); if (!$('#privModal').hidden) $('#privBox').innerHTML = privacyHtml(); break;
+    case 'privacy': openPrivacy(); break;
+    case 'privClose': closePrivacy(); break;
     case 'view': ui.view = el.dataset.view; ui.exportText = ''; render(); break;
     case 'new': ui.wz = newWizard(); ui.view = 'wizard'; render(); $('#demo').scrollIntoView(); break;
     case 'edit': ui.wz = newWizard(getProgram(ui.progId)); ui.view = 'wizard'; render(); $('#demo').scrollIntoView(); break;
@@ -1389,7 +1436,7 @@ function startPlay() {
 }
 function stopPlay() { clearInterval(ui.playing); ui.playing = null; render(); }
 
-if (ui.view === 'wizard') ui.view = 'program';
+if (ui.view === 'wizard' || ui.view === 'privacy') ui.view = 'program';
 renderStatic();
 render();
 store.init();
