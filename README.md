@@ -14,9 +14,18 @@ Available in English and Spanish (EN/ES toggle). A 90-day proficiency console fo
 - **Live demo:** replay a sample vendor's first 98 days.
 - **Tableau export:** two tidy CSV files (results and ramp targets) plus the calculated fields to build the workbook.
 
-## Data
+## Privacy and data
 
-On GitHub Pages, programs and results are saved in each visitor's own browser (localStorage). Use the Tableau export tab to download CSVs for sharing or reporting. For a live, shared feed, the data model maps onto three Salesforce custom objects (`Ramp_Program__c`, `Ramp_Metric__c`, `Metric_Result__c`) that Tableau can read with its Salesforce connector.
+On the public site (GitHub Pages) everything you enter stays in your own web browser. The site has no database and no accounts, so nobody else, including the author, can see your programs or results.
+
+- **Saving:** programs and results are saved when you click Create program, Save changes or Save results. They are stored in your browser (localStorage) on that computer only. Another device or browser will not see them, and clearing your browser data deletes them.
+- **No AI:** the app does not send your data to Claude or any other AI service. All scoring runs in your browser.
+- **Export:** CSV files download to your own device, or are copied to your clipboard. They are not stored anywhere else.
+- **Sharing the link:** gives people the app, not your data. Each person starts with the sample vendor and their own programs.
+- **Hosting:** the site is hosted on GitHub Pages and loads fonts from Google Fonts. Like any website, these services receive standard request details such as your IP address, never what you type.
+- **Good practice:** log team-level metrics. Avoid entering personal details about individual agents.
+
+For a shared, live team workspace, the same data model maps onto three Salesforce custom objects (`Ramp_Program__c`, `Ramp_Metric__c`, `Metric_Result__c`) that Tableau can read with its Salesforce connector.
 
 ## Run locally
 
