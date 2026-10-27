@@ -8,12 +8,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="A 90-day vendor proficiency console that shows, in plain language, where an outsourced team needs coaching, where it needs support from the client, and when it is ready.">
+<meta name="description" content="A 90-day vendor proficiency console that shows, in plain language, where the vendor's leaders should focus, what support the team needs from the client under the agreement, and when it is ready.">
 <meta name="author" content="Karen Tinoco">
 <meta name="copyright" content="© 2026 Karen Tinoco. PolyForm Noncommercial 1.0.0">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Vendor Ramp Tracker">
-<meta property="og:description" content="A 90-day proficiency console for vendor partnerships: guided metric setup, 30/60/90 scoring, and a coaching and support plan by area.">
+<meta property="og:description" content="A 90-day proficiency console for vendor partnerships: guided metric setup, 30/60/90 scoring, and a team-level partnership plan you share with the vendor's leaders.">
 <meta property="og:image" content="https://karentinoco13-alt.github.io/vendor-ramp-tracker/og-image.png">
 <meta property="og:url" content="https://karentinoco13-alt.github.io/vendor-ramp-tracker/">
 <meta name="twitter:card" content="summary_large_image">
@@ -171,6 +171,13 @@ a.btn { text-decoration: none; display: inline-flex; align-items: center; }
 .docs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-top: 28px; }
 .docs-grid h3 { margin-bottom: 6px; }
 .docs-grid p { color: var(--muted); font-size: 0.92rem; }
+.vw { margin-top: 36px; border: 1px solid var(--line); border-left: 4px solid var(--p2); border-radius: 12px; padding: 20px 22px; display: grid; gap: 12px; scroll-margin-top: 16px; }
+.vw > p { max-width: 75ch; }
+.vw-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.vw-cols ul { margin: 6px 0 0; padding-left: 1.2em; display: grid; gap: 6px; font-size: 0.92rem; }
+.vw-do b { color: var(--good); } .vw-dont b { color: var(--bad); }
+.vw-law { color: var(--muted); font-size: 0.88rem; }
+.vw-note { font-size: 0.85rem; color: var(--muted); margin-top: 10px; }
 h1, h2, h3 { font-family: var(--f-display); font-weight: 700; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
 h1 { font-size: 1.6rem; } h2 { font-size: 1.2rem; } h3 { font-size: 1rem; }
 p { margin: 0; }
@@ -316,7 +323,7 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
   <div class="hero-in">
     <p class="hero-eyebrow" data-t="Vendor management">Vendor management</p>
     <h1 class="hero-title">Vendor <span class="grad">Ramp</span> Tracker</h1>
-    <p class="hero-lede" data-t="hero.lede">A 90-day proficiency console for outsourced teams. Anyone can answer a few questions to choose the metrics that matter for their vendor. Then they log results and see, in plain language, whether the team is on pace, needs coaching, or has reached proficiency at day 90.</p>
+    <p class="hero-lede" data-t="hero.lede">A 90-day proficiency console for outsourced teams. When you hire a vendor the trust is already there; the work is building a partnership strong enough to drive results. Anyone can choose the metrics that matter, log results, and see in plain language where the vendor's leaders should focus, what support the team needs from you under the agreement, and when they are ready at day 90.</p>
     <div class="hero-phases"><span class="hp h1" data-t="Day 30 · Learn">Day 30 · Learn</span><span class="hp h2" data-t="Day 60 · Build">Day 60 · Build</span><span class="hp h3" data-t="Day 90 · Perform">Day 90 · Perform</span></div>
     <div class="hero-cta">
       <a class="hbtn solid" href="#demo" data-action="playDemo" data-t="Try the live demo">Try the live demo</a>
@@ -374,8 +381,22 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
 let LANG = 'en';
 try { LANG = localStorage.getItem('vrt.lang') || ((navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch { LANG = (navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en'; }
 const ES = {
+  'tc.h.vendors': 'Trabajar con equipos de proveedores',
+  'tc.vendors': 'La app está pensada para gestionar la relación con un proveedor a nivel de contrato y de equipo. No te pide dirigir, programar, dar coaching, evaluar ni sancionar al personal del proveedor, y aceptas no usarla para eso. Las reglas laborales y de relación laboral compartida cambian según el país; consulta con tu equipo legal antes de cambiar la forma de trabajar con un proveedor.',
+  'Working with vendors the right way': 'Trabajar con proveedores de la forma correcta',
+  'vw.why': 'Tú gestionas el acuerdo y los resultados del equipo. El proveedor gestiona a su personal. Dirigir al personal de un proveedor como si fuera tuyo puede hacer que tu empresa parezca su empleador (relación laboral compartida o patrón solidario), con riesgos legales, fiscales y de prestaciones para ambas empresas.',
+  'Do': 'Sí',
+  'Don\'t': 'No',
+  'vw.do1': 'Gestiona con base en el contrato y en resultados a nivel de equipo, como las métricas de esta app.',
+  'vw.do2': 'Comparte retroalimentación, datos y ejemplos con la gerencia del proveedor, y deja que sus líderes den coaching a su propio personal.',
+  'vw.do3': 'Da lo que dice el acuerdo: herramientas, accesos a sistemas, guías, pronósticos y requisitos claros.',
+  'vw.dont1': 'Asignar, programar, supervisar, dar coaching, evaluar o sancionar a personas del proveedor, o darles instrucciones del día a día.',
+  'vw.dont2': 'Contratar, despedir o fijar el salario del personal del proveedor, o decidir quién trabaja en tu cuenta, salvo lo que permita el contrato.',
+  'vw.dont3': 'Tratarlos como empleados tuyos (puestos, credenciales, prestaciones, eventos internos o evaluaciones de desempeño) a menos que tu contrato y tu equipo legal lo permitan.',
+  'vw.law': 'Las reglas cambian según el país. Por ejemplo, en Estados Unidos el criterio de empleador conjunto (joint employer) revisa si una empresa controla las condiciones esenciales de trabajo, y en México la reforma de subcontratación de 2021 limita la subcontratación a servicios especializados registrados ante la Secretaría del Trabajo (REPSE). Esto es orientación general, no asesoría legal: consulta con tus equipos legal y de compras.',
+  'vw.plan': 'Nosotros gestionamos el acuerdo y los resultados del equipo; el proveedor gestiona a su personal. Plantea estos puntos con los líderes del proveedor, no con agentes individuales.',
   'Vendor management': 'Gestión de proveedores',
-  'hero.lede': 'Una consola de competencia a 90 días para equipos tercerizados. Cuando contratas a un proveedor, la confianza ya existe; el trabajo es construir una colaboración sólida. Cualquier persona puede elegir las métricas que importan, registrar resultados y ver en lenguaje sencillo dónde el equipo necesita coaching, dónde necesita apoyo de tu parte y cuándo está listo en el día 90.',
+  'hero.lede': 'Una consola de competencia a 90 días para equipos tercerizados. Cuando contratas a un proveedor, la confianza ya existe; el trabajo es construir una colaboración sólida. Cualquier persona puede elegir las métricas que importan, registrar resultados y ver en lenguaje sencillo en qué deben enfocarse los líderes del proveedor, qué apoyo necesita el equipo de tu parte según el acuerdo y cuándo está listo en el día 90.',
   'Try the live demo': 'Probar la demo en vivo', 'How it scores': 'Cómo se califica',
   'Scorecard': 'Tablero', 'New program': 'Nuevo programa', 'Tableau export': 'Exportar a Tableau',
   // reference data
@@ -410,21 +431,21 @@ const ES = {
   'demo.notice': '<b>Demo interactiva con un proveedor de ejemplo.</b> Northwind BPO está incorporando un equipo de voz de nivel 1. Presiona reproducir para ver sus primeros 98 días: las metas suben en los días 30, 60 y 90, el plan de colaboración cambia y llega el veredicto del día 90. Todos los números son datos de ejemplo, calificados con las mismas reglas que los programas reales.',
   'Pause': 'Pausar', 'Replay from day 1': 'Repetir desde el día 1', 'Play the 90 days': 'Reproducir los 90 días', 'Set up your own vendor': 'Configura tu propio proveedor', 'Demo day': 'Día de la demo',
   // assessment
-  'Proficient at day 90': 'Competente en el día 90', 'Nearly there: targeted coaching': 'Casi listo: coaching focalizado', 'Extend the ramp with a joint support plan': 'Extender la rampa con un plan de apoyo conjunto',
-  'Starts {d}': 'Inicia el {d}', 'Waiting for data': 'Esperando datos', 'On pace for proficiency': 'Al ritmo para ser competente', 'Coaching in a few areas': 'Coaching en algunas áreas', 'Needs joint support': 'Necesita apoyo conjunto',
+  'Proficient at day 90': 'Competente en el día 90', 'Nearly there: vendor-led targeted coaching': 'Casi listo: coaching focalizado a cargo del proveedor', 'Extend the ramp with a joint support plan': 'Extender la rampa con un plan de apoyo conjunto',
+  'Starts {d}': 'Inicia el {d}', 'Waiting for data': 'Esperando datos', 'On pace for proficiency': 'Al ritmo para ser competente', 'Vendor-led coaching in a few areas': 'Coaching del proveedor en algunas áreas', 'Needs joint support': 'Necesita apoyo conjunto',
   'on pace': 'al ritmo', 'fine-tuning': 'en ajuste', 'need support': 'necesitan apoyo', 'waiting for data': 'esperando datos',
   // partnership plan
   'Partnership plan': 'Plan de colaboración', '{name} phase': 'fase {name}', 'Your metrics': 'Tus métricas',
-  'Where the team needs coaching, and where they need support from us. Areas on track are listed as strengths.': 'Dónde el equipo necesita coaching y dónde necesita apoyo de nuestra parte. Las áreas en meta aparecen como fortalezas.',
-  'Area': 'Área', 'Coaching for the vendor team': 'Coaching para el equipo del proveedor', 'Support from us': 'Apoyo de nuestra parte',
-  'Strengths to recognize': 'Fortalezas para reconocer', 'Every area is on track. Recognize the team and keep the regular review cadence.': 'Todas las áreas están en meta. Reconoce al equipo y mantén la cadencia de revisión.',
-  'coach.quality': 'Calibración semanal y revisiones de calidad lado a lado con el líder del proveedor.',
-  'coach.speed': 'Acompañamiento con asesores de alto desempeño en atajos del proceso y uso de herramientas.',
-  'coach.cx': 'Escuchar juntos contactos con baja calificación y dar coaching en resolución y tono.',
-  'coach.productivity': 'Coaching en flujo de trabajo y ritmo, una vez resueltos los bloqueos.',
-  'coach.compliance': 'Repaso de políticas y reuniones breves diarias de adherencia.',
-  'coach.revenue': 'Role-play de la oferta y acompañamiento a quienes mejor convierten.',
-  'coach.custom': 'Acordar una acción de coaching y un responsable con el líder del proveedor.',
+  'What to raise with the vendor\'s leaders, and the support we provide under the agreement. Areas on track are listed as strengths.': 'Qué plantear a los líderes del proveedor y qué apoyo damos según el acuerdo. Las áreas en meta aparecen como fortalezas.',
+  'Area': 'Área', 'What we ask the vendor\'s leaders to address': 'Qué pedimos a los líderes del proveedor', 'Support we provide under the agreement': 'Apoyo que damos según el acuerdo',
+  'Strengths to share with the vendor': 'Fortalezas para compartir con el proveedor', 'Every area is on track. Share the recognition with the vendor\'s leaders and keep the regular review cadence.': 'Todas las áreas están en meta. Comparte el reconocimiento con los líderes del proveedor y mantén la cadencia de revisión.',
+  'coach.quality': 'Pide al líder del proveedor que haga calibraciones semanales y revisiones de calidad con su equipo, y comparte con él los hallazgos de calidad.',
+  'coach.speed': 'Pide al líder del proveedor que acompañe a los asesores nuevos con sus asesores de mejor desempeño en atajos del proceso y uso de herramientas.',
+  'coach.cx': 'Comparte los contactos con baja calificación con el líder del proveedor para que sus líderes de equipo den coaching en resolución y tono.',
+  'coach.productivity': 'Una vez resueltos los bloqueos, pide al líder del proveedor su plan para mejorar el flujo de trabajo y el ritmo.',
+  'coach.compliance': 'Comparte las actualizaciones de políticas con el líder del proveedor y pídele que refuerce la capacitación y haga revisiones de adherencia con su equipo.',
+  'coach.revenue': 'Comparte los detalles de la oferta y ejemplos de alta conversión con el líder del proveedor, y pídele que haga role-plays con su equipo.',
+  'coach.custom': 'Acuerda con el líder del proveedor una acción, a cargo del lado del proveedor.',
   'help.quality': 'Compartir guías más claras, ejemplos de buen trabajo y respuestas rápidas a dudas de políticas.',
   'help.speed': 'Revisar herramientas, accesos y pasos de nuestro lado que los hacen más lentos.',
   'help.cx': 'Compartir retroalimentación de clientes y rutas de escalamiento, y mantener al día la base de conocimiento.',
@@ -452,8 +473,8 @@ const ES = {
   // wizard
   'Basics': 'Datos básicos', 'Type of work': 'Tipo de trabajo', 'Priorities': 'Prioridades', 'Metrics': 'Métricas', 'Goals & ramp': 'Metas y rampa', 'Review': 'Revisión',
   'Who are you tracking?': '¿A quién vas a medir?',
-  'One program covers one vendor team ramping on one line of work. A person can be a team of one.': 'Un programa cubre a un equipo de un proveedor en una línea de trabajo. Una persona puede ser un equipo de uno.',
-  'Vendor name': 'Nombre del proveedor', 'e.g. Acme Outsourcing': 'p. ej. Acme Outsourcing', 'Team, site or person': 'Equipo, sede o persona', '(optional)': '(opcional)',
+  'One program covers one vendor team ramping on one line of work. Track the team as a whole, not individual agents.': 'Un programa cubre a un equipo de un proveedor en una línea de trabajo. Mide al equipo completo, no a agentes individuales.',
+  'Vendor name': 'Nombre del proveedor', 'e.g. Acme Outsourcing': 'p. ej. Acme Outsourcing', 'Team or site': 'Equipo o sede', '(optional)': '(opcional)',
   'e.g. Spanish chat, Bogotá': 'p. ej. chat en español, Bogotá', 'Program owner': 'Responsable del programa', 'Who reviews the results': 'Quién revisa los resultados', 'Day 1 of the 90 days': 'Día 1 de los 90 días',
   'What kind of work is this vendor doing?': '¿Qué tipo de trabajo hace este proveedor?',
   "This picks the metric suggestions you'll see next. You can always add your own.": 'Esto define las métricas sugeridas en el siguiente paso. Siempre puedes agregar las tuyas.',
@@ -513,12 +534,12 @@ const ES = {
   'doc.s2': 'Usa las métricas sugeridas o agrega las tuyas. Cada una tiene una meta, una dirección (mayor o menor es mejor) y un peso de 1 a 3.',
   'Choose a ramp': 'Elige una rampa',
   'doc.s3': 'Gradual, constante o rápida. La rampa define la meta de cada hito como una parte de la meta final, por ejemplo 70%, 85% y 100% en los días 30, 60 y 90.',
-  'doc.s4': 'Captura valores a diario o por semana. Cada valor se compara con la meta de su fase. En meta o arriba es "En meta", 90–99% es "Ajustar" (coaching) y menos de 90% es "Necesita apoyo" (coaching más apoyo de nuestra parte).',
+  'doc.s4': 'Captura valores a diario o por semana. Cada valor se compara con la meta de su fase. En meta o arriba es "En meta", 90–99% es "Ajustar" (los líderes del proveedor dan coaching a su equipo) y menos de 90% es "Necesita apoyo" (coaching del proveedor más el apoyo que damos según el acuerdo).',
   'Get the verdict': 'Obtén el veredicto',
   'doc.s5': 'El puntaje ponderado de los días 61–90 define la competencia. El equipo necesita 100% o más en total, sin ninguna métrica por debajo del 90%.',
   'Attainment': 'Cumplimiento', 'doc.att': 'Mayor es mejor: real ÷ meta. Menor es mejor: meta ÷ real. En métricas donde menor es mejor, las metas iniciales son más flexibles (meta ÷ % de rampa).',
   'Weighted score': 'Puntaje ponderado', 'doc.ws': "Σ(peso × cumplimiento) ÷ Σ pesos. Cada métrica tiene un tope de 120%, para que una métrica fuerte no esconda una débil.",
-  'Partnership plan': 'Plan de colaboración', 'doc.ca': 'Las métricas se agrupan por área. Cada área que no está en meta muestra coaching para el equipo del proveedor y, cuando hace falta, el apoyo que nos toca dar: herramientas, accesos, guías o pronósticos. Las áreas en meta se reconocen como fortalezas.',
+  'Partnership plan': 'Plan de colaboración', 'doc.ca': 'Las métricas se agrupan por área. Cada área que no está en meta muestra qué pedir a los líderes del proveedor y, cuando hace falta, el apoyo que damos según el acuerdo: herramientas, accesos, guías o pronósticos. Las áreas en meta son fortalezas para compartir con el proveedor.',
   'About this project': 'Sobre este proyecto',
   'Day 30 · Learn': 'Día 30 · Aprender', 'Day 60 · Build': 'Día 60 · Desarrollar', 'Day 90 · Perform': 'Día 90 · Desempeñar',
   'Privacy and data': 'Privacidad y datos',
@@ -533,7 +554,7 @@ const ES = {
   'tc.h.accept': 'Aceptación', 'tc.accept': 'Al usar Vendor Ramp Tracker aceptas estos términos. Si no estás de acuerdo, no uses la app.',
   'tc.h.what': 'Qué es la app', 'tc.what': 'Una herramienta para configurar, dar seguimiento y revisar planes de competencia de 90 días para equipos de proveedores. Es un proyecto de portafolio de Karen Tinoco y se ofrece sin costo.',
   'tc.h.results': 'Los planes son únicos; no hay garantía de éxito',
-  'tc.h.advice': 'No es asesoría profesional', 'tc.advice': 'La app no ofrece asesoría legal, de recursos humanos, financiera ni contractual. Las decisiones sobre proveedores, contratos, personal o personas siguen siendo tuyas y de tu empresa.',
+  'tc.h.advice': 'No es asesoría profesional', 'tc.advice': 'La app no ofrece asesoría legal, laboral, de recursos humanos, financiera ni contractual. Las decisiones sobre proveedores, contratos, personal o personas siguen siendo tuyas y de tu empresa.',
   'tc.h.resp': 'Tus responsabilidades', 'tc.resp': 'Eres responsable de la exactitud de los datos que ingresas, de tener derecho a usarlos y de cumplir las políticas de tu empresa y las leyes de protección de datos que apliquen. No ingreses información personal o confidencial que no tengas permiso de compartir.',
   'tc.h.data': 'Tus datos y su eliminación',
   'tc.h.liability': 'Limitación de responsabilidad', 'tc.liability': 'En la máxima medida permitida por la ley, la app y su desarrolladora no son responsables de ninguna pérdida directa, indirecta, incidental o consecuente, incluidos datos perdidos, ganancias perdidas o decisiones de negocio tomadas con la app.',
@@ -578,7 +599,7 @@ const ES = {
   'pm.claude': 'Nunca. La app no envía tus programas ni resultados a Claude ni a ningún otro servicio de IA. Todos los cálculos se hacen en tu navegador.',
   'pm.local.security': 'No hay cuentas ni contraseñas, y la app nunca pide datos de inicio de sesión. No usa cookies, analítica ni rastreadores de publicidad. El sitio se entrega por HTTPS.',
   'pm.db.security': 'El acceso se controla desde el menú Compartir de claude.ai: solo las personas invitadas pueden abrir la página, y su nivel de acceso define si pueden cambiar datos. Sin cookies de la app, analítica ni rastreadores de publicidad. La página se entrega por HTTPS.',
-  'pm.tip': 'Describe a los equipos del proveedor por rol o sede, no por el nombre de cada agente, y deja fuera datos de salud, financieros u otros datos personales. La calificación funciona igual sin ellos.', 'Security': 'Seguridad', 'Shared team workspace': 'Espacio de equipo compartido', 'Saved in this browser only': 'Guardado solo en este navegador',
+  'pm.tip': 'Describe a los equipos del proveedor por rol o sede, nunca por el nombre de un agente, y deja fuera resultados individuales y datos de salud, financieros u otros datos personales. El proveedor gestiona a su personal; la calificación funciona a nivel de equipo.', 'Security': 'Seguridad', 'Shared team workspace': 'Espacio de equipo compartido', 'Saved in this browser only': 'Guardado solo en este navegador',
   'sec.h.access': 'Acceso', 'sec.h.track': 'Rastreo', 'sec.h.conn': 'Conexión', 'sec.h.device': 'Computadoras compartidas', 'sec.h.delete': 'Eliminar datos', 'sec.h.files': 'Archivos exportados',
   'sec.local.access': 'No hay cuentas ni contraseñas. La app nunca pide datos de inicio de sesión.',
   'sec.db.access': 'El acceso se controla desde el menú Compartir de claude.ai. Solo las personas que invita el propietario pueden abrir la página, y su nivel de acceso define si pueden cambiar datos.',
@@ -603,7 +624,7 @@ const ES = {
   'priv.db.share': 'Cualquier persona a la que el propietario dé acceso verá los mismos programas. El proveedor de ejemplo vive en la página y nunca se guarda.',
   'priv.host': 'El sitio carga sus tipografías desde Google Fonts{gh}. Como cualquier sitio web, estos servicios reciben datos técnicos de la solicitud, como tu dirección IP. Nunca reciben lo que escribes.',
   'priv.host.gh': ' y está alojado en GitHub Pages',
-  'priv.tip': 'Registra métricas a nivel de equipo. Evita escribir datos personales de agentes individuales, como nombres, evaluaciones o información de salud.',
+  'priv.tip': 'Registra solo métricas a nivel de equipo. No escribas nombres, resultados individuales, evaluaciones ni información de salud de los agentes del proveedor: el proveedor gestiona a su personal.',
   'priv.switch': 'Si necesitas que cada persona tenga su propio espacio privado, o que un equipo comparta los datos en el sitio público, la autora puede cambiar el modelo de almacenamiento.',
   'foot.by': 'Vendor Ramp Tracker por Karen Tinoco. Diseñado y dirigido por la autora; implementado con Claude Code como programador de IA en pareja. Todos los datos de proveedores del ejemplo son simulados. Northwind BPO es una empresa ficticia; sin afiliación con ningún proveedor real.',
   'foot.short': '© 2026 Karen Tinoco. PolyForm Noncommercial 1.0.0. Uso comercial solo con permiso.',
@@ -611,6 +632,17 @@ const ES = {
   'doc.about': 'Creado para que las revisiones de incorporación de proveedores sean consistentes y reutilizables entre equipos. Los datos se exportan como archivos CSV ordenados para Tableau, y el modelo de datos corresponde directamente a objetos personalizados de Salesforce para un flujo en vivo. Consulta la pestaña <a href="#demo" data-action="view" data-view="guide">Exportar a Tableau</a>.',
 };
 const EN_LONG = {
+  'tc.h.vendors': 'Working with vendor teams',
+  'tc.vendors': 'The app is designed to manage a vendor relationship at the contract and team level. It does not ask you to direct, schedule, coach, evaluate or discipline a vendor\'s workers, and you agree not to use it to do so. Labor and co-employment rules differ by country; check with your legal team before changing how you work with a vendor.',
+  'vw.why': 'You manage the agreement and the team\'s results. The vendor manages its people. Directing a vendor\'s workers as if they were your own staff can make your company look like their employer (co-employment or joint employment), with legal, tax and benefits risks for both companies.',
+  'vw.do1': 'Manage to the contract and to team-level results, like the metrics in this app.',
+  'vw.do2': 'Share feedback, data and examples with the vendor\'s management, and let their leaders coach their own people.',
+  'vw.do3': 'Provide what the agreement says: tools, system access, guidelines, forecasts and clear requirements.',
+  'vw.dont1': 'Assign, schedule, supervise, coach, evaluate or discipline individual vendor workers, or give them day-to-day direction.',
+  'vw.dont2': 'Hire, fire or set pay for vendor workers, or decide who works on your account, except as the contract allows.',
+  'vw.dont3': 'Treat them like your employees (titles, badges, benefits, internal events or performance reviews) unless your contract and legal team allow it.',
+  'vw.law': 'Rules differ by country. For example, in the United States the joint-employer standard looks at whether a company controls workers\' essential terms of employment, and in Mexico the 2021 outsourcing reform limits subcontracting to specialized services registered with the Labor Ministry (REPSE). This is general guidance, not legal advice: check with your legal and procurement teams.',
+  'vw.plan': 'We manage the agreement and team results; the vendor manages its people. Raise these points with the vendor\'s leaders, not with individual agents.',
   'tc.date': '27 October 2026',
   'tc.see': 'Rules on use, responsibility and warranties are in the',
   'tc.banner': 'By using Vendor Ramp Tracker you agree to its Terms & conditions: plans are guidance with no guarantee of results, and deleting data is permanent and your responsibility.',
@@ -619,7 +651,7 @@ const EN_LONG = {
   'tc.h.accept': 'Acceptance', 'tc.accept': "By using Vendor Ramp Tracker you agree to these terms. If you don't agree, don't use the app.",
   'tc.h.what': 'What the app is', 'tc.what': 'A tool to set up, track and review 90-day proficiency plans for vendor teams. It is a portfolio project by Karen Tinoco and is provided free of charge.',
   'tc.h.results': 'Plans are unique; no guarantee of success',
-  'tc.h.advice': 'Not professional advice', 'tc.advice': "The app does not provide legal, HR, financial or contractual advice. Decisions about vendors, contracts, staffing or people remain yours and your company's.",
+  'tc.h.advice': 'Not professional advice', 'tc.advice': 'The app does not provide legal, HR, employment, financial or contractual advice. Decisions about vendors, contracts, staffing or people remain yours and your company\'s.',
   'tc.h.resp': 'Your responsibilities', 'tc.resp': "You are responsible for the accuracy of the data you enter, for having the right to use it, and for following your company's policies and any data protection laws that apply. Don't enter personal or confidential information you are not allowed to share.",
   'tc.h.data': 'Your data and deleting it',
   'tc.h.liability': 'Limitation of liability', 'tc.liability': 'To the fullest extent permitted by law, the app and its developer are not liable for any direct, indirect, incidental or consequential loss, including lost data, lost profits or business decisions made using the app.',
@@ -653,7 +685,7 @@ const EN_LONG = {
   'pm.claude': "Never. The app doesn't send your programs or results to Claude or any other AI service. All scoring runs in your browser.",
   'pm.local.security': 'There are no accounts or passwords, and the app never asks for login details. It uses no cookies, analytics or advertising trackers. The site is served over HTTPS.',
   'pm.db.security': 'Access is controlled by the claude.ai Share menu: only invited people can open the page, and their access level decides whether they can change data. No app cookies, analytics or advertising trackers. The page is served over HTTPS.',
-  'pm.tip': 'Describe vendor teams by role or site, not by agent name, and leave out health, financial or other personal details. The scoring works just as well without them.',
+  'pm.tip': 'Describe vendor teams by role or site, never by agent name, and leave out individual results, health, financial or other personal details. The vendor manages its people; the scoring works at team level.',
   'sec.h.access': 'Access', 'sec.h.track': 'Tracking', 'sec.h.conn': 'Connection', 'sec.h.device': 'Shared computers', 'sec.h.delete': 'Deleting data', 'sec.h.files': 'Exported files',
   'sec.local.access': 'There are no accounts or passwords. The app never asks for login details.',
   'sec.db.access': "Access is controlled by the claude.ai Share menu. Only people the owner invites can open the page, and their access level decides whether they can change data.",
@@ -678,20 +710,20 @@ const EN_LONG = {
   'priv.db.share': 'Anyone the owner gives access to sees the same programs. The sample vendor is built into the page and is never saved.',
   'priv.host': 'The site loads its fonts from Google Fonts{gh}. Like any website, these services receive standard request details such as your IP address. They never receive what you type.',
   'priv.host.gh': ' and is hosted on GitHub Pages',
-  'priv.tip': 'Log team-level metrics. Avoid entering personal details about individual agents, such as names, performance reviews or health information.',
+  'priv.tip': 'Log team-level metrics only. Don\'t enter names, individual results, performance reviews or health information about vendor agents: the vendor manages its people.',
   'priv.switch': 'If you need a private space for each person, or a shared team workspace on the public site, the author can change how data is stored.',
   'foot.by': 'Vendor Ramp Tracker by Karen Tinoco. Designed and directed by the author; implemented with Claude Code as an AI pair programmer. All sample vendor data is simulated. Northwind BPO is a fictional company; not affiliated with any real vendor.',
   'foot.short': '© 2026 Karen Tinoco. PolyForm Noncommercial 1.0.0. Commercial use by permission only.',
   'foot.copy': '© 2026 Karen Tinoco. Licensed under <a href="https://github.com/karentinoco13-alt/vendor-ramp-tracker/blob/main/LICENSE.md">PolyForm Noncommercial 1.0.0</a>: free to use, share and adapt for non-commercial purposes, with credit. Commercial use by permission only.',
-  'hero.lede': 'A 90-day proficiency console for outsourced teams. When you hire a vendor the trust is already there; the work is building a partnership strong enough to drive results. Anyone can choose the metrics that matter, log results, and see in plain language where the team needs coaching, where they need support from you, and when they are ready at day 90.',
+  'hero.lede': 'A 90-day proficiency console for outsourced teams. When you hire a vendor the trust is already there; the work is building a partnership strong enough to drive results. Anyone can choose the metrics that matter, log results, and see in plain language where the vendor\'s leaders should focus, what support the team needs from you under the agreement, and when they are ready at day 90.',
   'demo.notice': '<b>Interactive demo with a sample vendor.</b> Northwind BPO is ramping a Tier 1 voice team. Press play to replay their first 98 days and watch the targets step up at days 30, 60 and 90, the partnership plan change, and the day-90 verdict land. All numbers are example data, scored by the same rules as real programs.',
-  'coach.quality': 'Weekly calibration and side-by-side QA reviews with the vendor lead.',
-  'coach.speed': 'Pair with top performers on process shortcuts and tool use.',
-  'coach.cx': 'Listen to low-rated contacts together and coach on resolution and tone.',
-  'coach.productivity': 'Coach on workflow and pacing once blockers are cleared.',
-  'coach.compliance': 'Refresh policy training and hold short daily adherence huddles.',
-  'coach.revenue': 'Role-play the offer and shadow the top converters.',
-  'coach.custom': 'Agree one coaching action and an owner with the vendor lead.',
+  'coach.quality': 'Ask the vendor lead to run weekly calibration and QA reviews with their team, and share the QA findings with them.',
+  'coach.speed': 'Ask the vendor lead to pair newer agents with their top performers on process shortcuts and tool use.',
+  'coach.cx': 'Share low-rated contacts with the vendor lead so their team leads can coach on resolution and tone.',
+  'coach.productivity': 'Once blockers are cleared, ask the vendor lead for their plan to improve workflow and pacing.',
+  'coach.compliance': 'Share policy updates with the vendor lead and ask them to refresh training and run adherence check-ins with their team.',
+  'coach.revenue': 'Share the offer details and top-converting examples with the vendor lead, and ask them to run role-plays with their team.',
+  'coach.custom': 'Agree one action, owned by the vendor\'s side, with the vendor lead.',
   'help.quality': 'Share clearer guidelines, examples of good work and fast answers to policy questions.',
   'help.speed': 'Check tools, system access and process steps on our side that slow them down.',
   'help.cx': 'Share customer feedback and escalation paths, and keep the knowledge base current.',
@@ -719,11 +751,11 @@ const EN_LONG = {
   'doc.s1': 'Vendor, start date, type of work and priorities. The answers filter a library of metrics and recommend the ones that fit.',
   'doc.s2': 'Use the suggested metrics or add your own. Each one gets a goal, a direction (higher or lower is better) and a weight from 1 to 3.',
   'doc.s3': 'Gradual, steady or fast. The ramp sets each checkpoint\'s target as a share of the goal, for example 70%, 85% and 100% at days 30, 60 and 90.',
-  'doc.s4': 'Enter values daily or weekly. Each value is compared with the target for its phase. At or above target is on track, 90–99% is fine-tune (coaching), and below 90% is needs support (coaching plus support from us).',
+  'doc.s4': 'Enter values daily or weekly. Each value is compared with the target for its phase. At or above target is on track, 90–99% is fine-tune (the vendor\'s leaders coach their team), and below 90% is needs support (vendor-led coaching plus the support we provide under the agreement).',
   'doc.s5': 'The weighted score for days 61–90 decides proficiency. The team needs 100% or more overall, with no single metric below 90%.',
   'doc.att': 'Higher is better: actual ÷ target. Lower is better: target ÷ actual. For lower-is-better metrics, early targets are looser (goal ÷ ramp %).',
   'doc.ws': "Σ(weight × attainment) ÷ Σ weights. Each metric is capped at 120%, so one strong metric can't hide a weak one.",
-  'doc.ca': 'Metrics are grouped by area. Each area that is not on track shows coaching for the vendor team and, when needed, the support that is ours to give: tools, access, guidelines or forecasts. Areas on track are recognized as strengths.',
+  'doc.ca': 'Metrics are grouped by area. Each area that is not on track shows what to ask the vendor\'s leaders to address and, when needed, the support we provide under the agreement: tools, access, guidelines or forecasts. Areas on track are strengths to share with the vendor.',
   'doc.about': 'Built to make vendor onboarding reviews consistent and reusable across teams. The data exports as tidy CSV files for Tableau, and the data model maps directly onto Salesforce custom objects for a live feed. See the <a href="#demo" data-action="view" data-view="guide">Tableau export</a> tab.',
 };
 function T(s, vars) {
@@ -935,9 +967,9 @@ function assess(p) {
   let verdict;
   const final = scores[2];
   if (today > 90 && final.score != null) {
-    verdict = final.score >= 1 && final.min >= 0.9 ? { s: 'good', t: T('Proficient at day 90') } : final.score >= 0.9 ? { s: 'warn', t: T('Nearly there: targeted coaching') } : { s: 'bad', t: T('Extend the ramp with a joint support plan') };
+    verdict = final.score >= 1 && final.min >= 0.9 ? { s: 'good', t: T('Proficient at day 90') } : final.score >= 0.9 ? { s: 'warn', t: T('Nearly there: vendor-led targeted coaching') } : { s: 'bad', t: T('Extend the ramp with a joint support plan') };
   } else if (cur.score == null) verdict = { s: 'none', t: today < 1 ? T('Starts {d}', { d: p.start }) : T('Waiting for data') };
-  else verdict = cur.score >= 1 && cur.min >= 0.9 ? { s: 'good', t: T('On pace for proficiency') } : cur.score >= 0.9 ? { s: 'warn', t: T('Coaching in a few areas') } : { s: 'bad', t: T('Needs joint support') };
+  else verdict = cur.score >= 1 && cur.min >= 0.9 ? { s: 'good', t: T('On pace for proficiency') } : cur.score >= 0.9 ? { s: 'warn', t: T('Vendor-led coaching in a few areas') } : { s: 'bad', t: T('Needs joint support') };
   return { today, curPhase, metrics, scores, cur, verdict };
 }
 
@@ -957,6 +989,7 @@ function privacyHtml() {
     ['sec.h.device', T('sec.' + k + '.device')],
     ['priv.h.host', host],
     ['priv.h.tip', T('pm.tip')],
+    ['Working with vendors the right way', T('vw.why') + ' ' + T('vw.law')],
   ];
   return `<h1 id="privTitle">${T('Privacy & security')}</h1>
     <div class="pm-lead ${shared ? 'shared' : ''}">${T('pm.' + k + '.lead')}</div>
@@ -1001,10 +1034,10 @@ document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !$('#p
 $('#privModal').addEventListener('click', (ev) => { if (ev.target.id === 'privModal') closeModal(); });
 
 // terms & conditions
-const TC_VERSION = '2026-10-27';
+const TC_VERSION = '2026-10-27b';
 const termsAgreed = () => lsGet('vrt.terms', '') === TC_VERSION;
 const agreeTerms = () => lsSet('vrt.terms', TC_VERSION);
-const TC_SECTIONS = ['accept', 'what', 'results', 'advice', 'resp', 'data', 'liability', 'waiver', 'asis', 'license', 'feedback', 'changes', 'contact'];
+const TC_SECTIONS = ['accept', 'what', 'results', 'advice', 'vendors', 'resp', 'data', 'liability', 'waiver', 'asis', 'license', 'feedback', 'changes', 'contact'];
 const TC_BODY = { results: 'terms.results', data: 'terms.data' };
 function termsHtml() {
   const agreed = termsAgreed();
@@ -1079,6 +1112,15 @@ function renderDocs() {
       <div><h3>${T('Weighted score')}</h3><p>${T('doc.ws')}</p></div>
       <div><h3>${T('Partnership plan')}</h3><p>${T('doc.ca')}</p></div>
     </div>
+    <div class="vw" id="vendors">
+      <h3>${T('Working with vendors the right way')}</h3>
+      <p>${T('vw.why')}</p>
+      <div class="vw-cols">
+        <div class="vw-do"><b>${T('Do')}</b><ul><li>${T('vw.do1')}</li><li>${T('vw.do2')}</li><li>${T('vw.do3')}</li></ul></div>
+        <div class="vw-dont"><b>${T("Don't")}</b><ul><li>${T('vw.dont1')}</li><li>${T('vw.dont2')}</li><li>${T('vw.dont3')}</li></ul></div>
+      </div>
+      <p class="vw-law">${T('vw.law')}</p>
+    </div>
     <p class="eyebrow" style="margin-top:36px">${T('About this project')}</p>
     <p class="docs-p">${T('doc.about')}</p>`;
 }
@@ -1145,12 +1187,13 @@ function plan(p, A) {
   const strengths = list.filter((a) => a.level === 'good');
   const mlist = (a) => a.rows.map(({ r, st }) => `<span class="pm ${st}">${esc(mName(r.m))} ${pct(r.cur.att)}</span>`).join('');
   return `<section class="card plan">
-    <header><h2>${T('Partnership plan')} · ${T('{name} phase', { name: T(PHASES[A.curPhase].name) })}</h2><span class="muted" style="font-size:.85rem">${T('Where the team needs coaching, and where they need support from us. Areas on track are listed as strengths.')}</span></header>
-    ${focusRows.length ? `<div class="tbl-wrap"><table class="plan-t"><thead><tr><th>${T('Area')}</th><th>${T('Coaching for the vendor team')}</th><th>${T('Support from us')}</th></tr></thead><tbody>
+    <header><h2>${T('Partnership plan')} · ${T('{name} phase', { name: T(PHASES[A.curPhase].name) })}</h2><span class="muted" style="font-size:.85rem">${T('What to raise with the vendor\'s leaders, and the support we provide under the agreement. Areas on track are listed as strengths.')}</span></header>
+    ${focusRows.length ? `<div class="tbl-wrap"><table class="plan-t"><thead><tr><th>${T('Area')}</th><th>${T('What we ask the vendor\'s leaders to address')}</th><th>${T('Support we provide under the agreement')}</th></tr></thead><tbody>
       ${focusRows.map((a) => `<tr class="a-${a.k}"><td><div class="row" style="gap:8px;align-items:center"><b class="area"><i class="dot"></i>${areaName(a.k)}</b><span class="chip ${a.level}">${T(STATUS[a.level])}</span></div><div class="pms">${mlist(a)}</div></td>
         <td>${T('coach.' + a.k)}</td><td>${a.level === 'bad' ? T('help.' + a.k) : '<span class="muted">—</span>'}</td></tr>`).join('')}
-    </tbody></table></div>` : `<p>${T('Every area is on track. Recognize the team and keep the regular review cadence.')}</p>`}
-    ${strengths.length && focusRows.length ? `<p class="strengths"><b>${T('Strengths to recognize')}:</b> ${strengths.map((a) => `<span class="a-${a.k}"><i class="dot"></i></span>${areaName(a.k)} (${a.rows.map(({ r }) => esc(mName(r.m)) + ' ' + pct(r.cur.att)).join(', ')})`).join(' · ')}</p>` : ''}
+    </tbody></table></div>` : `<p>${T('Every area is on track. Share the recognition with the vendor\'s leaders and keep the regular review cadence.')}</p>`}
+    <p class="vw-note">${T('vw.plan')} <a href="#vendors">${T('Working with vendors the right way')}</a></p>
+    ${strengths.length && focusRows.length ? `<p class="strengths"><b>${T('Strengths to share with the vendor')}:</b> ${strengths.map((a) => `<span class="a-${a.k}"><i class="dot"></i></span>${areaName(a.k)} (${a.rows.map(({ r }) => esc(mName(r.m)) + ' ' + pct(r.cur.att)).join(', ')})`).join(' · ')}</p>` : ''}
   </section>`;
 }
 
@@ -1333,10 +1376,10 @@ function renderWizard() {
   let body = '';
   if (w.step === 0) body = `
     <p class="q">${T('Who are you tracking?')}</p>
-    <p class="muted">${T('One program covers one vendor team ramping on one line of work. A person can be a team of one.')}</p>
+    <p class="muted">${T('One program covers one vendor team ramping on one line of work. Track the team as a whole, not individual agents.')}</p>
     <div class="loggrid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
       <label class="f">${T('Vendor name')}<input type="text" id="wz_vendor" data-f="vendor" value="${esc(d.vendor)}" placeholder="${esc(T('e.g. Acme Outsourcing'))}"></label>
-      <label class="f">${T('Team, site or person')} <span>${T('(optional)')}</span><input type="text" id="wz_team" data-f="team" value="${esc(d.team)}" placeholder="${esc(T('e.g. Spanish chat, Bogotá'))}"></label>
+      <label class="f">${T('Team or site')} <span>${T('(optional)')}</span><input type="text" id="wz_team" data-f="team" value="${esc(d.team)}" placeholder="${esc(T('e.g. Spanish chat, Bogotá'))}"></label>
       <label class="f">${T('Program owner')} <span>${T('(optional)')}</span><input type="text" id="wz_owner" data-f="owner" value="${esc(d.owner)}" placeholder="${esc(T('Who reviews the results'))}"></label>
       <label class="f">${T('Day 1 of the 90 days')}<input type="date" id="wz_start" data-f="start" value="${esc(d.start)}"></label>
     </div>`;

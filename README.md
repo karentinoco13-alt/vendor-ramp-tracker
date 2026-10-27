@@ -1,18 +1,29 @@
 # Vendor Ramp Tracker
 
-Available in English and Spanish (EN/ES toggle). A 90-day proficiency console for outsourced vendor teams. Anyone can answer a few guided questions to choose the metrics that matter for their vendor, set goals and a ramp, log results, and see whether the team is on pace, needs coaching, or is proficient at day 90.
+Available in English and Spanish (EN/ES toggle). A 90-day proficiency console for outsourced vendor teams. Anyone can answer a few guided questions to choose the metrics that matter for their vendor, set goals and a ramp, log results, and see whether the team is on pace, where the vendor's leaders should focus, or whether it is proficient at day 90.
 
 **Live site:** https://karentinoco13-alt.github.io/vendor-ramp-tracker/
 
 ## Features
 
 - **Guided setup:** vendor and start date, type of work, priorities, recommended metrics (or your own), then goals, weights and ramp speed.
-- **30/60/90 assessment:** each phase's target is a share of the final goal (e.g. 70% / 85% / 100%). Results are marked on track (≥100% of target), fine-tune (90–99%, coaching) or needs support (<90%, coaching plus support from the client side).
+- **30/60/90 assessment:** each phase's target is a share of the final goal (e.g. 70% / 85% / 100%). Results are marked on track (≥100% of target), fine-tune (90–99%, coaching led by the vendor's own leaders) or needs support (<90%, vendor-led coaching plus the support the client provides under the agreement).
 - **Day-90 verdict:** proficient when the weighted score for days 61–90 is at least 100% and no metric is below 90%.
-- **Partnership plan:** metrics grouped by area, with coaching for the vendor team, the support the client provides (tools, access, guidelines, forecasts), and strengths to recognize.
+- **Partnership plan:** metrics grouped by area, with what to ask the vendor's leaders to address, the support the client provides under the agreement (tools, access, guidelines, forecasts), and strengths to share with the vendor.
 - **Metric review:** scorecard with trends, ramp chart and 30/60/90 checkpoint grid.
 - **Live demo:** replay a sample vendor's first 98 days.
 - **Tableau export:** two tidy CSV files (results and ramp targets) plus the calculated fields to build the workbook.
+
+## Working with vendors the right way
+
+The client manages the agreement and the team's results; the vendor manages its people. Directing a vendor's workers as if they were your own staff can make your company look like their employer (co-employment or joint employment), with legal, tax and benefits risks. The app is built around that line:
+
+- Metrics are team-level only. The app asks you not to enter agent names, individual results or performance reviews.
+- The partnership plan lists what to **ask the vendor's leaders** to address, never instructions for individual vendor workers, plus the support the client provides under the agreement.
+- **Do:** manage to the contract and team outcomes; share feedback and data with the vendor's management; provide tools, access, guidelines, forecasts and clear requirements.
+- **Don't:** assign, schedule, supervise, coach, evaluate, discipline, hire or fire individual vendor workers, give them day-to-day direction, or treat them like employees (titles, benefits, internal events) unless your contract and legal team allow it.
+
+Rules differ by country (for example, the US joint-employer standard, or Mexico's 2021 outsourcing reform and REPSE registry). This is general guidance, not legal advice: check with your legal and procurement teams. The same guidance appears in the app, in English and Spanish, under How it scores, Privacy & security and Terms.
 
 ## Privacy and security
 
