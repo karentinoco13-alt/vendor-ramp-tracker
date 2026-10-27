@@ -131,7 +131,10 @@ a { color: var(--accent); }
 .pm-lead.shared { background: var(--warn-soft); }
 .pm-now { background: var(--accent-soft); border-radius: 10px; padding: 12px 18px; margin-top: 10px; line-height: 1.55; }
 .pm-switch { margin-top: 22px; font-size: 0.9rem; }
-.pm-terms { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--line); scroll-margin-top: 12px; }
+.tc { margin: 6px 0 0; padding-left: 22px; }
+.tc li::marker { font-family: var(--f-display); font-weight: 700; color: var(--p2); }
+.tc h2 { margin-top: 18px; }
+.tc-banner { justify-content: space-between; background: var(--warn-soft); }
 .pm-step { color: var(--bad); margin: -6px 0 10px; }
 .pm-warn { background: var(--bad-soft); border: 1.5px solid var(--bad); border-radius: 10px; padding: 14px 18px; line-height: 1.55; }
 .modal .pm-warn + p { margin-top: 12px; }
@@ -335,6 +338,7 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
           <button id="tabWizard" data-action="new" data-t="New program">New program</button>
           <button id="tabGuide" data-action="view" data-view="guide" data-t="Tableau export">Tableau export</button>
           <button id="tabPrivacy" data-action="privacy" data-t="Privacy & security">Privacy &amp; security</button>
+          <button id="tabTerms" data-action="terms" data-t="Terms">Terms</button>
           <button id="tabFeedback" data-action="feedback" data-t="Feedback">Feedback</button>
         </div>
         <div class="pills" id="pills"></div>
@@ -357,7 +361,7 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
   <div class="docs-in">
     <p data-t="foot.by">foot.by</p>
     <p><span data-t="foot.copy">foot.copy</span></p>
-    <p class="foot-links"><a href="#demo" data-action="privacy" data-t="Privacy & security">Privacy &amp; security</a> · <a href="#demo" data-action="terms" data-t="Terms of use">Terms of use</a> · <a href="#demo" data-action="feedback" data-t="Share feedback">Share feedback</a></p>
+    <p class="foot-links"><a href="#demo" data-action="privacy" data-t="Privacy & security">Privacy &amp; security</a> · <a href="#demo" data-action="terms" data-t="Terms & conditions">Terms &amp; conditions</a> · <a href="#demo" data-action="feedback" data-t="Share feedback">Share feedback</a></p>
     <p data-t="terms.short">terms.short</p>
   </div>
 </footer>
@@ -519,6 +523,26 @@ const ES = {
   'Day 30 · Learn': 'Día 30 · Aprender', 'Day 60 · Build': 'Día 60 · Desarrollar', 'Day 90 · Perform': 'Día 90 · Desempeñar',
   'Privacy and data': 'Privacidad y datos',
   'Privacy & security': 'Privacidad y seguridad',
+
+  'Terms': 'Términos', 'Terms & conditions': 'Términos y condiciones', 'Last updated: {d}': 'Última actualización: {d}', 'tc.date': '27 de octubre de 2026',
+  'I agree': 'Acepto', 'Read the terms': 'Leer los términos', 'You agreed to these terms': 'Aceptaste estos términos', 'Thanks. You agreed to the Terms & conditions.': 'Gracias. Aceptaste los Términos y condiciones.',
+  'tc.see': 'Las reglas de uso, responsabilidad y garantías están en', 
+  'tc.banner': 'Al usar Vendor Ramp Tracker aceptas sus Términos y condiciones: los planes son orientación sin garantía de resultados, y eliminar datos es permanente y es tu responsabilidad.',
+  'tc.summary': '<b>En resumen:</b> la app es gratuita y se ofrece tal cual. Los planes son únicos para cada persona, gerente y empresa, y no garantizan resultados sin un seguimiento adecuado. Tú eres responsable de tus datos, y la app y su desarrolladora no responden por pérdidas de datos.',
+  'tc.agree.box': 'He leído y acepto los', 'tc.agree.err': 'Acepta los Términos y condiciones para crear el programa.',
+  'tc.h.accept': 'Aceptación', 'tc.accept': 'Al usar Vendor Ramp Tracker aceptas estos términos. Si no estás de acuerdo, no uses la app.',
+  'tc.h.what': 'Qué es la app', 'tc.what': 'Una herramienta para configurar, dar seguimiento y revisar planes de competencia de 90 días para equipos de proveedores. Es un proyecto de portafolio de Karen Tinoco y se ofrece sin costo.',
+  'tc.h.results': 'Los planes son únicos; no hay garantía de éxito',
+  'tc.h.advice': 'No es asesoría profesional', 'tc.advice': 'La app no ofrece asesoría legal, de recursos humanos, financiera ni contractual. Las decisiones sobre proveedores, contratos, personal o personas siguen siendo tuyas y de tu empresa.',
+  'tc.h.resp': 'Tus responsabilidades', 'tc.resp': 'Eres responsable de la exactitud de los datos que ingresas, de tener derecho a usarlos y de cumplir las políticas de tu empresa y las leyes de protección de datos que apliquen. No ingreses información personal o confidencial que no tengas permiso de compartir.',
+  'tc.h.data': 'Tus datos y su eliminación',
+  'tc.h.liability': 'Limitación de responsabilidad', 'tc.liability': 'En la máxima medida permitida por la ley, la app y su desarrolladora no son responsables de ninguna pérdida directa, indirecta, incidental o consecuente, incluidos datos perdidos, ganancias perdidas o decisiones de negocio tomadas con la app.',
+  'tc.h.waiver': 'Renuncia a reclamos', 'tc.waiver': 'Al usar la app, y de nuevo cuando confirmas una eliminación, renuncias a cualquier reclamo o derecho a demandar a la app o a su desarrolladora por pérdida de datos, en la medida en que lo permita la ley.',
+  'tc.h.asis': 'Se ofrece tal cual', 'tc.asis': 'La app se ofrece tal cual y según disponibilidad, sin garantías de ningún tipo, en la medida en que lo permita la ley. Puede cambiar, no estar disponible o dejar de ofrecerse en cualquier momento.',
+  'tc.h.license': 'Licencia y derechos de autor', 'tc.license': '© 2026 Karen Tinoco. La app tiene licencia PolyForm Noncommercial 1.0.0: libre para usar, compartir y adaptar con fines no comerciales, dando crédito. El uso comercial requiere permiso por escrito.',
+  'tc.h.feedback': 'Comentarios', 'tc.feedback': 'Si envías comentarios, permites que se usen para mejorar la app, sin obligación ni pago.',
+  'tc.h.changes': 'Cambios a estos términos', 'tc.changes': 'Estos términos pueden actualizarse. La fecha de arriba indica la versión más reciente. Si los términos cambian, la app te pedirá aceptarlos de nuevo.',
+  'tc.h.contact': 'Contacto', 'tc.contact': 'Si tienes preguntas sobre estos términos, usa la pestaña Comentarios.',
   'Feedback': 'Comentarios', 'Share feedback': 'Enviar comentarios', 'Terms of use': 'Términos de uso',
   'terms.short': 'Solo orientación: los planes son únicos para cada persona, gerente y empresa, se basan en los datos ingresados y no garantizan resultados. Eliminar datos es permanente y es tu responsabilidad.',
   'terms.h.results': 'Sin garantía de resultados', 'terms.h.data': 'Tus datos son tu responsabilidad', 'terms.h.asis': 'Se ofrece tal cual',
@@ -587,6 +611,24 @@ const ES = {
   'doc.about': 'Creado para que las revisiones de incorporación de proveedores sean consistentes y reutilizables entre equipos. Los datos se exportan como archivos CSV ordenados para Tableau, y el modelo de datos corresponde directamente a objetos personalizados de Salesforce para un flujo en vivo. Consulta la pestaña <a href="#demo" data-action="view" data-view="guide">Exportar a Tableau</a>.',
 };
 const EN_LONG = {
+  'tc.date': '27 October 2026',
+  'tc.see': 'Rules on use, responsibility and warranties are in the',
+  'tc.banner': 'By using Vendor Ramp Tracker you agree to its Terms & conditions: plans are guidance with no guarantee of results, and deleting data is permanent and your responsibility.',
+  'tc.summary': '<b>In short:</b> the app is free and provided as is. Plans are unique to each person, manager and company, and do not guarantee results without proper monitoring. You are responsible for your data, and the app and its developer are not liable for any loss of data.',
+  'tc.agree.box': 'I have read and agree to the', 'tc.agree.err': 'Agree to the Terms & conditions to create the program.',
+  'tc.h.accept': 'Acceptance', 'tc.accept': "By using Vendor Ramp Tracker you agree to these terms. If you don't agree, don't use the app.",
+  'tc.h.what': 'What the app is', 'tc.what': 'A tool to set up, track and review 90-day proficiency plans for vendor teams. It is a portfolio project by Karen Tinoco and is provided free of charge.',
+  'tc.h.results': 'Plans are unique; no guarantee of success',
+  'tc.h.advice': 'Not professional advice', 'tc.advice': "The app does not provide legal, HR, financial or contractual advice. Decisions about vendors, contracts, staffing or people remain yours and your company's.",
+  'tc.h.resp': 'Your responsibilities', 'tc.resp': "You are responsible for the accuracy of the data you enter, for having the right to use it, and for following your company's policies and any data protection laws that apply. Don't enter personal or confidential information you are not allowed to share.",
+  'tc.h.data': 'Your data and deleting it',
+  'tc.h.liability': 'Limitation of liability', 'tc.liability': 'To the fullest extent permitted by law, the app and its developer are not liable for any direct, indirect, incidental or consequential loss, including lost data, lost profits or business decisions made using the app.',
+  'tc.h.waiver': 'Waiver of claims', 'tc.waiver': 'By using the app, and again when you confirm a deletion, you give up any claim or right to sue the app or its developer for loss of data, to the extent permitted by law.',
+  'tc.h.asis': 'Provided as is', 'tc.asis': 'The app is provided as is and as available, without warranties of any kind, to the extent permitted by law. It may change, be unavailable or stop being offered at any time.',
+  'tc.h.license': 'License and copyright', 'tc.license': '© 2026 Karen Tinoco. The app is licensed under PolyForm Noncommercial 1.0.0: free to use, share and adapt for non-commercial purposes, with credit. Commercial use requires written permission.',
+  'tc.h.feedback': 'Feedback', 'tc.feedback': 'If you send feedback, you allow it to be used to improve the app, without obligation or payment.',
+  'tc.h.changes': 'Changes to these terms', 'tc.changes': 'These terms may be updated. The date at the top shows the latest version. If the terms change, the app asks you to agree again.',
+  'tc.h.contact': 'Contact', 'tc.contact': 'Questions about these terms: use the Feedback tab.',
   'terms.short': 'Guidance only: plans are unique to each person, manager and company, are based on the data entered, and do not guarantee results. Deleting data is permanent and your responsibility.',
   'terms.h.results': 'No guarantee of results', 'terms.h.data': 'Your data is your responsibility', 'terms.h.asis': 'Provided as is',
   'terms.results': 'Every plan is unique and tailored to the person, manager and company who set it up, based only on the data they enter. Scores, verdicts and suggestions are guidance, not advice. The app does not guarantee any success without proper monitoring of the journey and all the data relevant to it.',
@@ -921,8 +963,7 @@ function privacyHtml() {
     <div class="pm-now"><b>${T('Right now:')}</b> ${T('pm.' + k + '.now')}</div>
     ${sections.map(([h, b]) => `<h2>${T(h)}</h2><p>${b}</p>`).join('')}
     <p class="muted pm-switch">${T('priv.switch')}</p>
-    <h1 id="terms" class="pm-terms">${T('Terms of use')}</h1>
-    ${[['terms.h.results', 'terms.results'], ['terms.h.data', 'terms.data'], ['terms.h.asis', 'terms.asis']].map(([h, b]) => `<h2>${T(h)}</h2><p>${T(b)}</p>`).join('')}
+    <p class="pm-switch">${T('tc.see')} <a href="#demo" data-action="terms">${T('Terms & conditions')}</a></p>
     <div class="pm-foot"><button class="btn navy" data-action="modalClose">${T('Close')}</button></div>`;
 }
 let lastFocus = null;
@@ -933,6 +974,7 @@ function modalHtml() {
   if (m.type === 'privacy') return privacyHtml();
   if (m.type === 'delete') return deleteHtml(m);
   if (m.type === 'feedback') return feedbackHtml();
+  if (m.type === 'terms') return termsHtml();
   return '';
 }
 function renderModal() { if (ui.modal) $('#privBox').innerHTML = modalHtml(); }
@@ -942,6 +984,7 @@ function openModal(m) {
   $('#privModal').hidden = false; document.body.style.overflow = 'hidden';
   $('#tabPrivacy').setAttribute('aria-pressed', m.type === 'privacy');
   $('#tabFeedback').setAttribute('aria-pressed', m.type === 'feedback');
+  $('#tabTerms').setAttribute('aria-pressed', m.type === 'terms');
   $('#privBox').scrollTop = 0; $('#privBox').focus();
   if (m.scrollTo) { const t = document.getElementById(m.scrollTo); if (t) t.scrollIntoView(); }
 }
@@ -950,11 +993,28 @@ function closeModal() {
   $('#privModal').hidden = true; document.body.style.overflow = '';
   $('#tabPrivacy').setAttribute('aria-pressed', 'false');
   $('#tabFeedback').setAttribute('aria-pressed', 'false');
+  $('#tabTerms').setAttribute('aria-pressed', 'false');
   lastFocus?.focus?.();
 }
 const openPrivacy = (scrollTo) => openModal({ type: 'privacy', scrollTo });
 document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !$('#privModal').hidden) closeModal(); });
 $('#privModal').addEventListener('click', (ev) => { if (ev.target.id === 'privModal') closeModal(); });
+
+// terms & conditions
+const TC_VERSION = '2026-10-27';
+const termsAgreed = () => lsGet('vrt.terms', '') === TC_VERSION;
+const agreeTerms = () => lsSet('vrt.terms', TC_VERSION);
+const TC_SECTIONS = ['accept', 'what', 'results', 'advice', 'resp', 'data', 'liability', 'waiver', 'asis', 'license', 'feedback', 'changes', 'contact'];
+const TC_BODY = { results: 'terms.results', data: 'terms.data' };
+function termsHtml() {
+  const agreed = termsAgreed();
+  return `<h1 id="privTitle">${T('Terms & conditions')}</h1>
+    <p class="muted">${T('Last updated: {d}', { d: T('tc.date') })}</p>
+    <div class="pm-now">${T('tc.summary')}</div>
+    <ol class="tc">${TC_SECTIONS.map((k) => `<li><h2>${T('tc.h.' + k)}</h2><p>${T(TC_BODY[k] || 'tc.' + k)}</p></li>`).join('')}</ol>
+    <div class="pm-foot">${agreed ? `<span class="chip good">${T('You agreed to these terms')}</span><button class="btn navy" data-action="modalClose">${T('Close')}</button>`
+      : `<button class="btn" data-action="modalClose">${T('Close')}</button><button class="btn navy" data-action="tcAgree">${T('I agree')}</button>`}</div>`;
+}
 
 // two-step delete confirmation
 function deleteHtml(m) {
@@ -1058,6 +1118,7 @@ function banner(p) {
   const out = [];
   if (store.mode === 'local') out.push(`<div class="notice warn">${T('Programs and results are saved in this browser only. Use Tableau export to share them or load them into Tableau.')}</div>`);
   if (!store.canWrite && !p.demo) out.push(`<div class="notice warn">${T('You can view this tracker but not change it. Ask the owner for Contributor access to log results.')}</div>`);
+  if (!termsAgreed()) out.push(`<div class="notice tc-banner"><span>${T('tc.banner')}</span><span class="row" style="gap:8px"><button class="btn" data-action="terms">${T('Read the terms')}</button><button class="btn navy" data-action="tcAgree">${T('I agree')}</button></span></div>`);
   if (p.demo) out.push(`<div class="notice" style="display:grid;gap:10px"><p>${T('demo.notice')} <a href="#how">${T('How it scores')}</a></p>
     <div class="player"><button class="btn primary" data-action="play">${ui.playing ? T('Pause') : ui.demoDay >= 98 ? T('Replay from day 1') : T('Play the 90 days')}</button>
       <input type="range" id="demoRange" min="1" max="98" value="${ui.demoDay}" aria-label="${T('Demo day')}">
@@ -1256,7 +1317,8 @@ function chart(p, r, today) {
 
 // ---------- wizard (decision tree) ----------
 const WZ_STEPS = ['Basics', 'Type of work', 'Priorities', 'Metrics', 'Goals & ramp', 'Review'];
-function newWizard(prog) {
+function newWizard(prog) { const w = newWizard0(prog); w.agree = termsAgreed(); return w; }
+function newWizard0(prog) {
   if (prog) return { step: 4, editingId: prog.id, d: JSON.parse(JSON.stringify({ vendor: prog.vendor, team: prog.team || '', owner: prog.owner || '', start: prog.start, role: prog.role, focus: prog.focus || [], rampKey: prog.rampKey || 'steady', ramp: prog.ramp, metrics: prog.metrics })), picked: true, err: '', custom: { name: '', unit: '#', dir: 'up' } };
   return { step: 0, editingId: null, d: { vendor: '', team: '', owner: '', start: todayISO(), role: null, focus: [], rampKey: 'steady', ramp: RAMPS.steady.pcts, metrics: [] }, picked: false, err: '', custom: { name: '', unit: '#', dir: 'up' } };
 }
@@ -1336,7 +1398,8 @@ function renderWizard() {
     <div class="tbl-wrap"><table><thead><tr><th>${T('Metric')}</th><th class="n">${T('Day 30')}</th><th class="n">${T('Day 60')}</th><th class="n">${T('Day 90 goal')}</th><th class="n">${T('Weight')}</th></tr></thead>
     <tbody>${d.metrics.map((m) => `<tr><td><b>${esc(mName(m))}</b> <span class="dir">${dirLow(m)}</span></td>${d.ramp.map((x) => `<td class="n">${fmt(targetVal({ ...m, goal: +m.goal }, x), m.unit)}</td>`).join('')}<td class="n">${m.weight}</td></tr>`).join('')}</tbody></table></div>
     <p class="muted" style="font-size:.88rem">${T('rule.day90')}</p>
-    <div class="disclaimer"><b>${T('Before you create this plan')}</b> ${T('terms.results')} <a href="#demo" data-action="terms">${T('Terms of use')}</a></div>`;
+    <div class="disclaimer"><b>${T('Before you create this plan')}</b> ${T('terms.results')}</div>
+    <label class="ack"><input type="checkbox" id="wzAgree" ${w.agree ? 'checked' : ''}><span>${T('tc.agree.box')} <a href="#demo" data-action="terms">${T('Terms & conditions')}</a></span></label>`;
   }
   return `<div class="wz">
     <div class="row" style="justify-content:space-between;align-items:center"><h1>${w.editingId ? T('Edit program') : T('New vendor program')}</h1><button class="btn ghost" data-action="wzCancel">${T('Cancel')}</button></div>
@@ -1344,7 +1407,7 @@ function renderWizard() {
     <section class="card" style="display:grid;gap:14px">${body}</section>
     ${w.err ? `<p class="err" role="alert">${esc(w.err)}</p>` : ''}
     <div class="wz-nav"><button class="btn" data-action="wzBack" ${w.step === 0 ? 'disabled' : ''}>${T('Back')}</button>
-      ${w.step < 5 ? `<button class="btn primary" data-action="wzNext">${T('Continue')}</button>` : `<button class="btn primary" data-action="wzSave">${w.editingId ? T('Save changes') : T('Create program')}</button>`}</div>
+      ${w.step < 5 ? `<button class="btn primary" data-action="wzNext">${T('Continue')}</button>` : `<button class="btn primary" id="wzSaveBtn" data-action="wzSave" ${w.agree ? '' : 'disabled'}>${w.editingId ? T('Save changes') : T('Create program')}</button>`}</div>
   </div>`;
 }
 function rampPreview(m, ramp) { return ramp.map((x) => esc(fmt(targetVal(m, x), m.unit))).join(' / '); }
@@ -1471,7 +1534,8 @@ document.addEventListener('click', async (ev) => {
   switch (a) {
     case 'lang': LANG = el.dataset.lang; try { localStorage.setItem('vrt.lang', LANG); } catch {} if (ui.wz) ui.wz.err = ''; renderStatic(); render(); renderModal(); break;
     case 'privacy': openPrivacy(); break;
-    case 'terms': openPrivacy('terms'); break;
+    case 'terms': openModal({ type: 'terms' }); break;
+    case 'tcAgree': agreeTerms(); if (ui.modal?.type === 'terms') closeModal(); render(); toast(T('Thanks. You agreed to the Terms & conditions.')); break;
     case 'feedback': if (ui.fb?.sent) ui.fb = null; openModal({ type: 'feedback' }); break;
     case 'modalClose': closeModal(); break;
     case 'delNext': if (ui.modal?.ack) { ui.modal.step = 2; renderModal(); } break;
@@ -1539,6 +1603,7 @@ document.addEventListener('click', async (ev) => {
       render(); $('#demo').scrollIntoView(); break;
     }
     case 'wzSave': {
+      if (!w.agree) { w.err = T('tc.agree.err'); render(); break; }
       if (!store.canWrite) { w.err = T("You don't have permission to save programs here."); render(); break; }
       const d = w.d;
       const prog = { id: w.editingId || 'p_' + uid(), vendor: d.vendor.trim(), team: d.team.trim(), owner: d.owner.trim(), role: d.role, focus: d.focus, start: d.start,
@@ -1573,6 +1638,7 @@ document.addEventListener('change', (ev) => {
   if (t.id === 'progSel') { ui.progId = t.value; ui.metricId = null; ui.armed = null; ui.exportText = ''; render(); }
   if (t.id === 'expScope') { ui.exportScope = t.value; ui.exportText = ''; render(); }
   if (t.id === 'demoRange') { stopPlay(); ui.demoDay = +t.value; render(); }
+  if (t.id === 'wzAgree' && ui.wz) { ui.wz.agree = t.checked; if (t.checked) agreeTerms(); const b = $('#wzSaveBtn'); if (b) b.disabled = !t.checked; }
   if (t.id === 'delAck' && ui.modal) { ui.modal.ack = t.checked; const b = $('#delNext'); if (b) b.disabled = !t.checked; }
   if (t.dataset.fb) { fbState()[t.dataset.fb] = t.value; }
 });

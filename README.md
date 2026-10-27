@@ -34,11 +34,9 @@ On the public site (GitHub Pages) everything you enter stays in your own web bro
 
 For a shared, live team workspace, the same data model maps onto three Salesforce custom objects (`Ramp_Program__c`, `Ramp_Metric__c`, `Metric_Result__c`) that Tableau can read with its Salesforce connector.
 
-## Terms of use
+## Terms & conditions
 
-- **No guarantee of results:** every plan is unique and tailored to the person, manager and company who set it up, based only on the data they enter. Scores, verdicts and suggestions are guidance, not advice. The app does not guarantee any success without proper monitoring of the journey and all the data relevant to it.
-- **Your data is your responsibility:** you are responsible for the data you enter, export and delete. The app and its developer are not responsible for any loss of data, including data deleted on purpose or by clearing browser data. Before anything is deleted, the app shows two warnings and asks the user to acknowledge this and give up any claim for that loss, to the extent permitted by law.
-- **Provided as is:** without warranties of any kind, to the extent permitted by law.
+See [TERMS.md](TERMS.md). The same terms are in the app's **Terms** tab, in English and Spanish. Visitors see an acceptance banner until they agree, and must tick "I have read and agree to the Terms & conditions" before creating a program. Deleting data shows two warnings, including an acknowledgement that the app and its developer are not responsible for lost data.
 
 ## Feedback
 
