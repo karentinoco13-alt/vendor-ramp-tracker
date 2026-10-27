@@ -131,6 +131,25 @@ a { color: var(--accent); }
 .pm-lead.shared { background: var(--warn-soft); }
 .pm-now { background: var(--accent-soft); border-radius: 10px; padding: 12px 18px; margin-top: 10px; line-height: 1.55; }
 .pm-switch { margin-top: 22px; font-size: 0.9rem; }
+.pm-terms { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--line); scroll-margin-top: 12px; }
+.pm-step { color: var(--bad); margin: -6px 0 10px; }
+.pm-warn { background: var(--bad-soft); border: 1.5px solid var(--bad); border-radius: 10px; padding: 14px 18px; line-height: 1.55; }
+.modal .pm-warn + p { margin-top: 12px; }
+.ack { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: start; margin-top: 14px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--sunk); line-height: 1.5; cursor: pointer; }
+.ack input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--bad); }
+.pm-foot { flex-wrap: wrap; gap: 10px; }
+a.btn { text-decoration: none; display: inline-flex; align-items: center; }
+.fb { display: grid; gap: 14px; margin: 14px 0; }
+.fb textarea { font-family: var(--f-body); font-size: 14px; }
+.fb-l { font-weight: 500; font-size: 0.9rem; display: block; margin-bottom: 6px; }
+.fb-rate { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.fb-n { width: 40px; height: 40px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); font-weight: 700; cursor: pointer; }
+.fb-n.r1 { --rc: var(--c-cx); } .fb-n.r2 { --rc: var(--p3); } .fb-n.r3 { --rc: var(--c-productivity); } .fb-n.r4 { --rc: var(--p1); } .fb-n.r5 { --rc: var(--c-revenue); }
+.fb-n:hover { border-color: var(--rc); }
+.fb-n[aria-pressed=true] { background: var(--rc); border-color: var(--rc); color: #fff; }
+.fb-scale { font-size: 0.8rem; margin-left: 6px; }
+.disclaimer { background: var(--warn-soft); border-radius: 10px; padding: 12px 16px; font-size: 0.9rem; line-height: 1.55; }
+.foot-links a { color: var(--accent); }
 .pm-foot { display: flex; justify-content: flex-end; margin-top: 22px; }
 .btn.navy { background: var(--navy); border-color: var(--navy); color: #fff; padding: 9px 20px; font-weight: 600; }
 .priv-intro { font-size: 1.05rem; font-weight: 500; }
@@ -316,6 +335,7 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
           <button id="tabWizard" data-action="new" data-t="New program">New program</button>
           <button id="tabGuide" data-action="view" data-view="guide" data-t="Tableau export">Tableau export</button>
           <button id="tabPrivacy" data-action="privacy" data-t="Privacy & security">Privacy &amp; security</button>
+          <button id="tabFeedback" data-action="feedback" data-t="Feedback">Feedback</button>
         </div>
         <div class="pills" id="pills"></div>
         <select id="progSel" aria-label="Program"></select>
@@ -336,7 +356,9 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
 <footer class="foot">
   <div class="docs-in">
     <p data-t="foot.by">foot.by</p>
-    <p><span data-t="foot.copy">foot.copy</span> · <a href="#demo" data-action="privacy" data-t="Privacy & security">Privacy &amp; security</a></p>
+    <p><span data-t="foot.copy">foot.copy</span></p>
+    <p class="foot-links"><a href="#demo" data-action="privacy" data-t="Privacy & security">Privacy &amp; security</a> · <a href="#demo" data-action="terms" data-t="Terms of use">Terms of use</a> · <a href="#demo" data-action="feedback" data-t="Share feedback">Share feedback</a></p>
+    <p data-t="terms.short">terms.short</p>
   </div>
 </footer>
 <div class="modal-back" id="privModal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="privTitle" tabindex="-1" id="privBox"></div></div>
@@ -497,6 +519,33 @@ const ES = {
   'Day 30 · Learn': 'Día 30 · Aprender', 'Day 60 · Build': 'Día 60 · Desarrollar', 'Day 90 · Perform': 'Día 90 · Desempeñar',
   'Privacy and data': 'Privacidad y datos',
   'Privacy & security': 'Privacidad y seguridad',
+  'Feedback': 'Comentarios', 'Share feedback': 'Enviar comentarios', 'Terms of use': 'Términos de uso',
+  'terms.short': 'Solo orientación: los planes son únicos para cada persona, gerente y empresa, se basan en los datos ingresados y no garantizan resultados. Eliminar datos es permanente y es tu responsabilidad.',
+  'terms.h.results': 'Sin garantía de resultados', 'terms.h.data': 'Tus datos son tu responsabilidad', 'terms.h.asis': 'Se ofrece tal cual',
+  'terms.results': 'Cada plan es único y se adapta a la persona, el gerente y la empresa que lo configuran, con base solo en los datos que ingresan. Los puntajes, veredictos y sugerencias son orientación, no asesoría. La app no garantiza ningún resultado sin un seguimiento adecuado del proceso y de todos los datos relevantes.',
+  'terms.data': 'Eres responsable de los datos que ingresas, exportas y eliminas. La app y su desarrolladora no son responsables de ninguna pérdida de datos, incluidos los datos eliminados a propósito o al borrar los datos del navegador. Antes de eliminar, la app te pide reconocer esto dos veces. Exporta los CSV con regularidad para conservar tu propia copia.',
+  'terms.asis': 'La app se ofrece tal cual, sin garantías de ningún tipo, en la medida en que lo permita la ley.',
+  'Before you create this plan': 'Antes de crear este plan:',
+  'Delete this program?': '¿Eliminar este programa?', 'Delete this result?': '¿Eliminar este resultado?', 'Warning 1 of 2': 'Advertencia 1 de 2', 'Warning 2 of 2': 'Advertencia 2 de 2',
+  'del.program.what': 'Vas a eliminar <b>{name}</b> y su(s) {n} resultado(s).', 'del.entry.what': 'Vas a eliminar el resultado <b>{name}</b>.',
+  'del.permanent': 'Esto es permanente y no se puede deshacer.', 'del.shared': 'Se eliminará para todas las personas del equipo.',
+  'del.export': 'Si quieres conservar una copia, exporta los CSV antes de continuar.',
+  'del.ack': 'Entiendo que los datos eliminados no se pueden recuperar. Reconozco que Vendor Ramp Tracker y su desarrolladora no son responsables de ninguna pérdida de datos, y renuncio a cualquier reclamo o acción legal contra ellos por esa pérdida, en la medida en que lo permita la ley.',
+  'Export a copy first': 'Exportar una copia primero', 'Final warning': 'Advertencia final',
+  'del.final': '¿Estás seguro? {what} No habrá forma de recuperarlo.', 'del.final2': 'Esta es tu última oportunidad para conservar estos datos.',
+  'Keep my data': 'Conservar mis datos', 'Delete permanently': 'Eliminar definitivamente',
+  'fb.intro': 'Ayúdanos a mejorar Vendor Ramp Tracker. Tus comentarios se usan para planear las próximas versiones: qué funciona, qué falta y qué haría la app más útil para tus revisiones de proveedores.',
+  'How useful is the app for your vendor reviews?': '¿Qué tan útil es la app para tus revisiones de proveedores?', '1 = not useful · 5 = very useful': '1 = nada útil · 5 = muy útil',
+  'What works well?': '¿Qué funciona bien?', 'What should change or be added in a future version?': '¿Qué debería cambiar o agregarse en una versión futura?',
+  'Your role': 'Tu rol', 'Contact': 'Contacto', 'Email or LinkedIn, if you would like a reply': 'Correo o LinkedIn, si quieres respuesta',
+  'Operations leader': 'Líder de operaciones', 'Team lead or supervisor': 'Líder de equipo o supervisor', 'Vendor partner': 'Socio proveedor', 'Other': 'Otro',
+  'fb.db.note': 'Tus comentarios se guardan de forma privada para la dueña de la app. Otras personas que usan la app no pueden verlos.',
+  'fb.local.note': 'Enviar abre un issue de GitHub ya llenado en una pestaña nueva. Necesitas una cuenta de GitHub y el issue es público, así que no incluyas datos confidenciales. También puedes copiar tus comentarios y compartirlos de otra forma.',
+  'Send feedback': 'Enviar comentarios', 'Copy feedback': 'Copiar comentarios', 'Send on GitHub': 'Enviar en GitHub', 'Thank you': 'Gracias',
+  'fb.thanks': 'Gracias por tus comentarios. Se revisan para planear las próximas versiones de la app.',
+  'fb.empty': 'Elige una calificación o escribe un comentario antes de enviar.', 'Feedback copied': 'Comentarios copiados',
+  "Couldn't copy. Select the text in the boxes and copy it.": 'No se pudo copiar. Selecciona el texto de los cuadros y cópialo.',
+  'fb.failed': 'No se enviaron tus comentarios. Revisa tu conexión e inténtalo de nuevo.',
   'Right now:': 'Ahora mismo:', 'Close': 'Cerrar',
   'pm.local.lead': 'Tus programas son privados. Este sitio no tiene base de datos ni cuentas, así que otras personas que usan la app no pueden ver lo que escribes, y tampoco la dueña de la app.',
   'pm.db.lead': 'Los programas de esta página se comparten con tu equipo. Todas las personas a las que el propietario da acceso ven los mismos programas y resultados.',
@@ -538,6 +587,23 @@ const ES = {
   'doc.about': 'Creado para que las revisiones de incorporación de proveedores sean consistentes y reutilizables entre equipos. Los datos se exportan como archivos CSV ordenados para Tableau, y el modelo de datos corresponde directamente a objetos personalizados de Salesforce para un flujo en vivo. Consulta la pestaña <a href="#demo" data-action="view" data-view="guide">Exportar a Tableau</a>.',
 };
 const EN_LONG = {
+  'terms.short': 'Guidance only: plans are unique to each person, manager and company, are based on the data entered, and do not guarantee results. Deleting data is permanent and your responsibility.',
+  'terms.h.results': 'No guarantee of results', 'terms.h.data': 'Your data is your responsibility', 'terms.h.asis': 'Provided as is',
+  'terms.results': 'Every plan is unique and tailored to the person, manager and company who set it up, based only on the data they enter. Scores, verdicts and suggestions are guidance, not advice. The app does not guarantee any success without proper monitoring of the journey and all the data relevant to it.',
+  'terms.data': 'You are responsible for the data you enter, export and delete. The app and its developer are not responsible for any loss of data, including data deleted on purpose or by clearing browser data. Before anything is deleted, the app asks you to acknowledge this twice. Export the CSVs regularly to keep your own copy.',
+  'terms.asis': 'The app is provided as is, without warranties of any kind, to the extent permitted by law.',
+  'Before you create this plan': 'Before you create this plan:',
+  'del.program.what': 'You are about to delete <b>{name}</b> and its {n} result(s).', 'del.entry.what': 'You are about to delete the result <b>{name}</b>.',
+  'del.permanent': "This is permanent and can't be undone.", 'del.shared': 'It will be deleted for everyone on the team.',
+  'del.export': 'If you want to keep a copy, export the CSVs before you continue.',
+  'del.ack': 'I understand that deleted data cannot be recovered. I acknowledge that Vendor Ramp Tracker and its developer are not responsible for any loss of data, and I give up any claim or right to sue them for that loss, to the extent permitted by law.',
+  'del.final': 'Are you sure? {what} There will be no way to get it back.', 'del.final2': 'This is your last chance to keep this data.',
+  'fb.intro': 'Help make Vendor Ramp Tracker better. Your feedback is used to plan future versions: what works, what is missing, and what would make the app more useful for your vendor reviews.',
+  'fb.db.note': "Your feedback is saved privately for the app's owner. Other people who use the app can't see it.",
+  'fb.local.note': "Sending opens a pre-filled GitHub issue in a new tab. You need a GitHub account, and the issue is public, so don't include confidential details. You can also copy your feedback and share it another way.",
+  'fb.thanks': 'Thank you for your feedback. It is reviewed to plan the next versions of the app.',
+  'fb.empty': 'Choose a rating or write a comment before sending.',
+  'fb.failed': "Your feedback wasn't sent. Check your connection and try again.",
   'pm.local.lead': "Your programs are private to you. This site has no database or accounts, so other people who use the app can't see what you enter, and neither can the app's owner.",
   'pm.db.lead': 'Programs on this page are shared with your team. Everyone the owner gives access to sees the same programs and results.',
   'pm.local.now': 'your programs are saved in this browser only.', 'pm.db.now': "your programs are saving to this page's shared team workspace.",
@@ -749,7 +815,7 @@ const store = {
     try { db = await window.claude?.use?.('db'); } catch { db = null; }
     if (db) {
       this.db = db; this.mode = 'db';
-      try { const u = await window.claude.use('user'); const c = u ? await u.can('data.write') : null; if (c === false) this.canWrite = false; } catch {}
+      try { const u = await window.claude.use('user'); this.user = u; const c = u ? await u.can('data.write') : null; if (c === false) this.canWrite = false; } catch {}
       let got = 0;
       const ready = () => { if (++got === 2) render(); };
       db.collection('programs').onSnapshot((s) => { this.programs = s.docs.map((d) => ({ id: d.id, ...d.data() })); got >= 2 ? render() : ready(); },
@@ -780,6 +846,11 @@ const store = {
   async deleteEntry(id) {
     if (this.mode === 'db') return this.db.doc('entries/' + id).delete();
     this.entries = this.entries.filter((e) => e.id !== id); this.persistLocal(); render();
+  },
+  async addFeedback(data) {
+    const id = await this.user?.id?.();
+    if (!id) throw { code: 'no_user' };
+    return this.db.collection('feedback/' + id + '/items').add(data);
   },
   async deleteProgram(id) {
     const mine = this.entries.filter((e) => e.programId === id);
@@ -850,23 +921,90 @@ function privacyHtml() {
     <div class="pm-now"><b>${T('Right now:')}</b> ${T('pm.' + k + '.now')}</div>
     ${sections.map(([h, b]) => `<h2>${T(h)}</h2><p>${b}</p>`).join('')}
     <p class="muted pm-switch">${T('priv.switch')}</p>
-    <div class="pm-foot"><button class="btn navy" data-action="privClose">${T('Close')}</button></div>`;
+    <h1 id="terms" class="pm-terms">${T('Terms of use')}</h1>
+    ${[['terms.h.results', 'terms.results'], ['terms.h.data', 'terms.data'], ['terms.h.asis', 'terms.asis']].map(([h, b]) => `<h2>${T(h)}</h2><p>${T(b)}</p>`).join('')}
+    <div class="pm-foot"><button class="btn navy" data-action="modalClose">${T('Close')}</button></div>`;
 }
 let lastFocus = null;
-function openPrivacy() {
-  lastFocus = document.activeElement;
-  $('#privBox').innerHTML = privacyHtml();
-  $('#privModal').hidden = false; document.body.style.overflow = 'hidden';
-  $('#tabPrivacy').setAttribute('aria-pressed', 'true');
-  $('#privBox').focus();
+const isShared = () => store.mode === 'db' || (store.mode === 'loading' && !!window.claude);
+function modalHtml() {
+  const m = ui.modal;
+  if (!m) return '';
+  if (m.type === 'privacy') return privacyHtml();
+  if (m.type === 'delete') return deleteHtml(m);
+  if (m.type === 'feedback') return feedbackHtml();
+  return '';
 }
-function closePrivacy() {
+function renderModal() { if (ui.modal) $('#privBox').innerHTML = modalHtml(); }
+function openModal(m) {
+  if ($('#privModal').hidden) lastFocus = document.activeElement;
+  ui.modal = m; renderModal();
+  $('#privModal').hidden = false; document.body.style.overflow = 'hidden';
+  $('#tabPrivacy').setAttribute('aria-pressed', m.type === 'privacy');
+  $('#tabFeedback').setAttribute('aria-pressed', m.type === 'feedback');
+  $('#privBox').scrollTop = 0; $('#privBox').focus();
+  if (m.scrollTo) { const t = document.getElementById(m.scrollTo); if (t) t.scrollIntoView(); }
+}
+function closeModal() {
+  ui.modal = null;
   $('#privModal').hidden = true; document.body.style.overflow = '';
   $('#tabPrivacy').setAttribute('aria-pressed', 'false');
+  $('#tabFeedback').setAttribute('aria-pressed', 'false');
   lastFocus?.focus?.();
 }
-document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !$('#privModal').hidden) closePrivacy(); });
-$('#privModal').addEventListener('click', (ev) => { if (ev.target.id === 'privModal') closePrivacy(); });
+const openPrivacy = (scrollTo) => openModal({ type: 'privacy', scrollTo });
+document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !$('#privModal').hidden) closeModal(); });
+$('#privModal').addEventListener('click', (ev) => { if (ev.target.id === 'privModal') closeModal(); });
+
+// two-step delete confirmation
+function deleteHtml(m) {
+  const what = m.kind === 'program' ? T('del.program.what', { name: esc(m.label), n: m.count }) : T('del.entry.what', { name: esc(m.label) });
+  if (m.step === 1) return `<h1 id="privTitle">${m.kind === 'program' ? T('Delete this program?') : T('Delete this result?')}</h1>
+    <p class="eyebrow pm-step">${T('Warning 1 of 2')}</p>
+    <div class="pm-warn">${what} ${T('del.permanent')}${isShared() ? ' ' + T('del.shared') : ''}</div>
+    <p>${T('del.export')}</p>
+    <label class="ack"><input type="checkbox" id="delAck" ${m.ack ? 'checked' : ''}><span>${T('del.ack')}</span></label>
+    <div class="pm-foot"><button class="btn" data-action="delExport">${T('Export a copy first')}</button><button class="btn" data-action="modalClose">${T('Cancel')}</button>
+      <button class="btn danger armed" id="delNext" data-action="delNext" ${m.ack ? '' : 'disabled'}>${T('Continue')}</button></div>`;
+  return `<h1 id="privTitle">${T('Final warning')}</h1>
+    <p class="eyebrow pm-step">${T('Warning 2 of 2')}</p>
+    <div class="pm-warn">${T('del.final', { what })}</div>
+    <p>${T('del.final2')}</p>
+    <div class="pm-foot"><button class="btn primary" data-action="modalClose">${T('Keep my data')}</button>
+      <button class="btn danger armed" data-action="delConfirm">${T('Delete permanently')}</button></div>`;
+}
+
+// feedback
+const FB_ROLES = ['Vendor manager', 'Operations leader', 'Team lead or supervisor', 'Vendor partner', 'Other'];
+function fbState() { return (ui.fb ||= { rating: 0, good: '', improve: '', role: '', contact: '', err: '', sent: false }); }
+function fbText() {
+  const f = fbState();
+  return `**Rating:** ${f.rating ? f.rating + '/5' : '-'}\n**Role:** ${f.role || '-'}\n\n**What works well**\n${f.good || '-'}\n\n**What should change or be added**\n${f.improve || '-'}\n\n**Contact:** ${f.contact || '-'}\n\n_Sent from Vendor Ramp Tracker (${LANG.toUpperCase()})_`;
+}
+const GH_ISSUES = 'https://github.com/karentinoco13-alt/vendor-ramp-tracker/issues/new';
+const fbUrl = () => GH_ISSUES + '?title=' + encodeURIComponent('Feedback: ' + (fbState().improve || fbState().good || 'Vendor Ramp Tracker').slice(0, 60)) + '&body=' + encodeURIComponent(fbText());
+const fbValid = () => { const f = fbState(); return f.rating || f.good.trim() || f.improve.trim(); };
+function feedbackHtml() {
+  const f = fbState(), shared = store.mode === 'db';
+  if (f.sent) return `<h1 id="privTitle">${T('Thank you')}</h1><div class="pm-lead">${T('fb.thanks')}</div>
+    <div class="pm-foot"><button class="btn navy" data-action="modalClose">${T('Close')}</button></div>`;
+  return `<h1 id="privTitle">${T('Share feedback')}</h1>
+    <p>${T('fb.intro')}</p>
+    <div class="fb">
+      <div><span class="fb-l">${T('How useful is the app for your vendor reviews?')}</span>
+        <div class="fb-rate" role="group">${[1, 2, 3, 4, 5].map((n) => `<button type="button" class="fb-n r${n}" data-action="fbRate" data-n="${n}" aria-pressed="${f.rating === n}">${n}</button>`).join('')}
+        <span class="muted fb-scale">${T('1 = not useful · 5 = very useful')}</span></div></div>
+      <label class="f">${T('What works well?')}<textarea id="fb_good" data-fb="good" rows="3">${esc(f.good)}</textarea></label>
+      <label class="f">${T('What should change or be added in a future version?')}<textarea id="fb_improve" data-fb="improve" rows="3">${esc(f.improve)}</textarea></label>
+      <div class="row"><label class="f" style="flex:1;min-width:200px">${T('Your role')} <span>${T('(optional)')}</span><select id="fb_role" data-fb="role"><option value=""></option>${FB_ROLES.map((r) => `<option value="${r}" ${f.role === r ? 'selected' : ''}>${T(r)}</option>`).join('')}</select></label>
+        <label class="f" style="flex:1.4;min-width:220px">${T('Contact')} <span>${T('(optional)')}</span><input type="text" id="fb_contact" data-fb="contact" value="${esc(f.contact)}" placeholder="${esc(T('Email or LinkedIn, if you would like a reply'))}"></label></div>
+    </div>
+    <div class="pm-now">${shared ? T('fb.db.note') : T('fb.local.note')}</div>
+    ${f.err ? `<p class="err" role="alert">${esc(f.err)}</p>` : ''}
+    <div class="pm-foot"><button class="btn" data-action="modalClose">${T('Cancel')}</button>
+      ${shared ? `<button class="btn primary" data-action="fbSend">${T('Send feedback')}</button>`
+        : `<button class="btn" data-action="fbCopy">${T('Copy feedback')}</button><a class="btn primary" id="fbGh" data-action="fbGh" href="${esc(fbUrl())}" target="_blank" rel="noopener">${T('Send on GitHub')}</a>`}</div>`;
+}
 function renderDocs() {
   const key = LANG + store.mode;
   if (key === docsKey) return;
@@ -1007,7 +1145,7 @@ function renderProgram(p) {
     const dn = dayNum(p.start, e.date), pi = phaseIdx(dn);
     const a = pi < 0 ? null : attain(m, +e.value, pctFor(p, pi));
     return `<tr><td class="n">${esc(e.date)}</td><td class="n">${dn}</td><td>${esc(mName(m))}</td><td class="n">${fmt(+e.value, m.unit)}</td><td class="n">${pct(a)}</td><td class="muted">${esc(e.note)}</td>
-      <td class="n">${ro ? '' : `<button class="btn ghost danger ${ui.armed === 'e' + e.id ? 'armed' : ''}" data-action="delEntry" data-id="${esc(e.id)}">${ui.armed === 'e' + e.id ? T('Confirm delete') : T('Delete')}</button>`}</td></tr>`;
+      <td class="n">${ro ? '' : `<button class="btn ghost danger ${ui.armed === 'e' + e.id ? 'armed' : ''}" data-action="delEntry" data-id="${esc(e.id)}">${T('Delete')}</button>`}</td></tr>`;
   }).join('');
 
   return `${banner(p)}${plan(p, A)}
@@ -1072,7 +1210,7 @@ function renderProgram(p) {
   <div class="row">
     <button class="btn" data-action="view" data-view="guide">${T('Export for Tableau')}</button>
     ${ro ? '' : `<button class="btn" data-action="edit">${T('Edit goals and metrics')}</button>
-    <button class="btn danger ${ui.armed === 'p' + p.id ? 'armed' : ''}" data-action="delProgram">${ui.armed === 'p' + p.id ? T('Confirm: delete program and all results') : T('Delete program')}</button>`}
+    <button class="btn danger ${ui.armed === 'p' + p.id ? 'armed' : ''}" data-action="delProgram">${T('Delete program')}</button>`}
   </div>`;
 }
 
@@ -1197,7 +1335,8 @@ function renderWizard() {
     </dl></div>
     <div class="tbl-wrap"><table><thead><tr><th>${T('Metric')}</th><th class="n">${T('Day 30')}</th><th class="n">${T('Day 60')}</th><th class="n">${T('Day 90 goal')}</th><th class="n">${T('Weight')}</th></tr></thead>
     <tbody>${d.metrics.map((m) => `<tr><td><b>${esc(mName(m))}</b> <span class="dir">${dirLow(m)}</span></td>${d.ramp.map((x) => `<td class="n">${fmt(targetVal({ ...m, goal: +m.goal }, x), m.unit)}</td>`).join('')}<td class="n">${m.weight}</td></tr>`).join('')}</tbody></table></div>
-    <p class="muted" style="font-size:.88rem">${T('rule.day90')}</p>`;
+    <p class="muted" style="font-size:.88rem">${T('rule.day90')}</p>
+    <div class="disclaimer"><b>${T('Before you create this plan')}</b> ${T('terms.results')} <a href="#demo" data-action="terms">${T('Terms of use')}</a></div>`;
   }
   return `<div class="wz">
     <div class="row" style="justify-content:space-between;align-items:center"><h1>${w.editingId ? T('Edit program') : T('New vendor program')}</h1><button class="btn ghost" data-action="wzCancel">${T('Cancel')}</button></div>
@@ -1330,9 +1469,36 @@ document.addEventListener('click', async (ev) => {
   if (a !== 'delEntry' && a !== 'delProgram') ui.armed = null;
   const w = ui.wz;
   switch (a) {
-    case 'lang': LANG = el.dataset.lang; try { localStorage.setItem('vrt.lang', LANG); } catch {} if (ui.wz) ui.wz.err = ''; renderStatic(); render(); if (!$('#privModal').hidden) $('#privBox').innerHTML = privacyHtml(); break;
+    case 'lang': LANG = el.dataset.lang; try { localStorage.setItem('vrt.lang', LANG); } catch {} if (ui.wz) ui.wz.err = ''; renderStatic(); render(); renderModal(); break;
     case 'privacy': openPrivacy(); break;
-    case 'privClose': closePrivacy(); break;
+    case 'terms': openPrivacy('terms'); break;
+    case 'feedback': if (ui.fb?.sent) ui.fb = null; openModal({ type: 'feedback' }); break;
+    case 'modalClose': closeModal(); break;
+    case 'delNext': if (ui.modal?.ack) { ui.modal.step = 2; renderModal(); } break;
+    case 'delExport': { const m = ui.modal; closeModal(); if (m?.kind === 'program') ui.exportScope = 'current'; ui.view = 'guide'; ui.exportText = ''; render(); break; }
+    case 'delConfirm': {
+      const m = ui.modal; if (!m || !m.ack || m.step !== 2) break;
+      closeModal();
+      if (m.kind === 'entry') { try { await store.deleteEntry(m.id); toast(T('Entry deleted')); } catch { toast(T("Couldn't delete the entry. Try again.")); } }
+      else { ui.progId = null; try { await store.deleteProgram(m.id); toast(T('Program deleted')); } catch { toast(T("Couldn't delete the program. Try again.")); } render(); }
+      break;
+    }
+    case 'fbRate': fbState().rating = +el.dataset.n; fbState().err = ''; renderModal(); break;
+    case 'fbGh': if (!fbValid()) { ev.preventDefault(); fbState().err = T('fb.empty'); renderModal(); } else { ui.fb = { ...fbState(), sent: true }; setTimeout(renderModal, 300); } break;
+    case 'fbCopy': {
+      if (!fbValid()) { fbState().err = T('fb.empty'); renderModal(); break; }
+      try { await navigator.clipboard.writeText(fbText()); toast(T('Feedback copied')); } catch { toast(T("Couldn't copy. Select the text in the boxes and copy it.")); }
+      break;
+    }
+    case 'fbSend': {
+      if (!fbValid()) { fbState().err = T('fb.empty'); renderModal(); break; }
+      const f = fbState(); el.disabled = true;
+      try {
+        await store.addFeedback({ rating: f.rating || null, good: f.good.trim().slice(0, 4000), improve: f.improve.trim().slice(0, 4000), role: f.role, contact: f.contact.trim().slice(0, 200), lang: LANG, createdAt: new Date().toISOString() });
+        ui.fb = { ...f, sent: true }; renderModal();
+      } catch { el.disabled = false; f.err = T("fb.failed"); renderModal(); }
+      break;
+    }
     case 'view': ui.view = el.dataset.view; ui.exportText = ''; render(); break;
     case 'new': ui.wz = newWizard(); ui.view = 'wizard'; render(); $('#demo').scrollIntoView(); break;
     case 'edit': ui.wz = newWizard(getProgram(ui.progId)); ui.view = 'wizard'; render(); $('#demo').scrollIntoView(); break;
@@ -1340,18 +1506,15 @@ document.addEventListener('click', async (ev) => {
     case 'playDemo': ui.view = 'program'; ui.progId = 'demo'; ui.metricId = null; ui.demoDay = 1; startPlay(); break;
     case 'play': if (ui.playing) stopPlay(); else { if (ui.demoDay >= 98) ui.demoDay = 1; startPlay(); } break;
     case 'delEntry': {
-      const key = 'e' + el.dataset.id;
-      if (ui.armed !== key) { ui.armed = key; render(); break; }
-      ui.armed = null;
-      try { await store.deleteEntry(el.dataset.id); toast(T('Entry deleted')); } catch { toast(T("Couldn't delete the entry. Try again.")); }
+      const p = getProgram(ui.progId), e = entriesFor(p).find((x) => x.id === el.dataset.id); if (!e) break;
+      const m = p.metrics.find((x) => x.id === e.metricId);
+      openModal({ type: 'delete', kind: 'entry', id: e.id, label: (m ? mName(m) : '') + ' · ' + e.date + ' · ' + fmt(+e.value, m?.unit), step: 1, ack: false });
       break;
     }
     case 'delProgram': {
-      const key = 'p' + ui.progId;
-      if (ui.armed !== key) { ui.armed = key; render(); break; }
-      ui.armed = null; const id = ui.progId; ui.progId = null;
-      try { await store.deleteProgram(id); toast(T('Program deleted')); } catch { toast(T("Couldn't delete the program. Try again.")); }
-      render(); break;
+      const p = getProgram(ui.progId); if (!p || p.demo) break;
+      openModal({ type: 'delete', kind: 'program', id: p.id, label: p.vendor + (p.team ? ' · ' + p.team : ''), count: entriesFor(p).length, step: 1, ack: false });
+      break;
     }
     case 'wzCancel': ui.wz = null; ui.view = 'program'; render(); break;
     case 'wzRole': if (w.d.role !== el.dataset.k) { w.d.role = el.dataset.k; w.picked = false; w.d.metrics = w.d.metrics.filter((m) => !m.id.startsWith('lib_')); } w.err = ''; render(); break;
@@ -1397,6 +1560,7 @@ document.addEventListener('click', async (ev) => {
 document.addEventListener('input', (ev) => {
   const t = ev.target, w = ui.wz;
   if (t.id === 'demoRange') { const b = t.parentElement.querySelector('b.num'); if (b) b.textContent = T('Day {d}', { d: t.value }); return; }
+  if (t.dataset.fb) { const f = fbState(); f[t.dataset.fb] = t.value; if (f.err && fbValid()) { f.err = ''; const er = $('#privBox .err'); if (er) er.remove(); } const gh = $('#fbGh'); if (gh) gh.href = fbUrl(); return; }
   if (w && t.dataset.f) w.d[t.dataset.f] = t.value;
   if (w && t.dataset.c) w.custom[t.dataset.c] = t.value;
   if (w && t.dataset.g != null) {
@@ -1409,6 +1573,8 @@ document.addEventListener('change', (ev) => {
   if (t.id === 'progSel') { ui.progId = t.value; ui.metricId = null; ui.armed = null; ui.exportText = ''; render(); }
   if (t.id === 'expScope') { ui.exportScope = t.value; ui.exportText = ''; render(); }
   if (t.id === 'demoRange') { stopPlay(); ui.demoDay = +t.value; render(); }
+  if (t.id === 'delAck' && ui.modal) { ui.modal.ack = t.checked; const b = $('#delNext'); if (b) b.disabled = !t.checked; }
+  if (t.dataset.fb) { fbState()[t.dataset.fb] = t.value; }
 });
 document.addEventListener('submit', async (ev) => {
   if (ev.target.id !== 'logForm') return;
