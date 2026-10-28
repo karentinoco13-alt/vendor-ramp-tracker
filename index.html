@@ -134,7 +134,6 @@ a { color: var(--accent); }
 .tc { margin: 6px 0 0; padding-left: 22px; }
 .tc li::marker { font-family: var(--f-display); font-weight: 700; color: var(--p2); }
 .tc h2 { margin-top: 18px; }
-.tc-banner { justify-content: space-between; background: var(--warn-soft); }
 .pm-step { color: var(--bad); margin: -6px 0 10px; }
 .pm-warn { background: var(--bad-soft); border: 1.5px solid var(--bad); border-radius: 10px; padding: 14px 18px; line-height: 1.55; }
 .modal .pm-warn + p { margin-top: 12px; }
@@ -424,7 +423,7 @@ td { border-bottom-color: color-mix(in srgb, var(--sc, var(--accent)) 15%, var(-
 
 /* notices */
 .notice { border-left: 5px solid var(--sec-ramp); background: color-mix(in srgb, var(--sec-ramp) 12%, var(--surface)); }
-.notice.warn, .notice.tc-banner { border-left-color: var(--warn); background: color-mix(in srgb, var(--warn) 16%, var(--surface)); }
+.notice.warn { border-left-color: var(--warn); background: color-mix(in srgb, var(--warn) 16%, var(--surface)); }
 
 /* compliance / co-employment notes */
 .vw { background: color-mix(in srgb, var(--sec-comp) 7%, var(--surface)); border-color: color-mix(in srgb, var(--sec-comp) 30%, var(--line)); border-left: 7px solid var(--sec-comp); }
@@ -463,6 +462,37 @@ td { border-bottom-color: color-mix(in srgb, var(--sc, var(--accent)) 15%, var(-
 .card .dir, .choice small, .docs .eyebrow, .docs-p { color: color-mix(in srgb, var(--muted) 70%, var(--ink)); }
 .flow li .flow-n { color: color-mix(in srgb, var(--fc) 55%, var(--ink)); }
 .vw-do > b { color: color-mix(in srgb, var(--good) 70%, var(--ink)); } .vw-dont > b { color: color-mix(in srgb, var(--bad) 70%, var(--ink)); }
+/* terms gate: blocking first-use dialog in the terms color */
+.gate { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; overflow: hidden;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: radial-gradient(55% 75% at 88% 8%, rgba(124, 58, 237, 0.42), transparent 62%), radial-gradient(45% 65% at 100% 85%, rgba(219, 39, 119, 0.30), transparent 62%),
+    radial-gradient(40% 60% at 10% 100%, color-mix(in srgb, var(--sec-terms) 45%, transparent), transparent 62%), var(--navy); }
+.gate[hidden] { display: none; }
+body.gated #privModal { z-index: 50; }
+.gate-box { --mc: var(--sec-terms); display: flex; flex-direction: column; max-height: 100%; }
+.gate-box > * { flex: none; }
+.gate-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
+.gate-top .eyebrow { color: color-mix(in srgb, var(--mc) 65%, var(--ink)); }
+.gate-box h1 { margin-bottom: 6px; }
+.gate-intro { margin-bottom: 12px; }
+.gate-scroll { flex: 1 1 auto; min-height: 7rem; overflow-y: auto; overscroll-behavior: contain; border: 1px solid color-mix(in srgb, var(--mc) 35%, var(--line)); border-radius: 10px;
+  background: color-mix(in srgb, var(--mc) 6%, var(--surface)); padding: 2px 16px 14px; }
+.gate-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.gate-list li { --gc: var(--mc); }
+.gate-list li.g-free { --gc: var(--sec-feedback); } .gate-list li.g-results { --gc: var(--sec-score); } .gate-list li.g-data { --gc: var(--sec-ramp); }
+.gate-list li.g-delete { --gc: var(--sec-delete); } .gate-list li.g-vendors { --gc: var(--sec-comp); } .gate-list li.g-license { --gc: var(--sec-terms); }
+.modal .gate-list h2 { font-size: 1.02rem; margin: 14px 0 4px; border-left-color: var(--gc); color: color-mix(in srgb, var(--gc) 60%, var(--ink)); }
+.gate-list li.g-vendors { background: color-mix(in srgb, var(--sec-comp) 10%, var(--surface)); border-left: 4px solid var(--sec-comp); border-radius: 8px; padding: 0 12px 10px; margin-top: 8px; }
+.modal .gate-list li.g-vendors h2 { border-left: 0; padding-left: 0; }
+.gate-list p { font-size: 0.93rem; }
+.gate-sum-foot { margin-top: 14px; font-size: 0.9rem; color: color-mix(in srgb, var(--muted) 70%, var(--ink)); }
+.gate-links { margin-top: 12px; font-size: 0.92rem; display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.gate-links a { font-weight: 600; }
+.gate-box .ack input { accent-color: var(--mc); }
+.gate-box .pm-foot { margin-top: 14px; }
+.gate-note { margin-top: 10px; font-size: 0.85rem; color: color-mix(in srgb, var(--warn) 70%, var(--ink)); }
+.gate-declined { display: grid; gap: 18px; justify-items: start; padding: 12px 0 4px; }
+.tc-accepted { background: var(--good-soft); color: color-mix(in srgb, var(--good) 70%, var(--ink)); border-left: 4px solid var(--good); border-radius: 8px; padding: 8px 12px; font-weight: 600; margin: 10px 0 0; }
 </style>
 
 <header class="hero">
@@ -518,6 +548,7 @@ td { border-bottom-color: color-mix(in srgb, var(--sc, var(--accent)) 15%, var(-
     <p data-t="terms.short">terms.short</p>
   </div>
 </footer>
+<div class="gate" id="tcGate" hidden><div class="modal gate-box" role="dialog" aria-modal="true" aria-labelledby="gateTitle" aria-describedby="gateIntro" tabindex="-1" id="gateBox"></div></div>
 <div class="modal-back" id="privModal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="privTitle" tabindex="-1" id="privBox"></div></div>
 <div class="toast" id="toast" hidden></div>
 
@@ -701,10 +732,31 @@ const ES = {
   'Privacy and data': 'Privacidad y datos',
   'Privacy & security': 'Privacidad y seguridad',
 
-  'Terms': 'Términos', 'Terms & conditions': 'Términos y condiciones', 'Last updated: {d}': 'Última actualización: {d}', 'tc.date': '27 de octubre de 2026',
-  'I agree': 'Acepto', 'Read the terms': 'Leer los términos', 'You agreed to these terms': 'Aceptaste estos términos', 'Thanks. You agreed to the Terms & conditions.': 'Gracias. Aceptaste los Términos y condiciones.',
+  'Terms': 'Términos', 'Terms & conditions': 'Términos y condiciones', 'Last updated: {d}': 'Última actualización: {d}', 'tc.date': '28 de octubre de 2026',
+  'tc.accepted': 'Aceptaste estos términos el {d}.', 'Language': 'Idioma',
   'tc.see': 'Las reglas de uso, responsabilidad y garantías están en', 
-  'tc.banner': 'Al usar Vendor Ramp Tracker aceptas sus Términos y condiciones: los planes son orientación sin garantía de resultados, y eliminar datos es permanente y es tu responsabilidad.',
+  'gate.title': 'Antes de empezar: Términos de uso',
+  'gate.intro': 'Este es un resumen de los Términos y condiciones de la app. Para usar Vendor Ramp Tracker necesitas aceptarlos.',
+  'gate.region': 'Resumen de los términos',
+  'gate.h.free': 'Gratuita y compartida para recibir comentarios',
+  'gate.free': 'La app es un proyecto de portafolio de Karen Tinoco y se ofrece sin costo mientras las personas la prueban y envían comentarios. Los comentarios que envíes pueden usarse para mejorar la app, sin obligación ni pago. Se ofrece tal cual y puede cambiar o dejar de ofrecerse en cualquier momento.',
+  'gate.h.results': 'Los planes son orientación, sin resultados garantizados',
+  'gate.results': 'Cada plan es único para la persona, el gerente y la empresa que lo configuran, y se basa solo en los datos ingresados. Los puntajes, veredictos y sugerencias son orientación, no asesoría legal, de recursos humanos, financiera ni contractual, y no garantizan ningún resultado.',
+  'gate.h.data': 'Dónde se guardan tus datos',
+  'gate.data.local': 'Los programas y resultados se guardan solo en este navegador. Nada se envía a un servidor, y la app nunca envía tus datos a Claude ni a ningún otro servicio de IA. Borrar los datos del navegador los elimina.',
+  'gate.data.db': 'Los programas y resultados se guardan en el espacio de equipo compartido de esta página, y todas las personas a las que el propietario da acceso los ven. Tus ajustes, incluida esta aceptación, se quedan en este navegador. La app nunca envía tus datos a Claude ni a ningún otro servicio de IA.',
+  'gate.h.delete': 'Eliminar es permanente y es tu responsabilidad',
+  'gate.delete': 'Los datos eliminados no se pueden recuperar. Eres responsable de los datos que ingresas, exportas y eliminas, y la app y su desarrolladora no son responsables de ninguna pérdida de datos. Exporta los CSV para conservar tu propia copia.',
+  'gate.h.vendors': 'Tú gestionas el acuerdo; el proveedor gestiona a su personal',
+  'gate.vendors': 'La app funciona a nivel de contrato y de equipo. Aceptas no usarla para dirigir, programar, dar coaching, evaluar ni sancionar al personal del proveedor, porque eso puede crear una relación laboral compartida. Las reglas cambian según el país; consulta con tu equipo legal.',
+  'gate.h.license': 'Licencia',
+  'gate.sumfoot': 'Esto es un resumen. Se aplican los Términos y condiciones completos.',
+  'Read the full Terms & conditions': 'Leer los Términos y condiciones completos', 'Privacy & security notice': 'Aviso de privacidad y seguridad',
+  'gate.box': 'He leído y acepto los Términos de uso y el Aviso de privacidad y seguridad',
+  'Accept and continue': 'Aceptar y continuar', 'Decline': 'Rechazar', 'Review again': 'Revisar de nuevo',
+  'gate.declined': 'Necesitas aceptar los términos para usar la app',
+  'gate.thanks': 'Gracias. Aceptaste los Términos de uso.',
+  'gate.nostore': 'Este navegador no está guardando ajustes, así que verás esto de nuevo en tu próxima visita.',
   'tc.summary': '<b>En resumen:</b> la app es gratuita y se ofrece tal cual. Los planes son únicos para cada persona, gerente y empresa, y no garantizan resultados sin un seguimiento adecuado. Tú eres responsable de tus datos, y la app y su desarrolladora no responden por pérdidas de datos.',
   'tc.agree.box': 'He leído y acepto los', 'tc.agree.err': 'Acepta los Términos y condiciones para crear el programa.',
   'tc.h.accept': 'Aceptación', 'tc.accept': 'Al usar Vendor Ramp Tracker aceptas estos términos. Si no estás de acuerdo, no uses la app.',
@@ -806,9 +858,29 @@ const EN_LONG = {
   'vw.dont3': 'Treat them like your employees (titles, badges, benefits, internal events or performance reviews) unless your contract and legal team allow it.',
   'vw.law': 'Rules differ by country. For example, in the United States the joint-employer standard looks at whether a company controls workers\' essential terms of employment, and in Mexico the 2021 outsourcing reform limits subcontracting to specialized services registered with the Labor Ministry (REPSE). This is general guidance, not legal advice: check with your legal and procurement teams.',
   'vw.plan': 'We manage the agreement and team results; the vendor manages its people. Raise these points with the vendor\'s leaders, not with individual agents.',
-  'tc.date': '27 October 2026',
+  'tc.date': '28 October 2026',
+  'tc.accepted': 'You accepted these terms on {d}.',
   'tc.see': 'Rules on use, responsibility and warranties are in the',
-  'tc.banner': 'By using Vendor Ramp Tracker you agree to its Terms & conditions: plans are guidance with no guarantee of results, and deleting data is permanent and your responsibility.',
+  'gate.title': 'Before you start: Terms of use',
+  'gate.intro': "This is a summary of the app's Terms & conditions. To use Vendor Ramp Tracker you need to accept them.",
+  'gate.region': 'Summary of the terms',
+  'gate.h.free': 'Free, and shared for feedback',
+  'gate.free': 'The app is a portfolio project by Karen Tinoco, provided free of charge while people try it and send feedback. Feedback you send can be used to improve the app, without obligation or payment. It is provided as is, and it may change or stop being offered at any time.',
+  'gate.h.results': 'Plans are guidance, with no guaranteed results',
+  'gate.results': 'Every plan is unique to the person, manager and company who set it up, and is based only on the data entered. Scores, verdicts and suggestions are guidance, not legal, HR, financial or contractual advice, and they do not guarantee any result.',
+  'gate.h.data': 'Where your data is kept',
+  'gate.data.local': 'Programs and results are saved in this browser only. Nothing is sent to a server, and the app never sends your data to Claude or any other AI service. Clearing your browser data deletes them.',
+  'gate.data.db': "Programs and results are saved in this page's shared team workspace, and everyone the owner gives access to sees them. Your settings, including this acceptance, stay in this browser. The app never sends your data to Claude or any other AI service.",
+  'gate.h.delete': 'Deleting is permanent and your responsibility',
+  'gate.delete': "Deleted data can't be recovered. You are responsible for the data you enter, export and delete, and the app and its developer are not responsible for any loss of data. Export the CSVs to keep your own copy.",
+  'gate.h.vendors': 'You manage the agreement; the vendor manages its people',
+  'gate.vendors': "The app works at contract and team level. You agree not to use it to direct, schedule, coach, evaluate or discipline a vendor's workers, because that can create co-employment. Rules differ by country; check with your legal team.",
+  'gate.h.license': 'License',
+  'gate.sumfoot': 'This is a summary. The full Terms & conditions apply.',
+  'gate.box': 'I have read and accept the Terms of use and the Privacy & security notice',
+  'gate.declined': 'You need to accept the terms to use the app',
+  'gate.thanks': 'Thanks. You accepted the Terms of use.',
+  'gate.nostore': "This browser isn't saving settings, so you'll see this again on your next visit.",
   'tc.summary': '<b>In short:</b> the app is free and provided as is. Plans are unique to each person, manager and company, and do not guarantee results without proper monitoring. You are responsible for your data, and the app and its developer are not liable for any loss of data.',
   'tc.agree.box': 'I have read and agree to the', 'tc.agree.err': 'Agree to the Terms & conditions to create the program.',
   'tc.h.accept': 'Acceptance', 'tc.accept': "By using Vendor Ramp Tracker you agree to these terms. If you don't agree, don't use the app.",
@@ -1195,7 +1267,7 @@ function openModal(m) {
 }
 function closeModal() {
   ui.modal = null;
-  $('#privModal').hidden = true; document.body.style.overflow = '';
+  $('#privModal').hidden = true; document.body.style.overflow = ui.gate ? 'hidden' : '';
   $('#tabPrivacy').setAttribute('aria-pressed', 'false');
   $('#tabFeedback').setAttribute('aria-pressed', 'false');
   $('#tabTerms').setAttribute('aria-pressed', 'false');
@@ -1204,21 +1276,83 @@ function closeModal() {
 const openPrivacy = (scrollTo) => openModal({ type: 'privacy', scrollTo });
 document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !$('#privModal').hidden) closeModal(); });
 $('#privModal').addEventListener('click', (ev) => { if (ev.target.id === 'privModal') closeModal(); });
+const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+document.addEventListener('keydown', (ev) => {
+  if (ev.key !== 'Tab') return;
+  const box = !$('#privModal').hidden ? $('#privBox') : !$('#tcGate').hidden ? $('#gateBox') : null;
+  if (!box) return;
+  const f = [...box.querySelectorAll(FOCUSABLE)].filter((x) => x.getClientRects().length);
+  const cur = document.activeElement;
+  if (!f.length) { ev.preventDefault(); box.focus(); return; }
+  const first = f[0], last = f[f.length - 1];
+  if (ev.shiftKey && (cur === first || cur === box || !box.contains(cur))) { ev.preventDefault(); last.focus(); }
+  else if (!ev.shiftKey && (cur === last || !box.contains(cur))) { ev.preventDefault(); first.focus(); }
+});
 
 // terms & conditions
-const TC_VERSION = '2026-10-27b';
-const termsAgreed = () => lsGet('vrt.terms', '') === TC_VERSION;
-const agreeTerms = () => lsSet('vrt.terms', TC_VERSION);
+// Bump TC_VERSION when the terms change: everyone sees the gate again.
+const TC_VERSION = '2026-10-28';
+const TC_KEY = 'vrt.terms.acceptance';
+let tcMem = null; // this visit only, for browsers that block storage
+function storedAcceptance() {
+  try { const v = JSON.parse(localStorage.getItem(TC_KEY) || 'null'); return v && v.version === TC_VERSION && v.acceptedAt ? v : null; } catch { return null; }
+}
+const acceptance = () => storedAcceptance() || (tcMem && tcMem.version === TC_VERSION ? tcMem : null);
+const termsAgreed = () => !!acceptance();
+function agreeTerms() {
+  const rec = { version: TC_VERSION, acceptedAt: new Date().toISOString() };
+  tcMem = rec;
+  try { localStorage.setItem(TC_KEY, JSON.stringify(rec)); localStorage.removeItem('vrt.terms'); } catch {}
+}
+function storageOk() { try { const k = 'vrt.__probe'; localStorage.setItem(k, '1'); localStorage.removeItem(k); return true; } catch { return false; } }
+const acceptedOn = () => { const a = acceptance(); const d = a && new Date(a.acceptedAt); return d && !isNaN(d) ? d.toLocaleDateString(DATE_LOCALE(), { year: 'numeric', month: 'long', day: 'numeric' }) : ''; };
 const TC_SECTIONS = ['accept', 'what', 'results', 'advice', 'vendors', 'resp', 'data', 'liability', 'waiver', 'asis', 'license', 'feedback', 'changes', 'contact'];
 const TC_BODY = { results: 'terms.results', data: 'terms.data' };
 function termsHtml() {
-  const agreed = termsAgreed();
+  const on = acceptedOn();
   return `<h1 id="privTitle">${T('Terms & conditions')}</h1>
     <p class="muted">${T('Last updated: {d}', { d: T('tc.date') })}</p>
+    ${on ? `<p class="tc-accepted">${T('tc.accepted', { d: esc(on) })}</p>` : ''}
     <div class="pm-now">${T('tc.summary')}</div>
     <ol class="tc">${TC_SECTIONS.map((k) => `<li><h2>${T('tc.h.' + k)}</h2><p>${T(TC_BODY[k] || 'tc.' + k)}</p></li>`).join('')}</ol>
-    <div class="pm-foot">${agreed ? `<span class="chip good">${T('You agreed to these terms')}</span><button class="btn navy" data-action="modalClose">${T('Close')}</button>`
-      : `<button class="btn" data-action="modalClose">${T('Close')}</button><button class="btn navy" data-action="tcAgree">${T('I agree')}</button>`}</div>`;
+    <div class="pm-foot"><button class="btn navy" data-action="modalClose">${T('Close')}</button></div>`;
+}
+
+// first-use terms gate: blocks the app until the current terms are accepted
+const GATE_ITEMS = ['free', 'results', 'data', 'delete', 'vendors', 'license'];
+const gateBody = (k) => k === 'data' ? T(isShared() ? 'gate.data.db' : 'gate.data.local') : k === 'license' ? T('tc.license') : T('gate.' + k);
+function gateHtml() {
+  const g = ui.gate;
+  const top = `<div class="gate-top"><span class="eyebrow">Vendor Ramp Tracker</span>
+    <div class="lang" role="group" aria-label="${T('Language')}">${['en', 'es'].map((l) => `<button type="button" data-action="lang" data-lang="${l}" aria-pressed="${LANG === l}">${l.toUpperCase()}</button>`).join('')}</div></div>`;
+  if (g.declined) return `${top}<div class="gate-declined"><h1 id="gateTitle" tabindex="-1">${T('gate.declined')}</h1>
+    <button type="button" class="btn navy" id="gateReview" data-action="gateReview">${T('Review again')}</button></div>`;
+  return `${top}<h1 id="gateTitle">${T('gate.title')}</h1>
+    <p class="muted gate-intro" id="gateIntro">${T('gate.intro')} ${T('Last updated: {d}', { d: T('tc.date') })}</p>
+    <div class="gate-scroll" role="region" aria-label="${T('gate.region')}" tabindex="0">
+      <ul class="gate-list">${GATE_ITEMS.map((k) => `<li class="g-${k}"><h2>${T('gate.h.' + k)}</h2><p>${gateBody(k)}</p></li>`).join('')}</ul>
+      <p class="gate-sum-foot">${T('gate.sumfoot')}</p>
+    </div>
+    <p class="gate-links"><a href="#tc-full" data-action="gateTerms">${T('Read the full Terms & conditions')}</a><a href="#privacy" data-action="gatePrivacy">${T('Privacy & security notice')}</a></p>
+    <label class="ack"><input type="checkbox" id="gateAgree" required aria-required="true" ${g.agree ? 'checked' : ''}><span>${T('gate.box')}</span></label>
+    ${storageOk() ? '' : `<p class="gate-note">${T('gate.nostore')}</p>`}
+    <div class="pm-foot"><button type="button" class="btn" data-action="gateDecline">${T('Decline')}</button>
+      <button type="button" class="btn navy" id="gateAccept" data-action="gateAccept" ${g.agree ? '' : 'disabled'}>${T('Accept and continue')}</button></div>`;
+}
+const gateBackground = () => document.querySelectorAll('.hero, .console-wrap, .docs, .foot');
+function renderGate() { if (ui.gate) $('#gateBox').innerHTML = gateHtml(); }
+function openGate() {
+  ui.gate = { agree: false, declined: false };
+  renderGate();
+  $('#tcGate').hidden = false; document.body.classList.add('gated'); document.body.style.overflow = 'hidden';
+  gateBackground().forEach((el) => { el.inert = true; });
+  $('#gateBox').scrollTop = 0; $('#gateBox').focus();
+}
+function closeGate() {
+  ui.gate = null;
+  $('#tcGate').hidden = true; document.body.classList.remove('gated'); document.body.style.overflow = '';
+  gateBackground().forEach((el) => { el.inert = false; });
+  $('#tabProgram').focus({ preventScroll: true });
 }
 
 // two-step delete confirmation
@@ -1347,7 +1481,6 @@ function banner(p) {
   const out = [];
   if (store.mode === 'local') out.push(`<div class="notice warn">${T('Programs and results are saved in this browser only. Use Tableau export to share them or load them into Tableau.')}</div>`);
   if (!store.canWrite && !p.demo) out.push(`<div class="notice warn">${T('You can view this tracker but not change it. Ask the owner for Contributor access to log results.')}</div>`);
-  if (!termsAgreed()) out.push(`<div class="notice tc-banner"><span>${T('tc.banner')}</span><span class="row" style="gap:8px"><button class="btn" data-action="terms">${T('Read the terms')}</button><button class="btn navy" data-action="tcAgree">${T('I agree')}</button></span></div>`);
   if (p.demo) out.push(`<div class="notice" style="display:grid;gap:10px"><p>${T('demo.notice')} <a href="#how">${T('How it scores')}</a></p>
     <div class="player"><button class="btn primary" data-action="play">${ui.playing ? T('Pause') : ui.demoDay >= 98 ? T('Replay from day 1') : T('Play the 90 days')}</button>
       <input type="range" id="demoRange" min="1" max="98" value="${ui.demoDay}" aria-label="${T('Demo day')}">
@@ -1762,10 +1895,19 @@ document.addEventListener('click', async (ev) => {
   if (a !== 'delEntry' && a !== 'delProgram') ui.armed = null;
   const w = ui.wz;
   switch (a) {
-    case 'lang': LANG = el.dataset.lang; try { localStorage.setItem('vrt.lang', LANG); } catch {} if (ui.wz) ui.wz.err = ''; renderStatic(); render(); renderModal(); break;
+    case 'lang': {
+      const inGate = !!el.closest('#gateBox');
+      LANG = el.dataset.lang; try { localStorage.setItem('vrt.lang', LANG); } catch {} if (ui.wz) ui.wz.err = ''; renderStatic(); render(); renderModal(); renderGate();
+      if (inGate) $('#gateBox [data-lang="' + LANG + '"]')?.focus();
+      break;
+    }
     case 'privacy': openPrivacy(); break;
     case 'terms': openModal({ type: 'terms' }); break;
-    case 'tcAgree': agreeTerms(); if (ui.modal?.type === 'terms') closeModal(); render(); toast(T('Thanks. You agreed to the Terms & conditions.')); break;
+    case 'gateTerms': ev.preventDefault(); openModal({ type: 'terms' }); break;
+    case 'gatePrivacy': ev.preventDefault(); openPrivacy(); break;
+    case 'gateAccept': if (!ui.gate?.agree) break; agreeTerms(); closeGate(); render(); toast(T('gate.thanks')); break;
+    case 'gateDecline': if (!ui.gate) break; ui.gate.declined = true; ui.gate.agree = false; renderGate(); $('#gateTitle').focus(); break;
+    case 'gateReview': if (!ui.gate) break; ui.gate.declined = false; renderGate(); $('#gateBox').scrollTop = 0; $('#gateAgree').focus(); break;
     case 'feedback': if (ui.fb?.sent) ui.fb = null; openModal({ type: 'feedback' }); break;
     case 'modalClose': closeModal(); break;
     case 'delNext': if (ui.modal?.ack || ui.modal?.kind === 'all') { ui.modal.step = 2; renderModal(); } break;
@@ -1774,7 +1916,7 @@ document.addEventListener('click', async (ev) => {
       const m = ui.modal; if (!m || m.step !== 2 || (m.kind === 'all' ? !m.ack2 : !m.ack)) break;
       if (m.kind === 'all') {
         closeModal();
-        try { await store.deleteAll(); ui.progId = null; ui.view = 'program'; ui.wz = null; ui.fb = null; render(); store.clearLocal(); toast(T('Your data was deleted.')); }
+        try { await store.deleteAll(); ui.progId = null; ui.view = 'program'; ui.wz = null; ui.fb = null; render(); store.clearLocal(); tcMem = null; toast(T('Your data was deleted.')); if (!termsAgreed()) openGate(); }
         catch { toast(T("Couldn't delete everything. Check your connection and try again.")); }
         break;
       }
@@ -1875,7 +2017,8 @@ document.addEventListener('change', (ev) => {
   if (t.id === 'progSel') { ui.progId = t.value; ui.metricId = null; ui.armed = null; ui.exportText = ''; render(); }
   if (t.id === 'expScope') { ui.exportScope = t.value; ui.exportText = ''; render(); }
   if (t.id === 'demoRange') { stopPlay(); ui.demoDay = +t.value; render(); }
-  if (t.id === 'wzAgree' && ui.wz) { ui.wz.agree = t.checked; if (t.checked) agreeTerms(); const b = $('#wzSaveBtn'); if (b) b.disabled = !t.checked; }
+  if (t.id === 'wzAgree' && ui.wz) { ui.wz.agree = t.checked; const b = $('#wzSaveBtn'); if (b) b.disabled = !t.checked; }
+  if (t.id === 'gateAgree' && ui.gate) { ui.gate.agree = t.checked; const b = $('#gateAccept'); if (b) b.disabled = !t.checked; }
   if (t.id === 'delAck2' && ui.modal) { ui.modal.ack2 = t.checked; const b = $('#delGo'); if (b) b.disabled = !t.checked; }
   if (t.id === 'delAck' && ui.modal) { ui.modal.ack = t.checked; const b = $('#delNext'); if (b) b.disabled = !t.checked; }
   if (t.dataset.fb) { fbState()[t.dataset.fb] = t.value; }
@@ -1910,6 +2053,7 @@ if (ui.view === 'wizard' || ui.view === 'privacy') ui.view = 'program';
 renderStatic();
 render();
 store.init();
+if (!termsAgreed()) openGate();
 })();
 </script>
 
