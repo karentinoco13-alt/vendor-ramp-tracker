@@ -40,7 +40,7 @@ On the public site (GitHub Pages) everything you enter stays in your own web bro
 - **Access:** no accounts or passwords; the app never asks for login details.
 - **Tracking:** no cookies, analytics or advertising trackers.
 - **Shared computers:** anyone using the same browser profile can see saved programs. Export your CSVs and clear browser data when you finish.
-- **Deleting data:** Delete program removes a program and its results right away; clearing browser data removes everything.
+- **Deleting data:** Delete program removes one program and its results. **Delete all my data** (Privacy & security tab and footer) removes every program, result and setting saved in the browser, including the Terms acceptance, after two warnings: the first offers to export a copy, the final one needs a ticked acknowledgment before *Delete permanently* unlocks. In the team version on claude.ai, it deletes the person's own feedback and browser settings; shared programs belong to the team and are deleted one by one.
 - **Exported files:** CSVs are plain text; store and share them according to your company's data policy.
 
 For a shared, live team workspace, the same data model maps onto three Salesforce custom objects (`Ramp_Program__c`, `Ramp_Metric__c`, `Metric_Result__c`) that Tableau can read with its Salesforce connector.

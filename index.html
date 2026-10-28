@@ -317,6 +317,30 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
 .lang { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 .lang button { border: 0; background: var(--surface); padding: 5px 11px; font-weight: 700; font-size: 0.82rem; cursor: pointer; color: var(--muted); }
 .lang button[aria-pressed=true] { background: var(--accent); color: var(--accent-ink); }
+
+/* color pass: phases, tinted headers, verdict, Do/Don't */
+.ph1 { --phc: var(--p1); } .ph2 { --phc: var(--p2); } .ph3 { --phc: var(--p3); } .ph4 { --phc: var(--c-revenue); }
+.card > header { margin: -18px -18px 14px; padding: 12px 18px; border-radius: var(--r) var(--r) 0 0; border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface)); }
+.card[class*=" a-"] > header { background: color-mix(in srgb, var(--ac) 12%, var(--surface)); box-shadow: inset 0 3px 0 var(--ac); }
+.card.plan { border-top: 4px solid var(--phc, var(--accent)); }
+.card.plan > header { background: color-mix(in srgb, var(--phc, var(--accent)) 12%, var(--surface)); }
+.card.plan > header h2 .phn { color: var(--phc); }
+.heat th.ph1, .heat th.ph2, .heat th.ph3 { color: var(--phc); box-shadow: inset 0 -3px 0 var(--phc); }
+.chip.good { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--good) 45%, transparent); }
+.chip.warn { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--warn) 45%, transparent); }
+.chip.bad { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bad) 45%, transparent); }
+.scorebox { border-radius: 12px; padding: 14px 16px; border: 1.5px solid var(--line); background: var(--sunk); }
+.scorebox.v-good { background: var(--good-soft); border-color: color-mix(in srgb, var(--good) 55%, transparent); }
+.scorebox.v-warn { background: var(--warn-soft); border-color: color-mix(in srgb, var(--warn) 55%, transparent); }
+.scorebox.v-bad { background: var(--bad-soft); border-color: color-mix(in srgb, var(--bad) 55%, transparent); }
+.scorebox.v-good .bignum { color: var(--good); } .scorebox.v-warn .bignum { color: var(--warn); } .scorebox.v-bad .bignum { color: var(--bad); }
+.scorebox .cp { background: var(--surface); }
+.vw-do, .vw-dont { border-radius: 10px; padding: 12px 14px 14px; border-left: 5px solid; }
+.vw-do { background: var(--good-soft); border-color: var(--good); } .vw-dont { background: var(--bad-soft); border-color: var(--bad); }
+.vw-do li::marker { color: var(--good); } .vw-dont li::marker { color: var(--bad); }
+.pm-delall { margin-top: 22px; border: 1.5px solid var(--bad); background: var(--bad-soft); border-radius: 10px; padding: 14px 16px; display: grid; gap: 8px; justify-items: start; }
+.pm-delall h2 { color: var(--bad); margin: 0; }
 </style>
 
 <header class="hero">
@@ -368,7 +392,7 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
   <div class="docs-in">
     <p data-t="foot.by">foot.by</p>
     <p><span data-t="foot.copy">foot.copy</span></p>
-    <p class="foot-links"><a href="#demo" data-action="privacy" data-t="Privacy & security">Privacy &amp; security</a> · <a href="#demo" data-action="terms" data-t="Terms & conditions">Terms &amp; conditions</a> · <a href="#demo" data-action="feedback" data-t="Share feedback">Share feedback</a></p>
+    <p class="foot-links"><a href="#demo" data-action="privacy" data-t="Privacy & security">Privacy &amp; security</a> · <a href="#demo" data-action="terms" data-t="Terms & conditions">Terms &amp; conditions</a> · <a href="#demo" data-action="feedback" data-t="Share feedback">Share feedback</a> · <a href="#demo" data-action="delAll" data-t="Delete all my data">Delete all my data</a></p>
     <p data-t="terms.short">terms.short</p>
   </div>
 </footer>
@@ -381,6 +405,16 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
 let LANG = 'en';
 try { LANG = localStorage.getItem('vrt.lang') || ((navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en'); } catch { LANG = (navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en'; }
 const ES = {
+  "Delete all my data": "Borrar todos mis datos",
+  "delall.title": "¿Borrar todos tus datos?",
+  "delall.what.local": "Vas a eliminar <b>todos tus programas, resultados y ajustes</b> guardados en este navegador, incluido tu idioma y tu aceptación de los Términos y condiciones (se te pedirá aceptarlos de nuevo).",
+  "delall.what.db": "Vas a eliminar <b>tus propios datos</b>: los comentarios que enviaste desde esta página y los ajustes guardados en este navegador, incluido tu idioma y tu aceptación de los Términos y condiciones (se te pedirá aceptarlos de nuevo). Los programas y resultados del espacio compartido pertenecen al equipo y no se eliminan aquí: elimínalos uno por uno con Eliminar programa, si te corresponde decidirlo.",
+  "delall.ack": "Entiendo que mis datos se eliminarán de forma permanente y no se pueden recuperar. Acepto toda la responsabilidad por eliminarlos. Acepto que Vendor Ramp Tracker y su desarrolladora no son responsables de ninguna pérdida de datos, y renuncio a cualquier derecho a presentar un reclamo o una demanda contra ellos por ello, en la medida máxima que permita la ley.",
+  "delall.final": "¿Estás seguro? Esto no se puede deshacer y no habrá forma de recuperar tus datos.",
+  "Your data was deleted.": "Tus datos fueron eliminados.",
+  "Couldn't delete everything. Check your connection and try again.": "No se pudo eliminar todo. Revisa tu conexión e inténtalo de nuevo.",
+  "priv.delall.local": "Borra cada programa, resultado y ajuste que esta app guardó para ti en este navegador, después de dos advertencias.",
+  "priv.delall.db": "Borra los comentarios que enviaste y los ajustes guardados en este navegador, después de dos advertencias. Los programas del espacio compartido pertenecen al equipo.",
   'tc.h.vendors': 'Trabajar con equipos de proveedores',
   'tc.vendors': 'La app está pensada para gestionar la relación con un proveedor a nivel de contrato y de equipo. No te pide dirigir, programar, dar coaching, evaluar ni sancionar al personal del proveedor, y aceptas no usarla para eso. Las reglas laborales y de relación laboral compartida cambian según el país; consulta con tu equipo legal antes de cambiar la forma de trabajar con un proveedor.',
   'Working with vendors the right way': 'Trabajar con proveedores de la forma correcta',
@@ -568,7 +602,7 @@ const ES = {
   'terms.short': 'Solo orientación: los planes son únicos para cada persona, gerente y empresa, se basan en los datos ingresados y no garantizan resultados. Eliminar datos es permanente y es tu responsabilidad.',
   'terms.h.results': 'Sin garantía de resultados', 'terms.h.data': 'Tus datos son tu responsabilidad', 'terms.h.asis': 'Se ofrece tal cual',
   'terms.results': 'Cada plan es único y se adapta a la persona, el gerente y la empresa que lo configuran, con base solo en los datos que ingresan. Los puntajes, veredictos y sugerencias son orientación, no asesoría. La app no garantiza ningún resultado sin un seguimiento adecuado del proceso y de todos los datos relevantes.',
-  'terms.data': 'Eres responsable de los datos que ingresas, exportas y eliminas. La app y su desarrolladora no son responsables de ninguna pérdida de datos, incluidos los datos eliminados a propósito o al borrar los datos del navegador. Antes de eliminar, la app te pide reconocer esto dos veces. Exporta los CSV con regularidad para conservar tu propia copia.',
+  'terms.data': 'Eres responsable de los datos que ingresas, exportas y eliminas. La app y su desarrolladora no son responsables de ninguna pérdida de datos, incluidos los datos eliminados a propósito o al borrar los datos del navegador. Antes de eliminar, la app te pide reconocer esto dos veces. Borrar todos mis datos elimina todo lo que la app guardó para ti, incluida tu aceptación de estos términos. Exporta los CSV con regularidad para conservar tu propia copia.',
   'terms.asis': 'La app se ofrece tal cual, sin garantías de ningún tipo, en la medida en que lo permita la ley.',
   'Before you create this plan': 'Antes de crear este plan:',
   'Delete this program?': '¿Eliminar este programa?', 'Delete this result?': '¿Eliminar este resultado?', 'Warning 1 of 2': 'Advertencia 1 de 2', 'Warning 2 of 2': 'Advertencia 2 de 2',
@@ -608,7 +642,7 @@ const ES = {
   'sec.db.conn': 'claude.ai entrega la página por HTTPS.',
   'sec.local.device': 'Cualquier persona que use el mismo perfil del navegador puede abrir la app y ver los programas guardados. En una computadora compartida, exporta tus CSV y borra los datos del navegador al terminar.',
   'sec.db.device': 'Cualquier persona con tu sesión de claude.ai abierta en un dispositivo puede ver el espacio de trabajo. Cierra sesión en computadoras compartidas.',
-  'sec.local.delete': 'Eliminar programa borra de inmediato el programa y todos sus resultados de este navegador. Borrar los datos del navegador elimina todo.',
+  'sec.local.delete': 'Eliminar programa borra de inmediato el programa y todos sus resultados de este navegador. Borrar todos mis datos, en este panel, elimina cada programa, resultado y ajuste después de dos advertencias.',
   'sec.db.delete': 'Eliminar programa borra el programa y todos sus resultados del espacio compartido, para todas las personas.',
   'sec.files': 'Los CSV son archivos de texto simple. Guárdalos y compártelos según la política de datos de tu empresa.', 'Privacy': 'Privacidad',
   'priv.local.intro': 'Todo lo que escribes se queda en tu propio navegador. Este sitio no tiene base de datos ni cuentas, así que nadie más, ni siquiera la autora, puede ver tus programas o resultados.',
@@ -632,6 +666,13 @@ const ES = {
   'doc.about': 'Creado para que las revisiones de incorporación de proveedores sean consistentes y reutilizables entre equipos. Los datos se exportan como archivos CSV ordenados para Tableau, y el modelo de datos corresponde directamente a objetos personalizados de Salesforce para un flujo en vivo. Consulta la pestaña <a href="#demo" data-action="view" data-view="guide">Exportar a Tableau</a>.',
 };
 const EN_LONG = {
+  "delall.title": "Delete all your data?",
+  "delall.what.local": "You are about to delete <b>all your programs, results and settings</b> saved in this browser, including your language choice and your agreement to the Terms &amp; conditions (you'll be asked to agree again).",
+  "delall.what.db": "You are about to delete <b>your own data</b>: the feedback you sent from this page and the settings saved in this browser, including your language choice and your agreement to the Terms &amp; conditions (you'll be asked to agree again). Programs and results in the shared team workspace belong to the team and are not deleted here: delete them one by one with Delete program, if that's yours to decide.",
+  "delall.ack": "I understand my data will be permanently deleted and can't be recovered. I accept full responsibility for deleting it. I agree that Vendor Ramp Tracker and its developer are not responsible for any loss of data, and I give up any right to make a claim or bring a lawsuit against them over it, to the fullest extent the law allows.",
+  "delall.final": "Are you sure? This can't be undone, and there will be no way to get your data back.",
+  "priv.delall.local": "Deletes every program, result and setting this app saved for you in this browser, after two warnings.",
+  "priv.delall.db": "Deletes the feedback you sent and the settings saved in this browser, after two warnings. Programs in the shared workspace belong to the team.",
   'tc.h.vendors': 'Working with vendor teams',
   'tc.vendors': 'The app is designed to manage a vendor relationship at the contract and team level. It does not ask you to direct, schedule, coach, evaluate or discipline a vendor\'s workers, and you agree not to use it to do so. Labor and co-employment rules differ by country; check with your legal team before changing how you work with a vendor.',
   'vw.why': 'You manage the agreement and the team\'s results. The vendor manages its people. Directing a vendor\'s workers as if they were your own staff can make your company look like their employer (co-employment or joint employment), with legal, tax and benefits risks for both companies.',
@@ -664,7 +705,7 @@ const EN_LONG = {
   'terms.short': 'Guidance only: plans are unique to each person, manager and company, are based on the data entered, and do not guarantee results. Deleting data is permanent and your responsibility.',
   'terms.h.results': 'No guarantee of results', 'terms.h.data': 'Your data is your responsibility', 'terms.h.asis': 'Provided as is',
   'terms.results': 'Every plan is unique and tailored to the person, manager and company who set it up, based only on the data they enter. Scores, verdicts and suggestions are guidance, not advice. The app does not guarantee any success without proper monitoring of the journey and all the data relevant to it.',
-  'terms.data': 'You are responsible for the data you enter, export and delete. The app and its developer are not responsible for any loss of data, including data deleted on purpose or by clearing browser data. Before anything is deleted, the app asks you to acknowledge this twice. Export the CSVs regularly to keep your own copy.',
+  'terms.data': 'You are responsible for the data you enter, export and delete. The app and its developer are not responsible for any loss of data, including data deleted on purpose or by clearing browser data. Before anything is deleted, the app asks you to acknowledge this twice. Delete all my data removes everything the app saved for you, including your acceptance of these terms. Export the CSVs regularly to keep your own copy.',
   'terms.asis': 'The app is provided as is, without warranties of any kind, to the extent permitted by law.',
   'Before you create this plan': 'Before you create this plan:',
   'del.program.what': 'You are about to delete <b>{name}</b> and its {n} result(s).', 'del.entry.what': 'You are about to delete the result <b>{name}</b>.',
@@ -694,7 +735,7 @@ const EN_LONG = {
   'sec.db.conn': 'The page is served over HTTPS by claude.ai.',
   'sec.local.device': 'Anyone who uses the same browser profile can open the app and see the saved programs. On a shared computer, export your CSVs and clear the browser data when you finish.',
   'sec.db.device': 'Anyone signed in to your claude.ai account on a device can see the workspace. Sign out on shared computers.',
-  'sec.local.delete': 'Delete program removes a program and all its results from this browser right away. Clearing your browser data removes everything.',
+  'sec.local.delete': 'Delete program removes a program and all its results from this browser right away. Delete all my data, in this panel, removes every program, result and setting after two warnings.',
   'sec.db.delete': 'Delete program removes a program and all its results from the shared workspace, for everyone.',
   'sec.files': "CSV files are plain text. Store and share them according to your company's data policy.",
   'priv.local.intro': 'Everything you enter stays in your own web browser. This site has no database and no accounts, so nobody else, including the author, can see your programs or results.',
@@ -926,6 +967,14 @@ const store = {
     if (!id) throw { code: 'no_user' };
     return this.db.collection('feedback/' + id + '/items').add(data);
   },
+  async deleteAll() {
+    if (this.mode === 'db') {
+      const id = await this.user?.id?.();
+      if (id) { const snap = await this.db.collection('feedback/' + id + '/items').get(); for (const d of snap.docs) await this.db.doc('feedback/' + id + '/items/' + d.id).delete(); }
+    } else { this.programs = []; this.entries = []; }
+    this.clearLocal();
+  },
+  clearLocal() { try { Object.keys(localStorage).filter((k) => k.startsWith('vrt.')).forEach((k) => localStorage.removeItem(k)); } catch {} },
   async deleteProgram(id) {
     const mine = this.entries.filter((e) => e.programId === id);
     if (this.mode === 'db') { for (const e of mine) await this.db.doc('entries/' + e.id).delete(); return this.db.doc('programs/' + id).delete(); }
@@ -995,6 +1044,7 @@ function privacyHtml() {
     <div class="pm-lead ${shared ? 'shared' : ''}">${T('pm.' + k + '.lead')}</div>
     <div class="pm-now"><b>${T('Right now:')}</b> ${T('pm.' + k + '.now')}</div>
     ${sections.map(([h, b]) => `<h2>${T(h)}</h2><p>${b}</p>`).join('')}
+    <div class="pm-delall"><h2>${T('Delete all my data')}</h2><p>${T(shared ? 'priv.delall.db' : 'priv.delall.local')}</p><button class="btn danger" data-action="delAll">${T('Delete all my data')}</button></div>
     <p class="muted pm-switch">${T('priv.switch')}</p>
     <p class="pm-switch">${T('tc.see')} <a href="#demo" data-action="terms">${T('Terms & conditions')}</a></p>
     <div class="pm-foot"><button class="btn navy" data-action="modalClose">${T('Close')}</button></div>`;
@@ -1051,6 +1101,21 @@ function termsHtml() {
 
 // two-step delete confirmation
 function deleteHtml(m) {
+  if (m.kind === 'all') {
+    const what = T(isShared() ? 'delall.what.db' : 'delall.what.local');
+    if (m.step === 1) return `<h1 id="privTitle">${T('delall.title')}</h1>
+    <p class="eyebrow pm-step">${T('Warning 1 of 2')}</p>
+    <div class="pm-warn">${what} ${T('del.permanent')}</div>
+    <p>${T('del.export')}</p>
+    <div class="pm-foot"><button class="btn" data-action="delExport">${T('Export a copy first')}</button><button class="btn primary" data-action="modalClose">${T('Keep my data')}</button>
+      <button class="btn danger armed" data-action="delNext">${T('Continue')}</button></div>`;
+    return `<h1 id="privTitle">${T('Final warning')}</h1>
+    <p class="eyebrow pm-step">${T('Warning 2 of 2')}</p>
+    <div class="pm-warn">${T('delall.final')}</div>
+    <label class="ack"><input type="checkbox" id="delAck2" ${m.ack2 ? 'checked' : ''}><span>${T('delall.ack')}</span></label>
+    <div class="pm-foot"><button class="btn primary" data-action="modalClose">${T('Keep my data')}</button>
+      <button class="btn danger armed" id="delGo" data-action="delConfirm" ${m.ack2 ? '' : 'disabled'}>${T('Delete permanently')}</button></div>`;
+  }
   const what = m.kind === 'program' ? T('del.program.what', { name: esc(m.label), n: m.count }) : T('del.entry.what', { name: esc(m.label) });
   if (m.step === 1) return `<h1 id="privTitle">${m.kind === 'program' ? T('Delete this program?') : T('Delete this result?')}</h1>
     <p class="eyebrow pm-step">${T('Warning 1 of 2')}</p>
@@ -1186,8 +1251,8 @@ function plan(p, A) {
   const focusRows = list.filter((a) => a.level !== 'good').sort((a, b) => rank[b.level] - rank[a.level]);
   const strengths = list.filter((a) => a.level === 'good');
   const mlist = (a) => a.rows.map(({ r, st }) => `<span class="pm ${st}">${esc(mName(r.m))} ${pct(r.cur.att)}</span>`).join('');
-  return `<section class="card plan">
-    <header><h2>${T('Partnership plan')} · ${T('{name} phase', { name: T(PHASES[A.curPhase].name) })}</h2><span class="muted" style="font-size:.85rem">${T('What to raise with the vendor\'s leaders, and the support we provide under the agreement. Areas on track are listed as strengths.')}</span></header>
+  return `<section class="card plan ph${A.curPhase + 1}">
+    <header><h2>${T('Partnership plan')} · <span class="phn">${T('{name} phase', { name: T(PHASES[A.curPhase].name) })}</span></h2><span class="muted" style="font-size:.85rem">${T('What to raise with the vendor\'s leaders, and the support we provide under the agreement. Areas on track are listed as strengths.')}</span></header>
     ${focusRows.length ? `<div class="tbl-wrap"><table class="plan-t"><thead><tr><th>${T('Area')}</th><th>${T('What we ask the vendor\'s leaders to address')}</th><th>${T('Support we provide under the agreement')}</th></tr></thead><tbody>
       ${focusRows.map((a) => `<tr class="a-${a.k}"><td><div class="row" style="gap:8px;align-items:center"><b class="area"><i class="dot"></i>${areaName(a.k)}</b><span class="chip ${a.level}">${T(STATUS[a.level])}</span></div><div class="pms">${mlist(a)}</div></td>
         <td>${T('coach.' + a.k)}</td><td>${a.level === 'bad' ? T('help.' + a.k) : '<span class="muted">—</span>'}</td></tr>`).join('')}
@@ -1266,7 +1331,7 @@ function renderProgram(p) {
           <div class="tl-axis"><span>30</span><span>60</span><span>90</span></div>
         </div>
       </div>
-      <div class="scorebox">
+      <div class="scorebox v-${A.verdict.s}">
         <span class="eyebrow">${d > 90 ? T('Day 90 proficiency score') : T('Current phase score')}</span>
         <div class="row" style="align-items:center;gap:14px"><span class="bignum">${pct(d > 90 ? A.scores[2].score : A.cur.score)}</span><span class="chip ${A.verdict.s}">${esc(A.verdict.t)}</span></div>
         <p class="muted" style="font-size:.85rem">${T("Weighted attainment against this phase's ramp target. 100% means every metric is at target.")}</p>
@@ -1290,7 +1355,7 @@ function renderProgram(p) {
     </section>
     <section class="card">
       <header><h2>${T('30 / 60 / 90 checkpoint review')}</h2><span class="muted" style="font-size:.85rem">${T("Phase average vs. that phase's target")}</span></header>
-      <div class="tbl-wrap"><table class="heat"><thead><tr><th>${T('Metric')}</th>${PHASES.slice(0, 3).map((x, i) => `<th style="text-align:center">${T(x.label)} · ${T('{p}% of goal', { p: Math.round(p.ramp[i] * 100) })}</th>`).join('')}</tr></thead><tbody>${heatRows}</tbody></table></div>
+      <div class="tbl-wrap"><table class="heat"><thead><tr><th>${T('Metric')}</th>${PHASES.slice(0, 3).map((x, i) => `<th class="ph${i + 1}" style="text-align:center">${T(x.label)} · ${T('{p}% of goal', { p: Math.round(p.ramp[i] * 100) })}</th>`).join('')}</tr></thead><tbody>${heatRows}</tbody></table></div>
     </section>
   </div>
 
@@ -1334,7 +1399,7 @@ function chart(p, r, today) {
   const x = (d) => L + (d / maxDay) * (W - L - R);
   const y = (v) => T0 + (1 - (v - lo) / (hi - lo)) * (H - T0 - B);
   let g = '';
-  [[1, 30], [61, 90]].forEach(([a, b]) => { g += `<rect x="${x(a - 1)}" y="${T0}" width="${x(b) - x(a - 1)}" height="${H - T0 - B}" fill="var(--band)"/>`; });
+  [[1, 30, 'var(--p1)'], [31, 60, 'var(--p2)'], [61, 90, 'var(--p3)']].forEach(([a, b, c]) => { g += `<rect x="${x(a - 1)}" y="${T0}" width="${x(b) - x(a - 1)}" height="${H - T0 - B}" fill="${c}" fill-opacity="0.07"/>`; });
   for (let v = lo; v <= hi + step / 2; v += step) {
     g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/>`;
     g += `<text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="JetBrains Mono, monospace">${esc(fmt(round(v, 2), m.unit === '%' || m.unit === '$' ? m.unit : '#'))}</text>`;
@@ -1581,10 +1646,16 @@ document.addEventListener('click', async (ev) => {
     case 'tcAgree': agreeTerms(); if (ui.modal?.type === 'terms') closeModal(); render(); toast(T('Thanks. You agreed to the Terms & conditions.')); break;
     case 'feedback': if (ui.fb?.sent) ui.fb = null; openModal({ type: 'feedback' }); break;
     case 'modalClose': closeModal(); break;
-    case 'delNext': if (ui.modal?.ack) { ui.modal.step = 2; renderModal(); } break;
-    case 'delExport': { const m = ui.modal; closeModal(); if (m?.kind === 'program') ui.exportScope = 'current'; ui.view = 'guide'; ui.exportText = ''; render(); break; }
+    case 'delNext': if (ui.modal?.ack || ui.modal?.kind === 'all') { ui.modal.step = 2; renderModal(); } break;
+    case 'delExport': { const m = ui.modal; closeModal(); ui.exportScope = m?.kind === 'program' ? 'current' : 'all'; ui.view = 'guide'; ui.exportText = ''; render(); break; }
     case 'delConfirm': {
-      const m = ui.modal; if (!m || !m.ack || m.step !== 2) break;
+      const m = ui.modal; if (!m || m.step !== 2 || (m.kind === 'all' ? !m.ack2 : !m.ack)) break;
+      if (m.kind === 'all') {
+        closeModal();
+        try { await store.deleteAll(); ui.progId = null; ui.view = 'program'; ui.wz = null; ui.fb = null; render(); store.clearLocal(); toast(T('Your data was deleted.')); }
+        catch { toast(T("Couldn't delete everything. Check your connection and try again.")); }
+        break;
+      }
       closeModal();
       if (m.kind === 'entry') { try { await store.deleteEntry(m.id); toast(T('Entry deleted')); } catch { toast(T("Couldn't delete the entry. Try again.")); } }
       else { ui.progId = null; try { await store.deleteProgram(m.id); toast(T('Program deleted')); } catch { toast(T("Couldn't delete the program. Try again.")); } render(); }
@@ -1618,6 +1689,7 @@ document.addEventListener('click', async (ev) => {
       openModal({ type: 'delete', kind: 'entry', id: e.id, label: (m ? mName(m) : '') + ' · ' + e.date + ' · ' + fmt(+e.value, m?.unit), step: 1, ack: false });
       break;
     }
+    case 'delAll': openModal({ type: 'delete', kind: 'all', step: 1, ack: false, ack2: false }); break;
     case 'delProgram': {
       const p = getProgram(ui.progId); if (!p || p.demo) break;
       openModal({ type: 'delete', kind: 'program', id: p.id, label: p.vendor + (p.team ? ' · ' + p.team : ''), count: entriesFor(p).length, step: 1, ack: false });
@@ -1682,6 +1754,7 @@ document.addEventListener('change', (ev) => {
   if (t.id === 'expScope') { ui.exportScope = t.value; ui.exportText = ''; render(); }
   if (t.id === 'demoRange') { stopPlay(); ui.demoDay = +t.value; render(); }
   if (t.id === 'wzAgree' && ui.wz) { ui.wz.agree = t.checked; if (t.checked) agreeTerms(); const b = $('#wzSaveBtn'); if (b) b.disabled = !t.checked; }
+  if (t.id === 'delAck2' && ui.modal) { ui.modal.ack2 = t.checked; const b = $('#delGo'); if (b) b.disabled = !t.checked; }
   if (t.id === 'delAck' && ui.modal) { ui.modal.ack = t.checked; const b = $('#delNext'); if (b) b.disabled = !t.checked; }
   if (t.dataset.fb) { fbState()[t.dataset.fb] = t.value; }
 });
