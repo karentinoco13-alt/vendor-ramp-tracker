@@ -341,6 +341,128 @@ code { font-family: var(--f-mono); font-size: 0.86em; background: var(--sunk); p
 .vw-do li::marker { color: var(--good); } .vw-dont li::marker { color: var(--bad); }
 .pm-delall { margin-top: 22px; border: 1.5px solid var(--bad); background: var(--bad-soft); border-radius: 10px; padding: 14px 16px; display: grid; gap: 8px; justify-items: start; }
 .pm-delall h2 { color: var(--bad); margin: 0; }
+/* color pass 2: section identities, tinted page, solid status chips, colored tabs */
+:root {
+  --sec-ramp: #0369a1; --sec-score: #6d28d9; --sec-risk: #c2410c; --sec-comp: #0f766e; --sec-log: #15803d; --sec-entries: #be185d;
+  --sec-guide: #4338ca; --sec-terms: #b45309; --sec-feedback: #be185d; --sec-delete: #b8372a; --on-solid: #ffffff;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --sec-ramp: #7dd3fc; --sec-score: #c4b5fd; --sec-risk: #fdba74; --sec-comp: #5eead4; --sec-log: #86efac; --sec-entries: #f9a8d4;
+  --sec-guide: #a5b4fc; --sec-terms: #fcd34d; --sec-feedback: #f9a8d4; --sec-delete: #f07a6b; --on-solid: #0b1215; } }
+:root[data-theme="dark"] {
+  --sec-ramp: #7dd3fc; --sec-score: #c4b5fd; --sec-risk: #fdba74; --sec-comp: #5eead4; --sec-log: #86efac; --sec-entries: #f9a8d4;
+  --sec-guide: #a5b4fc; --sec-terms: #fcd34d; --sec-feedback: #f9a8d4; --sec-delete: #f07a6b; --on-solid: #0b1215; }
+
+/* soft tinted page instead of flat white */
+body { background: color-mix(in srgb, var(--p2) 6%, var(--page)); }
+.console { background: color-mix(in srgb, var(--p1) 5%, var(--bg)); }
+.wrap { background: linear-gradient(165deg, color-mix(in srgb, var(--p1) 8%, transparent), color-mix(in srgb, var(--p2) 7%, transparent) 55%, color-mix(in srgb, var(--p3) 6%, transparent)); }
+.bar { background: linear-gradient(90deg, color-mix(in srgb, var(--p1) 9%, var(--surface)), color-mix(in srgb, var(--p2) 9%, var(--surface)) 60%, color-mix(in srgb, var(--p3) 7%, var(--surface))); }
+.docs { background: color-mix(in srgb, var(--sec-comp) 5%, transparent); }
+.foot { background: color-mix(in srgb, var(--p2) 6%, transparent); }
+
+/* every tab has its own color; the open tab is solid */
+#tabProgram { --tc: var(--sec-score); } #tabWizard { --tc: var(--sec-log); } #tabGuide { --tc: var(--sec-guide); }
+#tabPrivacy { --tc: var(--sec-comp); } #tabTerms { --tc: var(--sec-terms); } #tabFeedback { --tc: var(--sec-feedback); }
+.tabs { background: color-mix(in srgb, var(--surface) 70%, transparent); border: 1px solid var(--line); flex-wrap: wrap; }
+.tabs button { color: color-mix(in srgb, var(--tc) 72%, var(--ink)); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.tabs button::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--tc); flex: none; }
+.tabs button:hover { background: color-mix(in srgb, var(--tc) 14%, transparent); }
+.tabs button[aria-pressed=true] { background: var(--tc); color: var(--on-solid); box-shadow: 0 2px 6px color-mix(in srgb, var(--tc) 35%, transparent); }
+.tabs button[aria-pressed=true]::before { background: var(--on-solid); }
+
+/* cards: section color as a thick left border, tinted body, colored header band */
+.card { --sc: var(--accent); background: color-mix(in srgb, var(--sc) 4%, var(--surface)); border-color: color-mix(in srgb, var(--sc) 22%, var(--line)); border-left: 6px solid var(--sc); }
+.card > header { background: color-mix(in srgb, var(--sc) 15%, var(--surface)); box-shadow: inset 0 4px 0 var(--sc); border-bottom-color: color-mix(in srgb, var(--sc) 30%, var(--line)); margin-left: -18px; border-top-left-radius: 0; }
+.card > header h1, .card > header h2, .card > h2, .card > h3 { color: color-mix(in srgb, var(--sc) 70%, var(--ink)); }
+.card > header .muted { color: color-mix(in srgb, var(--sc) 30%, var(--ink)); }
+.card[class*=" a-"] > header { background: color-mix(in srgb, var(--sc) 15%, var(--surface)); box-shadow: inset 0 4px 0 var(--sc); }
+.card:has(> .summary) { --sc: var(--sec-ramp); }
+.card:has(> .summary) + .card { --sc: var(--sec-score); }
+.card.chart { --sc: var(--ac, var(--sec-score)); }
+.grid2 > .card:has(.heat) { --sc: var(--sec-ramp); }
+.card:has(#logForm) { --sc: var(--sec-log); }
+.card:has(#logForm) + .card { --sc: var(--sec-entries); }
+.card.plan { --sc: var(--sec-risk); border-top: 0; }
+.card.plan > header { background: color-mix(in srgb, var(--sc) 15%, var(--surface)); box-shadow: inset 0 4px 0 var(--phc, var(--sc)); }
+.guide > .card:first-child { --sc: var(--sec-guide); }
+.guide .grid2 > .card:nth-child(1) { --sc: var(--sec-score); }
+.guide .grid2 > .card:nth-child(2) { --sc: var(--sec-ramp); }
+.guide .grid2 > .card > h2 { padding-bottom: 8px; margin-bottom: 10px; border-bottom: 3px solid color-mix(in srgb, var(--sc) 45%, transparent); }
+.wz > .card { --sc: var(--sec-log); }
+.card .card.review { border-left-width: 4px; }
+pre.code { background: color-mix(in srgb, var(--sc, var(--accent)) 10%, var(--surface)); border-left: 4px solid var(--sc, var(--accent)); }
+
+/* ramp stages: tinted phase segments and checkpoints */
+.summary h1 { color: color-mix(in srgb, var(--sec-ramp) 55%, var(--ink)); }
+.summary .eyebrow { color: color-mix(in srgb, var(--sec-ramp) 70%, var(--ink)); }
+.tl-seg:not(.done):not(.now) { background: color-mix(in srgb, var(--pc) 13%, var(--surface)); color: color-mix(in srgb, var(--pc) 55%, var(--ink)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pc) 35%, transparent); }
+.tl-seg.done { background: color-mix(in srgb, var(--pc) 30%, var(--surface)); }
+.checkpoints .cp { background: color-mix(in srgb, var(--pc) 9%, var(--surface)); border-color: color-mix(in srgb, var(--pc) 30%, var(--line)); }
+.checkpoints .cp .eyebrow { color: color-mix(in srgb, var(--pc) 70%, var(--ink)); }
+
+/* tables: tinted header row and striped rows */
+.card th { background: color-mix(in srgb, var(--sc, var(--accent)) 14%, var(--surface)); color: color-mix(in srgb, var(--sc, var(--accent)) 60%, var(--ink)); border-bottom: 2px solid color-mix(in srgb, var(--sc, var(--accent)) 45%, transparent); }
+.heat th.ph1, .heat th.ph2, .heat th.ph3 { background: color-mix(in srgb, var(--phc) 16%, var(--surface)); color: color-mix(in srgb, var(--phc) 60%, var(--ink)); }
+.card tbody tr:nth-child(even):not(.sel) > td:not(.cell) { background: color-mix(in srgb, var(--sc, var(--accent)) 7%, transparent); }
+.card tbody tr.click:not(.sel):hover > td { background: color-mix(in srgb, var(--sc, var(--accent)) 14%, transparent); }
+.card tr.sel > td { background: color-mix(in srgb, var(--sc, var(--accent)) 20%, var(--surface)); }
+.card tr.sel > td:first-child { box-shadow: inset 4px 0 0 var(--sc, var(--accent)); }
+td { border-bottom-color: color-mix(in srgb, var(--sc, var(--accent)) 15%, var(--line)); }
+.cell.good { background: color-mix(in srgb, var(--good) 20%, var(--surface)); color: color-mix(in srgb, var(--good) 65%, var(--ink)); }
+.cell.warn { background: color-mix(in srgb, var(--warn) 20%, var(--surface)); color: color-mix(in srgb, var(--warn) 65%, var(--ink)); }
+.cell.bad { background: color-mix(in srgb, var(--bad) 20%, var(--surface)); color: color-mix(in srgb, var(--bad) 65%, var(--ink)); }
+
+/* status chips and pills: solid green / amber / red */
+.chip.good, .pill.good { background: var(--good); color: var(--on-solid); box-shadow: none; }
+.chip.warn, .pill.warn { background: var(--warn); color: var(--on-solid); box-shadow: none; }
+.chip.bad, .pill.bad { background: var(--bad); color: var(--on-solid); box-shadow: none; }
+.chip.none, .pill.none { background: color-mix(in srgb, var(--muted) 18%, var(--surface)); color: color-mix(in srgb, var(--muted) 60%, var(--ink)); }
+.pm.good { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--good) 50%, transparent); }
+.pm.warn { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--warn) 50%, transparent); }
+.pm.bad { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bad) 50%, transparent); }
+
+/* notices */
+.notice { border-left: 5px solid var(--sec-ramp); background: color-mix(in srgb, var(--sec-ramp) 12%, var(--surface)); }
+.notice.warn, .notice.tc-banner { border-left-color: var(--warn); background: color-mix(in srgb, var(--warn) 16%, var(--surface)); }
+
+/* compliance / co-employment notes */
+.vw { background: color-mix(in srgb, var(--sec-comp) 7%, var(--surface)); border-color: color-mix(in srgb, var(--sec-comp) 30%, var(--line)); border-left: 7px solid var(--sec-comp); }
+.vw > h3 { color: color-mix(in srgb, var(--sec-comp) 70%, var(--ink)); font-size: 1.15rem; }
+.vw-law { border-top: 2px dashed color-mix(in srgb, var(--sec-comp) 40%, transparent); padding-top: 10px; }
+.vw-note { background: color-mix(in srgb, var(--sec-comp) 11%, var(--surface)); border-left: 4px solid var(--sec-comp); border-radius: 8px; padding: 10px 14px; color: color-mix(in srgb, var(--sec-comp) 25%, var(--ink)); }
+.tc li:nth-child(5) { background: color-mix(in srgb, var(--sec-comp) 10%, var(--surface)); border-left: 4px solid var(--sec-comp); border-radius: 8px; padding: 2px 14px 12px; margin: 10px 0; }
+
+/* docs section */
+.flow li { background: color-mix(in srgb, var(--fc) 8%, var(--surface)); border-color: color-mix(in srgb, var(--fc) 28%, var(--line)); }
+.flow li .flow-n { color: color-mix(in srgb, var(--fc) 70%, var(--ink)); }
+.docs-grid > div { background: color-mix(in srgb, var(--dc) 7%, var(--surface)); border-radius: 0 10px 10px 0; padding: 14px 16px; }
+.docs-grid h3 { color: color-mix(in srgb, var(--dc) 65%, var(--ink)); }
+
+/* privacy, terms, feedback and delete dialogs each get a color */
+.modal { --mc: var(--accent); background: color-mix(in srgb, var(--mc) 4%, var(--surface)); border-left: 6px solid var(--mc); }
+.modal:has(.pm-delall) { --mc: var(--sec-comp); }
+.modal:has(ol.tc) { --mc: var(--sec-terms); }
+.modal:has(.fb) { --mc: var(--sec-feedback); }
+.modal:has(.pm-warn) { --mc: var(--sec-delete); }
+.modal::before { background: linear-gradient(90deg, var(--mc), color-mix(in srgb, var(--mc) 40%, var(--p2))); height: 7px; }
+.modal h1 { color: color-mix(in srgb, var(--mc) 65%, var(--ink)); }
+.modal h2 { color: color-mix(in srgb, var(--mc) 60%, var(--ink)); border-left: 4px solid var(--mc); padding-left: 10px; }
+.modal .pm-delall h2 { border-left: 0; padding-left: 0; color: var(--bad); }
+.tc li::marker { color: var(--mc); }
+.modal .pm-now { background: color-mix(in srgb, var(--mc) 12%, var(--surface)); border-left: 4px solid var(--mc); }
+.modal .ack { background: color-mix(in srgb, var(--mc) 8%, var(--surface)); border-color: color-mix(in srgb, var(--mc) 30%, var(--line)); }
+/* AA contrast on the new tints */
+:root { --shade: #0f2740; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --shade: #ffffff; } }
+:root[data-theme="dark"] { --shade: #ffffff; }
+.card.plan > header h2 .phn { color: color-mix(in srgb, var(--phc) 60%, var(--ink)); }
+.tl-seg.now { background: color-mix(in srgb, var(--pc) 62%, var(--shade)); color: var(--on-solid); }
+.checkpoints .cp .eyebrow { color: color-mix(in srgb, var(--pc) 55%, var(--ink)); }
+.pm.good { color: color-mix(in srgb, var(--good) 70%, var(--ink)); } .pm.warn { color: color-mix(in srgb, var(--warn) 70%, var(--ink)); } .pm.bad { color: color-mix(in srgb, var(--bad) 70%, var(--ink)); }
+.card .dir, .choice small, .docs .eyebrow, .docs-p { color: color-mix(in srgb, var(--muted) 70%, var(--ink)); }
+.flow li .flow-n { color: color-mix(in srgb, var(--fc) 55%, var(--ink)); }
+.vw-do > b { color: color-mix(in srgb, var(--good) 70%, var(--ink)); } .vw-dont > b { color: color-mix(in srgb, var(--bad) 70%, var(--ink)); }
 </style>
 
 <header class="hero">
