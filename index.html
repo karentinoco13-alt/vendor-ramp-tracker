@@ -1328,7 +1328,7 @@ function fbText() {
 }
 const GH_ISSUES = 'https://github.com/karentinoco13-alt/vendor-ramp-tracker/issues/new';
 const fbUrl = () => GH_ISSUES + '?title=' + encodeURIComponent('Feedback: ' + (fbState().comment || 'Vendor Ramp Tracker').slice(0, 60)) + '&body=' + encodeURIComponent(fbText());
-const FEEDBACK_ENDPOINT = '';  // Google Apps Script web app URL; set by owner
+const FEEDBACK_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxHYLwYatf0CjrD8Y2IO5rVQUmlQUi7X1NVVkAiU0Oi7VpmJZJicC5-5bs7cOYQsyrdrA/exec';  // private Google Apps Script web app (feedback inbox)
 async function sendFeedbackToOwner(payload) { // payload = {app, page, language, ...form fields, submitted}
   if (!FEEDBACK_ENDPOINT) return false;
   const body = JSON.stringify(payload);
