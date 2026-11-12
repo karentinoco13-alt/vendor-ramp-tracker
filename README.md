@@ -47,7 +47,7 @@ For a shared, live team workspace, the same data model maps onto three Salesforc
 
 ## Terms & conditions
 
-See [TERMS.md](TERMS.md). The same terms are in the app's **Terms** tab, in English and Spanish. Visitors see an acceptance banner until they agree, and must tick "I have read and agree to the Terms & conditions" before creating a program. Deleting data shows two warnings, including an acknowledgement that the app and its developer are not responsible for lost data.
+See [TERMS.md](TERMS.md). The same terms are in the app's **Terms** tab, in English and Spanish. Nothing blocks the app: a one-line notice at the bottom says that using the app means agreeing to the Terms and Privacy notice, and "OK" hides it (it comes back when the terms change). Actions that share data beyond the visitor's browser show a short agreement at that moment: sending feedback, and creating a program in the shared team version on claude.ai. Deleting data shows two warnings, including an acknowledgement that the app and its developer are not responsible for lost data.
 
 ## Feedback
 

@@ -462,36 +462,26 @@ td { border-bottom-color: color-mix(in srgb, var(--sc, var(--accent)) 15%, var(-
 .card .dir, .choice small, .docs .eyebrow, .docs-p { color: color-mix(in srgb, var(--muted) 70%, var(--ink)); }
 .flow li .flow-n { color: color-mix(in srgb, var(--fc) 55%, var(--ink)); }
 .vw-do > b { color: color-mix(in srgb, var(--good) 70%, var(--ink)); } .vw-dont > b { color: color-mix(in srgb, var(--bad) 70%, var(--ink)); }
-/* terms gate: blocking first-use dialog in the terms color */
-.gate { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; overflow: hidden;
-  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
-  background: radial-gradient(55% 75% at 88% 8%, rgba(124, 58, 237, 0.42), transparent 62%), radial-gradient(45% 65% at 100% 85%, rgba(219, 39, 119, 0.30), transparent 62%),
-    radial-gradient(40% 60% at 10% 100%, color-mix(in srgb, var(--sec-terms) 45%, transparent), transparent 62%), var(--navy); }
-.gate[hidden] { display: none; }
-body.gated #privModal { z-index: 50; }
-.gate-box { --mc: var(--sec-terms); display: flex; flex-direction: column; max-height: 100%; }
-.gate-box > * { flex: none; }
-.gate-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
-.gate-top .eyebrow { color: color-mix(in srgb, var(--mc) 65%, var(--ink)); }
-.gate-box h1 { margin-bottom: 6px; }
-.gate-intro { margin-bottom: 12px; }
-.gate-scroll { flex: 1 1 auto; min-height: 7rem; overflow-y: auto; overscroll-behavior: contain; border: 1px solid color-mix(in srgb, var(--mc) 35%, var(--line)); border-radius: 10px;
-  background: color-mix(in srgb, var(--mc) 6%, var(--surface)); padding: 2px 16px 14px; }
-.gate-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
-.gate-list li { --gc: var(--mc); }
-.gate-list li.g-free { --gc: var(--sec-feedback); } .gate-list li.g-results { --gc: var(--sec-score); } .gate-list li.g-data { --gc: var(--sec-ramp); }
-.gate-list li.g-delete { --gc: var(--sec-delete); } .gate-list li.g-vendors { --gc: var(--sec-comp); } .gate-list li.g-license { --gc: var(--sec-terms); }
-.modal .gate-list h2 { font-size: 1.02rem; margin: 14px 0 4px; border-left-color: var(--gc); color: color-mix(in srgb, var(--gc) 60%, var(--ink)); }
-.gate-list li.g-vendors { background: color-mix(in srgb, var(--sec-comp) 10%, var(--surface)); border-left: 4px solid var(--sec-comp); border-radius: 8px; padding: 0 12px 10px; margin-top: 8px; }
-.modal .gate-list li.g-vendors h2 { border-left: 0; padding-left: 0; }
-.gate-list p { font-size: 0.93rem; }
-.gate-sum-foot { margin-top: 14px; font-size: 0.9rem; color: color-mix(in srgb, var(--muted) 70%, var(--ink)); }
-.gate-links { margin-top: 12px; font-size: 0.92rem; display: flex; flex-wrap: wrap; gap: 4px 16px; }
-.gate-links a { font-weight: 600; }
-.gate-box .ack input { accent-color: var(--mc); }
-.gate-box .pm-foot { margin-top: 14px; }
-.gate-note { margin-top: 10px; font-size: 0.85rem; color: color-mix(in srgb, var(--warn) 70%, var(--ink)); }
-.gate-declined { display: grid; gap: 18px; justify-items: start; padding: 12px 0 4px; }
+/* terms notice: one dismissible line at the bottom; using the app counts as acceptance */
+.tc-note { position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 14px;
+  padding: 8px max(16px, env(safe-area-inset-right, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: var(--surface); border-top: 1px solid var(--line); box-shadow: 0 -4px 16px rgba(8, 18, 30, 0.12); font-size: 0.9rem; }
+.tc-note[hidden] { display: none; }
+.fb-agree { font-size: 0.85rem; margin-top: 10px; }
+.fb-alt { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; font-size: 0.9rem; }
+.tc-note a { font-weight: 600; }
+.tc-note .btn { min-height: 40px; padding: 6px 18px; }
+body.has-note .foot { padding-bottom: 80px; }
+body.has-note .toast { bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+/* phones: 40px tap targets, 16px inputs (no iOS zoom on focus) */
+@media (max-width: 720px) {
+  .btn, .lang button, .tabs button, .fb-n, select { min-height: 40px; }
+  .lang button { min-width: 40px; }
+  body :is(input:not([type=checkbox]):not([type=radio]):not([type=range]), select, textarea) { font-size: 16px; }
+  input[type=range] { min-height: 40px; }
+  .foot-links a { display: inline-block; padding: 10px 0; }
+  .tc-note { flex-wrap: nowrap; justify-content: space-between; }
+}
 .tc-accepted { background: var(--good-soft); color: color-mix(in srgb, var(--good) 70%, var(--ink)); border-left: 4px solid var(--good); border-radius: 8px; padding: 8px 12px; font-weight: 600; margin: 10px 0 0; }
 </style>
 
@@ -548,7 +538,7 @@ body.gated #privModal { z-index: 50; }
     <p data-t="terms.short">terms.short</p>
   </div>
 </footer>
-<div class="gate" id="tcGate" hidden><div class="modal gate-box" role="dialog" aria-modal="true" aria-labelledby="gateTitle" aria-describedby="gateIntro" tabindex="-1" id="gateBox"></div></div>
+<div class="tc-note" id="tcNote" hidden><span id="tcNoteText"></span><button type="button" class="btn navy" data-action="tcNoteOk">OK</button></div>
 <div class="modal-back" id="privModal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="privTitle" tabindex="-1" id="privBox"></div></div>
 <div class="toast" id="toast" hidden></div>
 
@@ -735,30 +725,12 @@ const ES = {
   'Terms': 'Términos', 'Terms & conditions': 'Términos y condiciones', 'Last updated: {d}': 'Última actualización: {d}', 'tc.date': '12 de noviembre de 2026',
   'tc.accepted': 'Aceptaste estos términos el {d}.', 'Language': 'Idioma',
   'tc.see': 'Las reglas de uso, responsabilidad y garantías están en', 
-  'gate.title': 'Antes de empezar: Términos de uso',
-  'gate.intro': 'Este es un resumen de los Términos y condiciones de la app. Para usar Vendor Ramp Tracker necesitas aceptarlos.',
-  'gate.region': 'Resumen de los términos',
-  'gate.h.free': 'Gratuita y compartida para recibir comentarios',
-  'gate.free': 'La app es un proyecto de portafolio de Karen Tinoco y se ofrece sin costo mientras las personas la prueban y envían comentarios. Los comentarios que envíes pueden usarse para mejorar la app, sin obligación ni pago. Se ofrece tal cual y puede cambiar o dejar de ofrecerse en cualquier momento.',
-  'gate.h.results': 'Los planes son orientación, sin resultados garantizados',
-  'gate.results': 'Cada plan es único para la persona, el gerente y la empresa que lo configuran, y se basa solo en los datos ingresados. Los puntajes, veredictos y sugerencias son orientación, no asesoría legal, de recursos humanos, financiera ni contractual, y no garantizan ningún resultado.',
-  'gate.h.data': 'Dónde se guardan tus datos',
-  'gate.data.local': 'Los programas y resultados se guardan solo en este navegador. Nada se envía a un servidor, y la app nunca envía tus datos a Claude ni a ningún otro servicio de IA. Borrar los datos del navegador los elimina.',
-  'gate.data.db': 'Los programas y resultados se guardan en el espacio de equipo compartido de esta página, y todas las personas a las que el propietario da acceso los ven. Tus ajustes, incluida esta aceptación, se quedan en este navegador. La app nunca envía tus datos a Claude ni a ningún otro servicio de IA.',
-  'gate.h.delete': 'Eliminar es permanente y es tu responsabilidad',
-  'gate.delete': 'Los datos eliminados no se pueden recuperar. Eres responsable de los datos que ingresas, exportas y eliminas, y la app y su desarrolladora no son responsables de ninguna pérdida de datos. Exporta los CSV para conservar tu propia copia.',
-  'gate.h.vendors': 'Tú gestionas el acuerdo; el proveedor gestiona a su personal',
-  'gate.vendors': 'La app funciona a nivel de contrato y de equipo. Aceptas no usarla para dirigir, programar, dar coaching, evaluar ni sancionar al personal del proveedor, porque eso puede crear una relación laboral compartida. Las reglas cambian según el país; consulta con tu equipo legal.',
-  'gate.h.license': 'Licencia',
-  'gate.sumfoot': 'Esto es un resumen. Se aplican los Términos y condiciones completos.',
-  'Read the full Terms & conditions': 'Leer los Términos y condiciones completos', 'Privacy & security notice': 'Aviso de privacidad y seguridad',
-  'gate.box': 'He leído y acepto los Términos de uso y el Aviso de privacidad y seguridad',
-  'Accept and continue': 'Aceptar y continuar', 'Decline': 'Rechazar', 'Review again': 'Revisar de nuevo',
-  'gate.declined': 'Necesitas aceptar los términos para usar la app',
-  'gate.thanks': 'Gracias. Aceptaste los Términos de uso.',
-  'gate.nostore': 'Este navegador no está guardando ajustes, así que verás esto de nuevo en tu próxima visita.',
+  'tcnote.text': 'Al usar esta app aceptas los <a href="#demo" data-action="terms">Términos</a> y el <a href="#demo" data-action="privacy">Aviso de privacidad</a>.', 'OK': 'Entendido',
+  'fb.agree': 'Al enviar aceptas los <a href="#demo" data-action="terms">Términos</a>.', 'Comments': 'Comentarios', 'fb.comment.ph': 'Qué funciona, qué falta o qué cambiarías',
+  'Email, if you would like a reply': 'Correo, si quieres respuesta', 'Other ways to send': 'Otras formas de enviar',
+  'tc.agree.shared': 'Este programa se guarda en el espacio compartido de esta página. Al crearlo aceptas los',
   'tc.summary': '<b>En resumen:</b> la app es gratuita y se ofrece tal cual. Los planes son únicos para cada persona, gerente y empresa, y no garantizan resultados sin un seguimiento adecuado. Tú eres responsable de tus datos, y la app y su desarrolladora no responden por pérdidas de datos.',
-  'tc.agree.box': 'He leído y acepto los', 'tc.agree.err': 'Acepta los Términos y condiciones para crear el programa.',
+  'tc.agree.err': 'Acepta los Términos y condiciones para crear el programa.',
   'tc.h.accept': 'Aceptación', 'tc.accept': 'Al usar Vendor Ramp Tracker aceptas estos términos. Si no estás de acuerdo, no uses la app.',
   'tc.h.what': 'Qué es la app', 'tc.what': 'Una herramienta para configurar, dar seguimiento y revisar planes de competencia de 90 días para equipos de proveedores. Es un proyecto de portafolio de Karen Tinoco y se ofrece sin costo.',
   'tc.h.results': 'Los planes son únicos; no hay garantía de éxito',
@@ -770,7 +742,7 @@ const ES = {
   'tc.h.asis': 'Se ofrece tal cual', 'tc.asis': 'La app se ofrece tal cual y según disponibilidad, sin garantías de ningún tipo, en la medida en que lo permita la ley. Puede cambiar, no estar disponible o dejar de ofrecerse en cualquier momento.',
   'tc.h.license': 'Licencia y derechos de autor', 'tc.license': '© 2026 Karen Tinoco. La app tiene licencia PolyForm Noncommercial 1.0.0: libre para usar, compartir y adaptar con fines no comerciales, dando crédito. El uso comercial requiere permiso por escrito.',
   'tc.h.feedback': 'Comentarios', 'tc.feedback': 'Si envías comentarios, permites que se usen para mejorar la app, sin obligación ni pago. Los comentarios que envías de forma privada desde la app se entregan a la desarrolladora de la app (se guardan en su cuenta de Google). Los que publicas como issue de GitHub son públicos.',
-  'tc.h.changes': 'Cambios a estos términos', 'tc.changes': 'Estos términos pueden actualizarse. La fecha de arriba indica la versión más reciente. Si los términos cambian, la app te pedirá aceptarlos de nuevo.',
+  'tc.h.changes': 'Cambios a estos términos', 'tc.changes': 'Estos términos pueden actualizarse. La fecha de arriba indica la versión más reciente. Si los términos cambian, la app muestra un aviso; si sigues usándola, aceptas los términos actualizados.',
   'tc.h.contact': 'Contacto', 'tc.contact': 'Si tienes preguntas sobre estos términos, usa la pestaña Comentarios.',
   'Feedback': 'Comentarios', 'Share feedback': 'Enviar comentarios', 'Terms of use': 'Términos de uso',
   'terms.short': 'Solo orientación: los planes son únicos para cada persona, gerente y empresa, se basan en los datos ingresados y no garantizan resultados. Eliminar datos es permanente y es tu responsabilidad.',
@@ -789,9 +761,6 @@ const ES = {
   'Keep my data': 'Conservar mis datos', 'Delete permanently': 'Eliminar definitivamente',
   'fb.intro': 'Ayúdanos a mejorar Vendor Ramp Tracker. Tus comentarios se usan para planear las próximas versiones: qué funciona, qué falta y qué haría la app más útil para tus revisiones de proveedores.',
   'How useful is the app for your vendor reviews?': '¿Qué tan útil es la app para tus revisiones de proveedores?', '1 = not useful · 5 = very useful': '1 = nada útil · 5 = muy útil',
-  'What works well?': '¿Qué funciona bien?', 'What should change or be added in a future version?': '¿Qué debería cambiar o agregarse en una versión futura?',
-  'Your role': 'Tu rol', 'Contact': 'Contacto', 'Email or LinkedIn, if you would like a reply': 'Correo o LinkedIn, si quieres respuesta',
-  'Operations leader': 'Líder de operaciones', 'Team lead or supervisor': 'Líder de equipo o supervisor', 'Vendor partner': 'Socio proveedor', 'Other': 'Otro',
   'fb.db.note': 'Tus comentarios se guardan de forma privada para la dueña de la app. Otras personas que usan la app no pueden verlos.',
   'fb.local.note': 'Enviar abre un issue de GitHub ya llenado en una pestaña nueva. Necesitas una cuenta de GitHub y el issue es público, así que no incluyas datos confidenciales. También puedes copiar tus comentarios y compartirlos de otra forma.',
   'fb.db.note.owner': 'Tus comentarios se entregan de forma privada a la desarrolladora de la app (se guardan en su cuenta de Google) y también se guardan de forma privada para la dueña de la app. Otras personas que usan la app no pueden verlos.',
@@ -865,28 +834,11 @@ const EN_LONG = {
   'tc.date': '12 November 2026',
   'tc.accepted': 'You accepted these terms on {d}.',
   'tc.see': 'Rules on use, responsibility and warranties are in the',
-  'gate.title': 'Before you start: Terms of use',
-  'gate.intro': "This is a summary of the app's Terms & conditions. To use Vendor Ramp Tracker you need to accept them.",
-  'gate.region': 'Summary of the terms',
-  'gate.h.free': 'Free, and shared for feedback',
-  'gate.free': 'The app is a portfolio project by Karen Tinoco, provided free of charge while people try it and send feedback. Feedback you send can be used to improve the app, without obligation or payment. It is provided as is, and it may change or stop being offered at any time.',
-  'gate.h.results': 'Plans are guidance, with no guaranteed results',
-  'gate.results': 'Every plan is unique to the person, manager and company who set it up, and is based only on the data entered. Scores, verdicts and suggestions are guidance, not legal, HR, financial or contractual advice, and they do not guarantee any result.',
-  'gate.h.data': 'Where your data is kept',
-  'gate.data.local': 'Programs and results are saved in this browser only. Nothing is sent to a server, and the app never sends your data to Claude or any other AI service. Clearing your browser data deletes them.',
-  'gate.data.db': "Programs and results are saved in this page's shared team workspace, and everyone the owner gives access to sees them. Your settings, including this acceptance, stay in this browser. The app never sends your data to Claude or any other AI service.",
-  'gate.h.delete': 'Deleting is permanent and your responsibility',
-  'gate.delete': "Deleted data can't be recovered. You are responsible for the data you enter, export and delete, and the app and its developer are not responsible for any loss of data. Export the CSVs to keep your own copy.",
-  'gate.h.vendors': 'You manage the agreement; the vendor manages its people',
-  'gate.vendors': "The app works at contract and team level. You agree not to use it to direct, schedule, coach, evaluate or discipline a vendor's workers, because that can create co-employment. Rules differ by country; check with your legal team.",
-  'gate.h.license': 'License',
-  'gate.sumfoot': 'This is a summary. The full Terms & conditions apply.',
-  'gate.box': 'I have read and accept the Terms of use and the Privacy & security notice',
-  'gate.declined': 'You need to accept the terms to use the app',
-  'gate.thanks': 'Thanks. You accepted the Terms of use.',
-  'gate.nostore': "This browser isn't saving settings, so you'll see this again on your next visit.",
+  'tcnote.text': 'By using this app you agree to the <a href="#demo" data-action="terms">Terms</a> and <a href="#demo" data-action="privacy">Privacy notice</a>.',
+  'fb.agree': 'By sending, you agree to the <a href="#demo" data-action="terms">Terms</a>.', 'fb.comment.ph': 'What works, what is missing, or what you would change',
+  'tc.agree.shared': 'This program is saved in this page\'s shared workspace. By creating it you agree to the',
   'tc.summary': '<b>In short:</b> the app is free and provided as is. Plans are unique to each person, manager and company, and do not guarantee results without proper monitoring. You are responsible for your data, and the app and its developer are not liable for any loss of data.',
-  'tc.agree.box': 'I have read and agree to the', 'tc.agree.err': 'Agree to the Terms & conditions to create the program.',
+  'tc.agree.err': 'Agree to the Terms & conditions to create the program.',
   'tc.h.accept': 'Acceptance', 'tc.accept': "By using Vendor Ramp Tracker you agree to these terms. If you don't agree, don't use the app.",
   'tc.h.what': 'What the app is', 'tc.what': 'A tool to set up, track and review 90-day proficiency plans for vendor teams. It is a portfolio project by Karen Tinoco and is provided free of charge.',
   'tc.h.results': 'Plans are unique; no guarantee of success',
@@ -898,7 +850,7 @@ const EN_LONG = {
   'tc.h.asis': 'Provided as is', 'tc.asis': 'The app is provided as is and as available, without warranties of any kind, to the extent permitted by law. It may change, be unavailable or stop being offered at any time.',
   'tc.h.license': 'License and copyright', 'tc.license': '© 2026 Karen Tinoco. The app is licensed under PolyForm Noncommercial 1.0.0: free to use, share and adapt for non-commercial purposes, with credit. Commercial use requires written permission.',
   'tc.h.feedback': 'Feedback', 'tc.feedback': "If you send feedback, you allow it to be used to improve the app, without obligation or payment. Feedback you send privately from the app is delivered to the app's developer (stored in the developer's Google account). Feedback you post as a GitHub issue is public.",
-  'tc.h.changes': 'Changes to these terms', 'tc.changes': 'These terms may be updated. The date at the top shows the latest version. If the terms change, the app asks you to agree again.',
+  'tc.h.changes': 'Changes to these terms', 'tc.changes': 'These terms may be updated. The date at the top shows the latest version. If the terms change, the app shows a notice; continuing to use the app means you accept the updated terms.',
   'tc.h.contact': 'Contact', 'tc.contact': 'Questions about these terms: use the Feedback tab.',
   'terms.short': 'Guidance only: plans are unique to each person, manager and company, are based on the data entered, and do not guarantee results. Deleting data is permanent and your responsibility.',
   'terms.h.results': 'No guarantee of results', 'terms.h.data': 'Your data is your responsibility', 'terms.h.asis': 'Provided as is',
@@ -1277,7 +1229,7 @@ function openModal(m) {
 }
 function closeModal() {
   ui.modal = null;
-  $('#privModal').hidden = true; document.body.style.overflow = ui.gate ? 'hidden' : '';
+  $('#privModal').hidden = true; document.body.style.overflow = '';
   $('#tabPrivacy').setAttribute('aria-pressed', 'false');
   $('#tabFeedback').setAttribute('aria-pressed', 'false');
   $('#tabTerms').setAttribute('aria-pressed', 'false');
@@ -1289,7 +1241,7 @@ $('#privModal').addEventListener('click', (ev) => { if (ev.target.id === 'privMo
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 document.addEventListener('keydown', (ev) => {
   if (ev.key !== 'Tab') return;
-  const box = !$('#privModal').hidden ? $('#privBox') : !$('#tcGate').hidden ? $('#gateBox') : null;
+  const box = !$('#privModal').hidden ? $('#privBox') : null;
   if (!box) return;
   const f = [...box.querySelectorAll(FOCUSABLE)].filter((x) => x.getClientRects().length);
   const cur = document.activeElement;
@@ -1300,7 +1252,7 @@ document.addEventListener('keydown', (ev) => {
 });
 
 // terms & conditions
-// Bump TC_VERSION when the terms change: everyone sees the gate again.
+// Bump TC_VERSION when the terms change: everyone sees the (non-blocking) terms notice again.
 const TC_VERSION = '2026-11-12';
 const TC_KEY = 'vrt.terms.acceptance';
 let tcMem = null; // this visit only, for browsers that block storage
@@ -1328,41 +1280,11 @@ function termsHtml() {
     <div class="pm-foot"><button class="btn navy" data-action="modalClose">${T('Close')}</button></div>`;
 }
 
-// first-use terms gate: blocks the app until the current terms are accepted
-const GATE_ITEMS = ['free', 'results', 'data', 'delete', 'vendors', 'license'];
-const gateBody = (k) => k === 'data' ? T(isShared() ? 'gate.data.db' : 'gate.data.local') : k === 'license' ? T('tc.license') : T('gate.' + k);
-function gateHtml() {
-  const g = ui.gate;
-  const top = `<div class="gate-top"><span class="eyebrow">Vendor Ramp Tracker</span>
-    <div class="lang" role="group" aria-label="${T('Language')}">${['en', 'es'].map((l) => `<button type="button" data-action="lang" data-lang="${l}" aria-pressed="${LANG === l}">${l.toUpperCase()}</button>`).join('')}</div></div>`;
-  if (g.declined) return `${top}<div class="gate-declined"><h1 id="gateTitle" tabindex="-1">${T('gate.declined')}</h1>
-    <button type="button" class="btn navy" id="gateReview" data-action="gateReview">${T('Review again')}</button></div>`;
-  return `${top}<h1 id="gateTitle">${T('gate.title')}</h1>
-    <p class="muted gate-intro" id="gateIntro">${T('gate.intro')} ${T('Last updated: {d}', { d: T('tc.date') })}</p>
-    <div class="gate-scroll" role="region" aria-label="${T('gate.region')}" tabindex="0">
-      <ul class="gate-list">${GATE_ITEMS.map((k) => `<li class="g-${k}"><h2>${T('gate.h.' + k)}</h2><p>${gateBody(k)}</p></li>`).join('')}</ul>
-      <p class="gate-sum-foot">${T('gate.sumfoot')}</p>
-    </div>
-    <p class="gate-links"><a href="#tc-full" data-action="gateTerms">${T('Read the full Terms & conditions')}</a><a href="#privacy" data-action="gatePrivacy">${T('Privacy & security notice')}</a></p>
-    <label class="ack"><input type="checkbox" id="gateAgree" required aria-required="true" ${g.agree ? 'checked' : ''}><span>${T('gate.box')}</span></label>
-    ${storageOk() ? '' : `<p class="gate-note">${T('gate.nostore')}</p>`}
-    <div class="pm-foot"><button type="button" class="btn" data-action="gateDecline">${T('Decline')}</button>
-      <button type="button" class="btn navy" id="gateAccept" data-action="gateAccept" ${g.agree ? '' : 'disabled'}>${T('Accept and continue')}</button></div>`;
-}
-const gateBackground = () => document.querySelectorAll('.hero, .console-wrap, .docs, .foot');
-function renderGate() { if (ui.gate) $('#gateBox').innerHTML = gateHtml(); }
-function openGate() {
-  ui.gate = { agree: false, declined: false };
-  renderGate();
-  $('#tcGate').hidden = false; document.body.classList.add('gated'); document.body.style.overflow = 'hidden';
-  gateBackground().forEach((el) => { el.inert = true; });
-  $('#gateBox').scrollTop = 0; $('#gateBox').focus();
-}
-function closeGate() {
-  ui.gate = null;
-  $('#tcGate').hidden = true; document.body.classList.remove('gated'); document.body.style.overflow = '';
-  gateBackground().forEach((el) => { el.inert = false; });
-  $('#tabProgram').focus({ preventScroll: true });
+// terms notice: one dismissible line; using the app counts as acceptance
+function renderTcNote() {
+  const n = $('#tcNote'), show = !termsAgreed();
+  $('#tcNoteText').innerHTML = T('tcnote.text'); n.querySelector('button').textContent = T('OK');
+  n.hidden = !show; document.body.classList.toggle('has-note', show);
 }
 
 // two-step delete confirmation
@@ -1399,14 +1321,13 @@ function deleteHtml(m) {
 }
 
 // feedback
-const FB_ROLES = ['Vendor manager', 'Operations leader', 'Team lead or supervisor', 'Vendor partner', 'Other'];
-function fbState() { return (ui.fb ||= { rating: 0, good: '', improve: '', role: '', contact: '', err: '', sent: false }); }
+function fbState() { return (ui.fb ||= { rating: 0, comment: '', contact: '', err: '', sent: false }); }
 function fbText() {
   const f = fbState();
-  return `**Rating:** ${f.rating ? f.rating + '/5' : '-'}\n**Role:** ${f.role || '-'}\n\n**What works well**\n${f.good || '-'}\n\n**What should change or be added**\n${f.improve || '-'}\n\n**Contact:** ${f.contact || '-'}\n\n_Sent from Vendor Ramp Tracker (${LANG.toUpperCase()})_`;
+  return `**Rating:** ${f.rating ? f.rating + '/5' : '-'}\n\n\n**Comments**\n${f.comment || '-'}\n\n**Contact:** ${f.contact || '-'}\n\n_Sent from Vendor Ramp Tracker (${LANG.toUpperCase()})_`;
 }
 const GH_ISSUES = 'https://github.com/karentinoco13-alt/vendor-ramp-tracker/issues/new';
-const fbUrl = () => GH_ISSUES + '?title=' + encodeURIComponent('Feedback: ' + (fbState().improve || fbState().good || 'Vendor Ramp Tracker').slice(0, 60)) + '&body=' + encodeURIComponent(fbText());
+const fbUrl = () => GH_ISSUES + '?title=' + encodeURIComponent('Feedback: ' + (fbState().comment || 'Vendor Ramp Tracker').slice(0, 60)) + '&body=' + encodeURIComponent(fbText());
 const FEEDBACK_ENDPOINT = '';  // Google Apps Script web app URL; set by owner
 async function sendFeedbackToOwner(payload) { // payload = {app, page, language, ...form fields, submitted}
   if (!FEEDBACK_ENDPOINT) return false;
@@ -1414,7 +1335,7 @@ async function sendFeedbackToOwner(payload) { // payload = {app, page, language,
   try { const r = await fetch(FEEDBACK_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body }); return r.ok; }
   catch (e) { try { await fetch(FEEDBACK_ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body }); return true; } catch (e2) { return false; } }
 }
-const fbValid = () => { const f = fbState(); return f.rating || f.good.trim() || f.improve.trim(); };
+const fbValid = () => { const f = fbState(); return f.rating || f.comment.trim(); };
 function feedbackHtml() {
   const f = fbState(), shared = store.mode === 'db';
   if (f.sent) return `<h1 id="privTitle">${T('Thank you')}</h1><div class="pm-lead">${T('fb.thanks')}</div>
@@ -1425,16 +1346,14 @@ function feedbackHtml() {
       <div><span class="fb-l">${T('How useful is the app for your vendor reviews?')}</span>
         <div class="fb-rate" role="group">${[1, 2, 3, 4, 5].map((n) => `<button type="button" class="fb-n r${n}" data-action="fbRate" data-n="${n}" aria-pressed="${f.rating === n}">${n}</button>`).join('')}
         <span class="muted fb-scale">${T('1 = not useful · 5 = very useful')}</span></div></div>
-      <label class="f">${T('What works well?')}<textarea id="fb_good" data-fb="good" rows="3">${esc(f.good)}</textarea></label>
-      <label class="f">${T('What should change or be added in a future version?')}<textarea id="fb_improve" data-fb="improve" rows="3">${esc(f.improve)}</textarea></label>
-      <div class="row"><label class="f" style="flex:1;min-width:200px">${T('Your role')} <span>${T('(optional)')}</span><select id="fb_role" data-fb="role"><option value=""></option>${FB_ROLES.map((r) => `<option value="${r}" ${f.role === r ? 'selected' : ''}>${T(r)}</option>`).join('')}</select></label>
-        <label class="f" style="flex:1.4;min-width:220px">${T('Contact')} <span>${T('(optional)')}</span><input type="text" id="fb_contact" data-fb="contact" value="${esc(f.contact)}" placeholder="${esc(T('Email or LinkedIn, if you would like a reply'))}"></label></div>
+      <label class="f">${T('Comments')} <span>${T('(optional)')}</span><textarea id="fb_comment" data-fb="comment" rows="3" placeholder="${esc(T('fb.comment.ph'))}">${esc(f.comment)}</textarea></label>
+      <label class="f">${T('Email, if you would like a reply')} <span>${T('(optional)')}</span><input type="email" id="fb_contact" data-fb="contact" value="${esc(f.contact)}" autocomplete="email"></label>
     </div>
-    <div class="pm-now">${T((shared ? 'fb.db.note' : 'fb.local.note') + (FEEDBACK_ENDPOINT ? '.owner' : ''))}</div>
     ${f.err ? `<p class="err" role="alert">${esc(f.err)}</p>` : ''}
-    <div class="pm-foot"><button class="btn" data-action="modalClose">${T('Cancel')}</button>
-      ${shared ? `<button class="btn primary" data-action="fbSend">${T('Send feedback')}</button>`
-        : `<button class="btn" data-action="fbCopy">${T('Copy feedback')}</button><a class="btn ${FEEDBACK_ENDPOINT ? '' : 'primary'}" id="fbGh" data-action="fbGh" href="${esc(fbUrl())}" target="_blank" rel="noopener">${T('Send on GitHub')}</a>${FEEDBACK_ENDPOINT ? `<button class="btn primary" data-action="fbSend">${T('Send feedback')}</button>` : ''}`}</div>`;
+    <div class="pm-now">${T((shared ? 'fb.db.note' : 'fb.local.note') + (FEEDBACK_ENDPOINT ? '.owner' : ''))}</div>
+    <p class="muted fb-agree">${T('fb.agree')}</p>
+    ${shared ? '' : `<div class="fb-alt">${FEEDBACK_ENDPOINT ? `<span class="muted">${T('Other ways to send')}:</span>` : ''}<button class="btn" data-action="fbCopy">${T('Copy feedback')}</button><a class="btn" id="fbGh" data-action="fbGh" href="${esc(fbUrl())}" target="_blank" rel="noopener">${T('Send on GitHub')}</a></div>`}
+    <div class="pm-foot"><button class="btn" data-action="modalClose">${T('Cancel')}</button>${shared || FEEDBACK_ENDPOINT ? `<button class="btn primary" data-action="fbSend">${T('Send feedback')}</button>` : ''}</div>`;
 }
 function renderDocs() {
   const key = LANG + store.mode;
@@ -1697,7 +1616,7 @@ function chart(p, r, today) {
 
 // ---------- wizard (decision tree) ----------
 const WZ_STEPS = ['Basics', 'Type of work', 'Priorities', 'Metrics', 'Goals & ramp', 'Review'];
-function newWizard(prog) { const w = newWizard0(prog); w.agree = termsAgreed(); return w; }
+function newWizard(prog) { const w = newWizard0(prog); w.agree = termsAgreed() || !isShared(); return w; }
 function newWizard0(prog) {
   if (prog) return { step: 4, editingId: prog.id, d: JSON.parse(JSON.stringify({ vendor: prog.vendor, team: prog.team || '', owner: prog.owner || '', start: prog.start, role: prog.role, focus: prog.focus || [], rampKey: prog.rampKey || 'steady', ramp: prog.ramp, metrics: prog.metrics })), picked: true, err: '', custom: { name: '', unit: '#', dir: 'up' } };
   return { step: 0, editingId: null, d: { vendor: '', team: '', owner: '', start: todayISO(), role: null, focus: [], rampKey: 'steady', ramp: RAMPS.steady.pcts, metrics: [] }, picked: false, err: '', custom: { name: '', unit: '#', dir: 'up' } };
@@ -1779,7 +1698,7 @@ function renderWizard() {
     <tbody>${d.metrics.map((m) => `<tr><td><b>${esc(mName(m))}</b> <span class="dir">${dirLow(m)}</span></td>${d.ramp.map((x) => `<td class="n">${fmt(targetVal({ ...m, goal: +m.goal }, x), m.unit)}</td>`).join('')}<td class="n">${m.weight}</td></tr>`).join('')}</tbody></table></div>
     <p class="muted" style="font-size:.88rem">${T('rule.day90')}</p>
     <div class="disclaimer"><b>${T('Before you create this plan')}</b> ${T('terms.results')}</div>
-    <label class="ack"><input type="checkbox" id="wzAgree" ${w.agree ? 'checked' : ''}><span>${T('tc.agree.box')} <a href="#demo" data-action="terms">${T('Terms & conditions')}</a></span></label>`;
+    ${isShared() ? `<label class="ack"><input type="checkbox" id="wzAgree" ${w.agree ? 'checked' : ''}><span>${T('tc.agree.shared')} <a href="#demo" data-action="terms">${T('Terms & conditions')}</a></span></label>` : ''}`;
   }
   return `<div class="wz">
     <div class="row" style="justify-content:space-between;align-items:center"><h1>${w.editingId ? T('Edit program') : T('New vendor program')}</h1><button class="btn ghost" data-action="wzCancel">${T('Cancel')}</button></div>
@@ -1913,18 +1832,12 @@ document.addEventListener('click', async (ev) => {
   const w = ui.wz;
   switch (a) {
     case 'lang': {
-      const inGate = !!el.closest('#gateBox');
-      LANG = el.dataset.lang; try { localStorage.setItem('vrt.lang', LANG); } catch {} if (ui.wz) ui.wz.err = ''; renderStatic(); render(); renderModal(); renderGate();
-      if (inGate) $('#gateBox [data-lang="' + LANG + '"]')?.focus();
+      LANG = el.dataset.lang; try { localStorage.setItem('vrt.lang', LANG); } catch {} if (ui.wz) ui.wz.err = ''; renderStatic(); render(); renderModal(); renderTcNote();
       break;
     }
     case 'privacy': openPrivacy(); break;
     case 'terms': openModal({ type: 'terms' }); break;
-    case 'gateTerms': ev.preventDefault(); openModal({ type: 'terms' }); break;
-    case 'gatePrivacy': ev.preventDefault(); openPrivacy(); break;
-    case 'gateAccept': if (!ui.gate?.agree) break; agreeTerms(); closeGate(); render(); toast(T('gate.thanks')); break;
-    case 'gateDecline': if (!ui.gate) break; ui.gate.declined = true; ui.gate.agree = false; renderGate(); $('#gateTitle').focus(); break;
-    case 'gateReview': if (!ui.gate) break; ui.gate.declined = false; renderGate(); $('#gateBox').scrollTop = 0; $('#gateAgree').focus(); break;
+    case 'tcNoteOk': agreeTerms(); renderTcNote(); break;
     case 'feedback': if (ui.fb?.sent) ui.fb = null; openModal({ type: 'feedback' }); break;
     case 'modalClose': closeModal(); break;
     case 'delNext': if (ui.modal?.ack || ui.modal?.kind === 'all') { ui.modal.step = 2; renderModal(); } break;
@@ -1933,7 +1846,7 @@ document.addEventListener('click', async (ev) => {
       const m = ui.modal; if (!m || m.step !== 2 || (m.kind === 'all' ? !m.ack2 : !m.ack)) break;
       if (m.kind === 'all') {
         closeModal();
-        try { await store.deleteAll(); ui.progId = null; ui.view = 'program'; ui.wz = null; ui.fb = null; render(); store.clearLocal(); tcMem = null; toast(T('Your data was deleted.')); if (!termsAgreed()) openGate(); }
+        try { await store.deleteAll(); ui.progId = null; ui.view = 'program'; ui.wz = null; ui.fb = null; render(); store.clearLocal(); tcMem = null; toast(T('Your data was deleted.')); renderTcNote(); }
         catch { toast(T("Couldn't delete everything. Check your connection and try again.")); }
         break;
       }
@@ -1952,7 +1865,7 @@ document.addEventListener('click', async (ev) => {
     case 'fbSend': {
       if (!fbValid()) { fbState().err = T('fb.empty'); renderModal(); break; }
       const f = fbState(); el.disabled = true;
-      const fields = { rating: f.rating || null, good: f.good.trim().slice(0, 4000), improve: f.improve.trim().slice(0, 4000), role: f.role, contact: f.contact.trim().slice(0, 200) };
+      const fields = { rating: f.rating || null, comment: f.comment.trim().slice(0, 4000), contact: f.contact.trim().slice(0, 200) };
       const jobs = [];
       if (FEEDBACK_ENDPOINT) jobs.push(sendFeedbackToOwner({ app: 'Vendor Ramp Tracker', page: location.href, language: LANG, ...fields, submitted: new Date().toISOString() }));
       if (store.mode === 'db') jobs.push(store.addFeedback({ ...fields, lang: LANG, createdAt: new Date().toISOString() }).then(() => true));
@@ -2038,7 +1951,6 @@ document.addEventListener('change', (ev) => {
   if (t.id === 'expScope') { ui.exportScope = t.value; ui.exportText = ''; render(); }
   if (t.id === 'demoRange') { stopPlay(); ui.demoDay = +t.value; render(); }
   if (t.id === 'wzAgree' && ui.wz) { ui.wz.agree = t.checked; const b = $('#wzSaveBtn'); if (b) b.disabled = !t.checked; }
-  if (t.id === 'gateAgree' && ui.gate) { ui.gate.agree = t.checked; const b = $('#gateAccept'); if (b) b.disabled = !t.checked; }
   if (t.id === 'delAck2' && ui.modal) { ui.modal.ack2 = t.checked; const b = $('#delGo'); if (b) b.disabled = !t.checked; }
   if (t.id === 'delAck' && ui.modal) { ui.modal.ack = t.checked; const b = $('#delNext'); if (b) b.disabled = !t.checked; }
   if (t.dataset.fb) { fbState()[t.dataset.fb] = t.value; }
@@ -2073,7 +1985,7 @@ if (ui.view === 'wizard' || ui.view === 'privacy') ui.view = 'program';
 renderStatic();
 render();
 store.init();
-if (!termsAgreed()) openGate();
+renderTcNote();
 })();
 </script>
 <script data-goatcounter="https://karentinoco13.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
